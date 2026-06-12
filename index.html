@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A股核心指标金融看板 | 2026-06-12</title>
+<title>A股核心指标金融看板 | 2026-06-12 收盘</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
 <style>
 :root {
@@ -163,13 +163,33 @@ tr:hover { background: var(--table-hover); }
 .tag-warn { background: #fffbeb; color: #d97706; }
 
 .missing { color: #ef4444; font-weight: 600; }
-.missing::before { content: "⚠️ "; }
 
 /* Chart Container */
 .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
 .chart-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; min-height: 350px; }
 .chart-box h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--text-secondary); }
 .chart-inner { width: 100%; height: 300px; }
+
+/* Heatmap */
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.heatmap-cell {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 10px;
+  text-align: center;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+.heatmap-cell:hover { transform: scale(1.03); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.heatmap-cell .industry-name { font-weight: 600; margin-bottom: 4px; }
+.heatmap-cell .industry-change { font-size: 1.1rem; font-weight: 700; }
+.heatmap-cell .industry-leader { font-size: 0.65rem; color: var(--text-secondary); margin-top: 2px; }
 
 /* Summary */
 .summary-box {
@@ -219,10 +239,6 @@ tr:hover { background: var(--table-hover); }
   table { font-size: 0.75rem; }
 }
 
-/* Dot indicators */
-.dot-red { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--red); margin-right: 4px; }
-.dot-green { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-right: 4px; }
-
 /* Tabs */
 .tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
 .tab-btn {
@@ -246,23 +262,20 @@ tr:hover { background: var(--table-hover); }
 <header class="header">
   <h1>A股核心指标金融看板</h1>
   <div class="header-right">
-    <span class="update-time">⏱️ 数据更新: 2026-06-12 09:50 CST（盘中）</span>
+    <span class="update-time">⏱️ 数据更新: 2026-06-12 15:30 CST（收盘）</span>
     <button class="theme-toggle" onclick="toggleTheme()">🌙 暗色模式</button>
   </div>
 </header>
 
 <div class="container">
 
-<!-- ========== 模块一：核心指数卡片 ========== -->
+<!-- ========== 模块一：股指表现 ========== -->
 <div class="module">
   <div class="module-header">
-    <h2><span class="icon"></span>一、股指表现 —— 实时行情速览</h2>
-    <span class="module-time">⏱️ 更新时间: 2026-06-12 09:49 CST | 来源: 沪深北交易所 (NeoData)</span>
+    <h2><span class="icon"></span>一、股指表现</h2>
+    <span class="module-time">⏱️ 更新时间: 2026-06-12 收盘 | 来源: 沪深北交易所 (NeoData)</span>
   </div>
-
   <div class="cards-row" id="index-cards"></div>
-
-  <!-- 指数估值表 -->
   <div class="table-wrapper" style="margin-top:16px;">
     <table id="index-table">
       <thead>
@@ -284,7 +297,7 @@ tr:hover { background: var(--table-hover); }
   </div>
 </div>
 
-<!-- ========== 图表区 ========== -->
+<!-- 股指图表 -->
 <div class="chart-row">
   <div class="chart-box">
     <h3>各指数今日涨跌幅对比 (%)</h3>
@@ -296,30 +309,72 @@ tr:hover { background: var(--table-hover); }
   </div>
 </div>
 
-<!-- ========== 模块二：宏观基本面 ========== -->
+<!-- ========== 模块二：市场宽度 ========== -->
 <div class="module">
   <div class="module-header">
-    <h2><span class="icon"></span>二、宏观基本面</h2>
+    <h2><span class="icon"></span>二、市场宽度</h2>
+    <span class="module-time">⏱️ 更新时间: 2026-06-12 收盘 | 来源: 沪深北交易所</span>
+  </div>
+  <div class="cards-row" id="breadth-cards"></div>
+</div>
+
+<!-- ========== 模块三：海外市场联动 ========== -->
+<div class="module">
+  <div class="module-header">
+    <h2><span class="icon"></span>三、海外市场联动</h2>
+    <span class="module-time">⏱️ 美股数据: 2026-06-11 ET | 港股/汇率: 2026-06-12 | 来源: NeoData</span>
+  </div>
+  <div class="cards-row" id="overseas-cards"></div>
+  <div class="table-wrapper" style="margin-top:16px;">
+    <table>
+      <thead>
+        <tr><th>市场/品种</th><th>最新价</th><th>涨跌幅</th><th>5日涨跌</th><th>20日涨跌</th><th>年初至今</th><th>数据日期</th></tr>
+      </thead>
+      <tbody id="overseas-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ========== 模块四：期指基差 ========== -->
+<div class="module">
+  <div class="module-header">
+    <h2><span class="icon"></span>四、期指基差</h2>
+    <span class="module-time">⏱️ 更新时间: 2026-06-12 12:02 | 来源: NeoData</span>
+  </div>
+  <div class="cards-row" id="futures-cards"></div>
+</div>
+
+<!-- ========== 模块五：大宗商品 ========== -->
+<div class="module">
+  <div class="module-header">
+    <h2><span class="icon"></span>五、大宗商品</h2>
+    <span class="module-time">⏱️ 更新时间: 2026-06-12 12:01 | 来源: 上海黄金交易所 / COMEX / NeoData</span>
+  </div>
+  <div class="cards-row" id="commodity-cards"></div>
+</div>
+
+<!-- ========== 模块六：宏观基本面 ========== -->
+<div class="module">
+  <div class="module-header">
+    <h2><span class="icon"></span>六、宏观基本面</h2>
     <span class="module-time">⏱️ 最近更新: 2026-06-10 09:30 | 来源: 国家统计局</span>
   </div>
   <div class="cards-row" id="macro-cards"></div>
   <div class="table-wrapper" style="margin-top:16px;">
     <table>
       <thead>
-        <tr>
-          <th>指标</th><th>最新值</th><th>前值</th><th>环比变化</th><th>数据日期</th><th>来源</th>
-        </tr>
+        <tr><th>指标</th><th>最新值</th><th>前值</th><th>环比变化</th><th>数据日期</th><th>来源</th></tr>
       </thead>
       <tbody id="macro-tbody"></tbody>
     </table>
   </div>
 </div>
 
-<!-- ========== 模块三：流动性环境 ========== -->
+<!-- ========== 模块七：流动性环境 ========== -->
 <div class="module">
   <div class="module-header">
-    <h2><span class="icon"></span>三、流动性环境</h2>
-    <span class="module-time">⏱️ 最近更新: 2026-06-11 | 来源: 中国人民银行 / 中债信息网</span>
+    <h2><span class="icon"></span>七、流动性环境</h2>
+    <span class="module-time">⏱️ 最近更新: 2026-06-12 | 来源: 中国人民银行 / 中债信息网</span>
   </div>
   <div class="cards-row" id="liquidity-cards"></div>
   <div class="chart-row">
@@ -334,41 +389,50 @@ tr:hover { background: var(--table-hover); }
   </div>
 </div>
 
-<!-- ========== 模块四：市场估值 ========== -->
+<!-- ========== 模块八：市场估值 ========== -->
 <div class="module">
   <div class="module-header">
-    <h2><span class="icon"></span>四、市场估值</h2>
-    <span class="module-time">⏱️ 估值数据日期: 2026-06-12 09:49 | 来源: 沪深交易所 / 中债信息网</span>
+    <h2><span class="icon"></span>八、市场估值</h2>
+    <span class="module-time">⏱️ 估值数据日期: 2026-06-12 收盘 | 来源: 沪深交易所 / 中债信息网</span>
   </div>
   <div class="cards-row" id="valuation-cards"></div>
 </div>
 
-<!-- ========== 模块五：情绪与资金 ========== -->
+<!-- ========== 模块九：情绪与资金 ========== -->
 <div class="module">
   <div class="module-header">
-    <h2><span class="icon"></span>五、情绪与资金</h2>
-    <span class="module-time">⏱️ 两融数据: 2026-06-11 收盘 | 来源: 沪深交易所</span>
+    <h2><span class="icon"></span>九、情绪与资金</h2>
+    <span class="module-time">⏱️ 两融数据: 2026-06-08 收盘（T-2） | 来源: 沪深交易所</span>
   </div>
   <div class="cards-row" id="sentiment-cards"></div>
+</div>
 
-  <!-- 行业资金流向 -->
-  <div class="module-header" style="margin-top:20px;">
-    <h3>申万行业板块涨跌幅 & 主力资金</h3>
-    <span class="module-time">⏱️ 2026-06-12 09:50 | 注：主力资金为估算值 (盘中数据)</span>
+<!-- ========== 模块十：板块轮动热力图 ========== -->
+<div class="module">
+  <div class="module-header">
+    <h2><span class="icon"></span>十、板块轮动热力图</h2>
+    <span class="module-time">⏱️ 更新时间: 2026-06-12 收盘 | 来源: 申万行业 (NeoData)</span>
   </div>
+  <div class="heatmap-grid" id="heatmap-grid"></div>
+  <p style="font-size:0.72rem;color:var(--text-secondary);margin-top:8px;">颜色越深红表示涨幅越大，绿色表示下跌，灰色=暂缺数据。仅展示已获取数据的行业板块。</p>
+</div>
 
+<!-- ========== 模块十一：行业资金流向 ========== -->
+<div class="module">
+  <div class="module-header">
+    <h2><span class="icon"></span>十一、行业资金流向</h2>
+    <span class="module-time">⏱️ 2026-06-12 收盘 | 注：主力资金为估算值</span>
+  </div>
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('industry-all')">全部行业</button>
     <button class="tab-btn" onclick="switchTab('industry-up')">🔴 上涨行业</button>
     <button class="tab-btn" onclick="switchTab('industry-inflow')">📈 主力净流入TOP</button>
   </div>
-
   <div class="filter-bar">
     <input type="text" id="industry-filter" placeholder="搜索行业..." onkeyup="filterIndustry()">
   </div>
-
   <div class="table-wrapper">
-    <table>
+    <table id="industry-table">
       <thead>
         <tr>
           <th onclick="sortIndustry(0)">行业<span class="sort-arrow">↕</span></th>
@@ -384,99 +448,150 @@ tr:hover { background: var(--table-hover); }
       <tbody id="industry-tbody"></tbody>
     </table>
   </div>
-  <p style="font-size:0.72rem;color:var(--text-secondary);margin-top:6px;">注：主力资金数据来自东方财富估算，涨股比为板块内上涨家数/总家数；盘中数据持续更新</p>
+  <p style="font-size:0.72rem;color:var(--text-secondary);margin-top:6px;">注：主力资金数据来自东方财富估算；仅展示有完整数据的行业板块，其余暂缺</p>
 </div>
 
 <!-- ========== 今日小结 ========== -->
 <div class="summary-box">
-  <h3>今日市场小结</h3>
+  <h3>📊 今日市场小结 (2026-06-12 收盘)</h3>
   <p id="daily-summary"></p>
 </div>
 
 <!-- ========== Footer ========== -->
 <div class="footer">
-  <p>数据来源：国家统计局、中国人民银行、沪深北交易所、中债信息网、东方财富数据中心</p>
+  <p>数据来源：国家统计局、中国人民银行、沪深北交易所、中债信息网、上海黄金交易所、COMEX</p>
   <p>数据来自公开渠道，仅供参考，不构成投资建议。股市有风险，投资需谨慎。</p>
-  <p>© 2026 A股金融看板 | 自动生成于 2026-06-12 09:50 CST</p>
+  <p>© 2026 A股金融看板 | 自动生成于 2026-06-12 15:30 CST（收盘数据）</p>
 </div>
 
 </div><!-- end container -->
 
 <script>
 // ========================
-// DATA
+// DATA — 2026-06-12 收盘
 // ========================
+
+// 模块一：股指表现
 const indexData = [
-  { name: "上证指数", code: "000001.SH", price: 4025.63, prevClose: 3987.01, change: 0.97, volume: 3794, pe: 17.80, pePct: 96.95, pb: null, pbPct: null, chg5d: -0.05, chg20d: -2.65, chgYTD: 1.43, mcap: 671750, source: "上交所" },
-  { name: "深证成指", code: "399001.SZ", price: 15053.47, prevClose: 14851.98, change: 1.36, volume: 4307, pe: 49.79, pePct: 98.10, pb: null, pbPct: null, chg5d: -1.71, chg20d: -3.26, chgYTD: 11.30, mcap: 469417, source: "深交所" },
-  { name: "创业板指", code: "399006.SZ", price: 3882.00, prevClose: 3811.25, change: 1.86, volume: 2113, pe: 68.72, pePct: 58.14, pb: null, pbPct: null, chg5d: -1.92, chg20d: -1.20, chgYTD: 21.19, mcap: 202804, source: "深交所" },
-  { name: "科创50", code: "000688.SH", price: 1722.03, prevClose: 1662.44, change: 3.58, volume: 463, pe: 162.78, pePct: null, pb: null, pbPct: null, chg5d: 3.22, chg20d: 1.52, chgYTD: 28.11, mcap: 51607, source: "上交所" },
-  { name: "沪深300", code: "000300.SH", price: 4774.05, prevClose: 4722.41, change: 1.09, volume: 1952, pe: 14.35, pePct: null, pb: null, pbPct: null, chg5d: -0.89, chg20d: -1.76, chgYTD: 3.11, mcap: 547256, source: "沪深交易所" },
-  { name: "中证500", code: "000905.SH", price: 8165.43, prevClose: 8035.78, change: 1.61, volume: 1676, pe: 35.75, pePct: null, pb: null, pbPct: null, chg5d: -1.04, chg20d: -4.35, chgYTD: 9.37, mcap: 181813, source: "中证指数" },
-  { name: "中证1000", code: "000852.SH", price: 8264.40, prevClose: 8159.45, change: 1.29, volume: 1868, pe: 54.09, pePct: null, pb: null, pbPct: null, chg5d: -0.92, chg20d: -4.82, chgYTD: 8.81, mcap: 163134, source: "中证指数" },
-  { name: "北证50", code: "899050.BJ", price: 1258.91, prevClose: 1252.30, change: 0.53, volume: 58, pe: 52.32, pePct: null, pb: null, pbPct: null, chg5d: -3.09, chg20d: -8.66, chgYTD: -12.60, mcap: 3163, source: "北交所" }
+  { name: "上证指数", code: "000001.SH", price: 4049.29, change: 1.56, volume: 9803.20, pe: 17.07, pePct: 96.95, chg5d: null, chg20d: null, chgYTD: 2.12, source: "上交所" },
+  { name: "深证成指", code: "399001.SZ", price: 15103.14, change: 1.69, volume: 10798.16, pe: 34.88, pePct: 98.10, chg5d: null, chg20d: null, chgYTD: 11.02, source: "深交所" },
+  { name: "创业板指", code: "399006.SZ", price: 3859.75, change: 1.27, volume: 5170.21, pe: 45.26, pePct: 58.14, chg5d: null, chg20d: null, chgYTD: 19.02, source: "深交所" },
+  { name: "科创50", code: "000688.SH", price: 1681.58, change: 1.15, volume: 1098.41, pe: null, pePct: null, chg5d: null, chg20d: null, chgYTD: 23.66, source: "上交所" },
+  { name: "沪深300", code: "000300.SH", price: 4794.71, change: 1.53, volume: 5341.44, pe: null, pePct: null, chg5d: null, chg20d: null, chgYTD: 3.08, source: "沪深交易所" },
+  { name: "中证500", code: "000905.SH", price: 8219.78, change: 2.29, volume: 4318.37, pe: null, pePct: null, chg5d: null, chg20d: null, chgYTD: 10.20, source: "中证指数" },
+  { name: "中证1000", code: "399852.SZ", price: 8300.32, change: 1.73, volume: 4685.81, pe: null, pePct: null, chg5d: null, chg20d: null, chgYTD: 9.25, source: "中证指数" },
+  { name: "北证50", code: "899050.BJ", price: 1269.98, change: 1.41, volume: 143.55, pe: null, pePct: null, chg5d: null, chg20d: null, chgYTD: -12.45, source: "北交所" }
 ];
 
+// 计算总成交额（上证+深证）
+const totalTurnover = indexData.filter(d => ['上证指数','深证成指'].includes(d.name)).reduce((s,d) => s + d.volume, 0);
+
+// 模块二：市场宽度
+const breadthData = [
+  { name: "上涨家数", val: "暂缺", note: "API未返回全市场统计" },
+  { name: "下跌家数", val: "暂缺", note: "API未返回全市场统计" },
+  { name: "涨停家数(含ST)", val: "暂缺", note: "API未返回全市场统计" },
+  { name: "跌停家数(含ST)", val: "暂缺", note: "API未返回全市场统计" },
+  { name: "全市场成交额", val: (totalTurnover/10000).toFixed(2)+"万亿", note: "沪深两市合计（基于指数成交额汇总）" },
+  { name: "涨跌比", val: "暂缺", note: "需涨跌家数数据" }
+];
+
+// 模块三：海外市场联动
+const overseasData = [
+  { name: "恒生科技指数", code: "HSTECH.HK", price: 4735.72, change: 1.72, chg5d: -3.12, chg20d: -6.71, chgYTD: -14.15, date: "2026-06-12 12:00", source: "港交所" },
+  { name: "纳斯达克指数", code: ".IXIC.US", price: 25809.66, change: 2.54, chg5d: -3.81, chg20d: -2.24, chgYTD: 11.05, date: "2026-06-11 ET", source: "NASDAQ" },
+  { name: "标普500", code: ".INX.US", price: 7394.30, change: 1.75, chg5d: -2.51, chg20d: -0.67, chgYTD: 8.02, date: "2026-06-11 ET", source: "S&P" },
+  { name: "美元人民币(USDCNY)", code: "USDCNY", price: 6.7630, change: -0.13, chg5d: -0.37, chg20d: -0.71, chgYTD: -3.20, date: "2026-06-12 12:02", source: "中国外汇交易中心" },
+  { name: "美元指数", code: "DINIW", price: 99.77, change: 0.08, chg5d: -0.33, chg20d: 0.50, chgYTD: 1.53, date: "2026-06-12 12:02", source: "ICE" }
+];
+
+// 模块四：期指基差
+const futuresData = [
+  { name: "富时A50期货", code: "CN", price: 15477.00, prevClose: 15195.00, change: 1.86, note: "最新价 vs 昨收15195", source: "新加坡交易所" },
+  { name: "沪深300 IF主力", code: "IF", price: null, prevClose: null, change: null, note: "暂缺", source: "中金所" },
+  { name: "中证500 IC主力", code: "IC", price: null, prevClose: null, change: null, note: "暂缺", source: "中金所" },
+  { name: "中证1000 IM主力", code: "IM", price: null, prevClose: null, change: null, note: "暂缺", source: "中金所" }
+];
+
+// 模块五：大宗商品
+const commodityData = [
+  { name: "上海金(AU9999)", code: "AU9999.SHG", price: 912.80, change: 1.87, note: "昨结算896.01元/克", source: "上海黄金交易所" },
+  { name: "伦敦金", code: "AUUSDO.LIFFE", price: 4218.40, change: 2.54, note: "昨结算4114.00美元/盎司", source: "LBMA" },
+  { name: "COMEX铜", code: "HG.FU", price: 6.426, change: 2.40, note: "昨结算6.275美元/磅 | 6/11数据", source: "COMEX" },
+  { name: "原油(WTI)", code: "CL", price: null, change: null, note: "暂缺", source: "NYMEX" }
+];
+
+// 模块六：宏观基本面
 const macroData = [
-  { name: "制造业PMI", val: "50.0%", prev: "50.3%", chg: "-0.3%", date: "2026-05-31", source: "国家统计局" },
-  { name: "高技术制造业PMI", val: "52.9", prev: "52.2", chg: "+0.7", date: "2026-05-31", source: "中国人民银行" },
-  { name: "装备制造业PMI", val: "52.1", prev: "51.8", chg: "+0.3", date: "2026-05-31", source: "中国人民银行" },
-  { name: "大企业PMI", val: "51.1%", prev: "50.2%", chg: "+0.9%", date: "2026-05-31", source: "国家统计局" },
-  { name: "中型企业PMI", val: "48.6%", prev: "50.5%", chg: "-1.9%", date: "2026-05-31", source: "国家统计局" },
-  { name: "CPI同比", val: "1.2%", prev: "1.2%", chg: "0.0%", date: "2026-05", source: "国家统计局 6/10公布" },
-  { name: "CPI环比", val: "-0.1%", prev: "0.3%", chg: "-0.4%", date: "2026-05", source: "国家统计局 6/10公布" },
-  { name: "PPI同比", val: "3.9%", prev: "2.8%", chg: "+1.1%", date: "2026-05", source: "国家统计局 6/10公布" },
-  { name: "PPI环比(生产资料)", val: "0.7%", prev: "2.1%", chg: "-1.4%", date: "2026-05", source: "国家统计局 6/10公布" },
-  { name: "社融预估(5月)", val: "17578亿", prev: "14320亿(4月)", chg: "+3258亿", date: "2026-05预估", source: "聚源数据(预估)" },
-  { name: "社融存量(4月)", val: "456.89万亿", prev: "456.46万亿(3月)", chg: "+0.43万亿", date: "2026-04", source: "中国人民银行" },
-  { name: "新订单指数", val: "暂缺", prev: "", chg: "", date: "", source: "待公布" }
+  { name: "综合PMI产出(5月)", val: "50.5%", prev: "50.1%(4月)", chg: "+0.4%", date: "2026-05-31", source: "国家统计局" },
+  { name: "高技术制造业PMI", val: "52.9", prev: "52.2(4月)", chg: "+0.7", date: "2026-05-31", source: "国家统计局" },
+  { name: "装备制造业PMI", val: "52.1", prev: "51.8(4月)", chg: "+0.3", date: "2026-05-31", source: "国家统计局" },
+  { name: "消费品行业PMI", val: "49.7", prev: "50.7(4月)", chg: "-1.0", date: "2026-05-31", source: "国家统计局" },
+  { name: "高耗能行业PMI", val: "47.1", prev: "47.9(4月)", chg: "-0.8", date: "2026-05-31", source: "国家统计局" },
+  { name: "CPI同比(5月)", val: "1.2%", prev: "1.2%(4月)", chg: "持平", date: "2026-05", source: "国家统计局 6/10公布" },
+  { name: "CPI环比(5月)", val: "-0.1%", prev: "+0.3%(4月)", chg: "-0.4%", date: "2026-05", source: "国家统计局 6/10公布" },
+  { name: "PPI同比(5月)", val: "3.9%", prev: "2.8%(4月)", chg: "+1.1%", date: "2026-05", source: "国家统计局 6/10公布" },
+  { name: "PPI环比(5月)", val: "0.5%", prev: "1.7%(4月)", chg: "-1.2%", date: "2026-05", source: "国家统计局 6/10公布" },
+  { name: "社融预估(5月)", val: "19700亿(中金预测)", prev: "14320亿(4月实际)", chg: "+5380亿", date: "2026-05预估", source: "聚源数据(中金公司预测)" },
+  { name: "社融存量(4月)", val: "456.89万亿", prev: "456.46万亿(3月)", chg: "+0.43万亿", date: "2026-04", source: "中国人民银行" }
 ];
 
+// 模块七：流动性环境
 const liquidityData = [
   { name: "10Y国债收益率", val: "1.7475%", prev: "1.7207%(6/5)", chg: "+2.68bp", date: "2026-06-11", source: "中债信息网" },
-  { name: "14天逆回购利率", val: "1.65%", prev: "1.65%", chg: "持平", date: "2026-06-11", source: "中国人民银行" },
-  { name: "7天逆回购利率", val: "1.40%", prev: "1.40%", chg: "持平", date: "2026-06-11", source: "中国人民银行" },
-  { name: "逆回购操作(6/11)", val: "1885亿", prev: "1590亿(6/10)", chg: "+295亿", date: "2026-06-11", source: "中国人民银行" },
-  { name: "DR007", val: "暂缺", prev: "", chg: "", date: "", source: "待查询" },
+  { name: "7天逆回购利率", val: "1.40%", prev: "1.40%", chg: "持平", date: "2026-06-12", source: "中国人民银行" },
+  { name: "今日逆回购操作", val: "1193亿", prev: "1885亿(6/11)", chg: "-692亿", date: "2026-06-12", source: "中国人民银行" },
+  { name: "今日净投放/回笼", val: "净回笼72亿", prev: "净投放295亿(6/11)", chg: "--", date: "2026-06-12", source: "中国人民银行 (到期1265亿)" },
+  { name: "DR007", val: "暂缺", prev: "", chg: "", date: "", source: "待查询 (运行在逆回购利率下方)" },
   { name: "1年期LPR", val: "暂缺", prev: "", chg: "", date: "", source: "待查询" },
   { name: "5年期LPR", val: "暂缺", prev: "", chg: "", date: "", source: "待查询" },
   { name: "MLF利率(1Y)", val: "暂缺", prev: "", chg: "", date: "", source: "待查询" }
 ];
 
+// 模块八：市场估值
+// 上交所+深交所总市值估算
+const totalMCap = 1141167; // 亿元
+const gdpEst = 1400000;    // 2026年GDP预估140万亿(亿元)
+const buffetIdx = (totalMCap / gdpEst * 100).toFixed(1);
+const hs300pe = 14.35; // 估测值
+const erp = ((1 / hs300pe * 100) - 1.7475).toFixed(2);
+
 const valuationData = [
-  { name: "巴菲特指数(总市值/GDP)*", val: "约81.5%", note: "沪深总市值≈114.1万亿 / 2026年GDP预估140万亿", source: "基于交易所数据估算" },
-  { name: "股债性价比 ERP", val: "约5.22%", note: "1/沪深300PE(14.35) - 10Y国债(1.7475%)", source: "基于交易所&中债数据计算" },
-  { name: "沪深300股息率", val: "暂缺(实时)", note: "历史高位约3.5%+，需等年报分红数据更新", source: "待上市公司分红公告" },
-  { name: "沪深300股息率-10Y国债", val: "暂缺", note: "需最新股息率数据", source: "待更新" }
+  { name: "巴菲特指数*", val: buffetIdx + "%", note: "沪深总市值≈114.1万亿 / GDP预估140万亿", source: "基于交易所数据估算" },
+  { name: "股债性价比 ERP", val: erp + "%", note: "1/沪深300PE估测 - 10Y国债(1.7475%)", source: "基于交易所&中债数据计算" },
+  { name: "沪深300 PE分位", val: "暂缺", note: "最新年报数据更新中", source: "待更新" },
+  { name: "沪深300股息率", val: "暂缺", note: "待分红公告数据", source: "待更新" }
 ];
 
+// 模块九：情绪与资金
 const sentimentData = [
-  { name: "两融余额", val: "28736亿", prev: "28791亿(6/10)", chg: "-55亿 (-0.19%)", date: "2026-06-11", source: "沪深交易所" },
-  { name: "融资余额", val: "28527亿", prev: "28580亿(6/10)", chg: "-53亿 (-0.18%)", date: "2026-06-11", source: "沪深交易所" },
-  { name: "融券余额", val: "209亿", prev: "211亿(6/10)", chg: "-2亿 (-1.03%)", date: "2026-06-11", source: "沪深交易所" },
-  { name: "北向资金(今日)", val: "盘中暂无", note: "北向资金实时数据已停更，需等收盘后公布", source: "沪深港通" },
-  { name: "融资净买入ETF TOP", val: "通信/机器人/纳指", note: "6/9数据：通信ETF、机器人ETF、纳斯达克100ETF", source: "沪深交易所" }
+  { name: "两融余额", val: "28535亿", note: "6/8数据 (沪14537+深13998) | 较6/7: -234亿", source: "沪深交易所" },
+  { name: "融资余额", val: "28535亿", note: "6/8数据 | 两市合计", source: "沪深交易所" },
+  { name: "融券余额", val: "暂缺", note: "API未返回单独融券数据", source: "待查询" },
+  { name: "北向资金(今日)", val: "暂缺", note: "北向资金实时数据已停更", source: "沪深港通" },
+  { name: "ETF净流入TOP(近一周)", val: "沪深300ETF", note: "近一周沪深300相关ETF累计净流入79.10亿", source: "Wind" }
 ];
 
-// Industry data (申万行业板块 — 2026-06-12 盘中)
+// 模块十&十一：行业板块数据
 const industryData = [
-  { name: "靶材(概念)", code: "pt02011037", change: 6.10, volume: null, turnover: 11.13, inflow: null, inflow5d: null, inflow20d: null, chg5d: 38.42, chg20d: 37.68, leader: "阿石创 +12.70%" },
-  { name: "半导体", code: "pt01801081", change: 4.11, volume: 1426, turnover: 2.06, inflow: 7.56, inflow5d: -6.07, inflow20d: -130.99, chg5d: 5.44, chg20d: 7.10, leader: "神工股份 +20.00%" },
-  { name: "印巴冲突概念", code: "pt02GN2400", change: 4.84, volume: null, turnover: 0.87, inflow: null, inflow5d: null, inflow20d: null, chg5d: 3.46, chg20d: -5.90, leader: "晨曦航空 +19.96%" },
-  { name: "电子布", code: "pt02GN2422", change: 4.83, volume: null, turnover: 2.05, inflow: null, inflow5d: null, inflow20d: null, chg5d: 11.30, chg20d: 22.32, leader: "国际复材 +12.36%" },
-  { name: "无人战机", code: "pt02GN2384", change: 4.57, volume: null, turnover: 1.65, inflow: null, inflow5d: null, inflow20d: null, chg5d: 7.32, chg20d: -4.09, leader: "宗申动力 +8.57%" },
-  { name: "HBM存储器", code: "pt02GN2272", change: 4.13, volume: null, turnover: 3.65, inflow: null, inflow5d: null, inflow20d: null, chg5d: 10.06, chg20d: 14.63, leader: "盛美上海 +15.49%" },
-  { name: "博通概念", code: "pt02GN2397", change: 4.08, volume: null, turnover: 1.47, inflow: null, inflow5d: null, inflow20d: null, chg5d: 1.95, chg20d: 9.01, leader: "生益电子 +8.34%" },
-  { name: "航天系", code: "pt02GN2327", change: 4.44, volume: null, turnover: 1.20, inflow: null, inflow5d: null, inflow20d: null, chg5d: -0.23, chg20d: -12.50, leader: "航天发展 +10.02%" },
-  { name: "SRAM概念", code: "pt02GN2291", change: 4.39, volume: null, turnover: 2.87, inflow: null, inflow5d: null, inflow20d: null, chg5d: 1.25, chg20d: -6.04, leader: "万润科技 +7.30%" },
-  { name: "元件", code: "pt01801083", change: 2.97, volume: 521, turnover: 2.39, inflow: 3.71, inflow5d: -10.40, inflow20d: -16.80, chg5d: 2.20, chg20d: 24.80, leader: "方邦股份 +17.42%" },
-  { name: "消费电子", code: "pt01801085", change: 2.10, volume: 287, turnover: 0.96, inflow: 1.34, inflow5d: -16.46, inflow20d: -51.42, chg5d: null, chg20d: null, leader: "智动力 +8.40%" },
-  { name: "通信设备", code: "pt01801102", change: 1.64, volume: 635, turnover: 1.43, inflow: -0.89, inflow5d: -26.73, inflow20d: -57.77, chg5d: null, chg20d: null, leader: "澄天伟业 +16.55%" },
-  { name: "转融券标的", code: "pt02003631", change: 0.70, volume: 7758, turnover: 0.50, inflow: 14.27, inflow5d: -182.16, inflow20d: -927.92, chg5d: null, chg20d: null, leader: "神工股份 +20.00%" },
-  { name: "化学制品", code: "pt01801034", change: -0.06, volume: 258, turnover: 1.50, inflow: -0.40, inflow5d: 0.32, inflow20d: -11.57, chg5d: null, chg20d: null, leader: "宿迁联盛 +10.03%" },
-  { name: "电力", code: "pt01801161", change: -0.60, volume: 162, turnover: 0.50, inflow: -0.62, inflow5d: -8.43, inflow20d: -33.60, chg5d: null, chg20d: null, leader: "露笑科技 +5.90%" },
-  { name: "传媒", code: null, change: -0.30, volume: null, turnover: null, inflow: null, inflow5d: null, inflow20d: null, chg5d: null, chg20d: null, leader: "--" },
-  { name: "计算机", code: null, change: 0.60, volume: null, turnover: null, inflow: null, inflow5d: null, inflow20d: null, chg5d: null, chg20d: null, leader: "--" }
+  { name: "工业金属", change: 7.50, volume: 590.51, turnover: 2.54, inflow: 67.52, inflow5d: -14.61, inflow20d: -177.34, leader: "电工合金 +11.65%", note: "涨股比55/60" },
+  { name: "贵金属", change: 7.21, volume: null, turnover: 2.41, inflow: null, inflow5d: null, inflow20d: null, leader: "招金黄金 +10.02%" },
+  { name: "小金属", change: 5.45, volume: null, turnover: 5.61, inflow: null, inflow5d: null, inflow20d: null, leader: "锡业股份 +10.01%" },
+  { name: "能源金属", change: 5.23, volume: null, turnover: 5.26, inflow: null, inflow5d: null, inflow20d: null, leader: "盛屯矿业 +9.97%" },
+  { name: "航空装备II", change: 4.89, volume: null, turnover: 2.15, inflow: null, inflow5d: null, inflow20d: null, leader: "晨曦航空 +19.96%" },
+  { name: "航空机场", change: 4.68, volume: null, turnover: 1.36, inflow: null, inflow5d: null, inflow20d: null, leader: "中信海直 +9.98%" },
+  { name: "电池", change: 3.77, volume: 738.92, turnover: 3.00, inflow: 40.06, inflow5d: -8.99, inflow20d: -432.87, leader: "珠海冠宇 +18.02%", note: "涨股比90/97" },
+  { name: "半导体", change: 0.38, volume: 3037.60, turnover: 4.35, inflow: 39.26, inflow5d: -97.00, inflow20d: -1346.20, leader: "蓝箭电子 +19.98%", note: "涨股比82/173" }
+];
+
+// 其余31个申万行业暂缺数据
+const missingIndustries = [
+  "银行", "非银金融", "房地产", "建筑装饰", "建筑材料",
+  "机械设备", "电力设备", "国防军工", "汽车", "家用电器",
+  "纺织服饰", "轻工制造", "商贸零售", "社会服务", "食品饮料",
+  "农林牧渔", "医药生物", "美容护理", "公用事业", "环保",
+  "交通运输", "通信", "计算机", "传媒", "电子",
+  "石油石化", "基础化工", "钢铁", "煤炭", "综合"
 ];
 
 // ========================
@@ -488,36 +603,50 @@ function toggleTheme() {
   isDark = !isDark;
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : '');
   themeBtn.innerHTML = isDark ? '☀️ 亮色模式' : '🌙 暗色模式';
-  // Re-render charts
   setTimeout(renderCharts, 200);
 }
 
 // ========================
-// RENDER INDEX CARDS
+// RENDER HELPERS
+// ========================
+function fmtChg(v) {
+  if (v === null || v === undefined) return { cls: 'neutral', txt: '暂缺' };
+  const cls = v > 0 ? 'up' : (v < 0 ? 'down' : 'neutral');
+  const txt = (v > 0 ? '+' : '') + v.toFixed(2) + '%';
+  return { cls, txt };
+}
+
+function fmtVol(v) {
+  if (v === null || v === undefined) return '暂缺';
+  if (v > 10000) return (v/10000).toFixed(2)+'万亿';
+  return v.toFixed(2)+'亿';
+}
+
+// ========================
+// MODULE 1: INDEX CARDS & TABLE
 // ========================
 function renderIndexCards() {
   const container = document.getElementById('index-cards');
   container.innerHTML = indexData.map(d => {
-    const chgClass = d.change > 0 ? 'up' : (d.change < 0 ? 'down' : 'neutral');
-    const chgSign = d.change > 0 ? '+' : '';
-    return `
-      <div class="card">
-        <div class="card-title">${d.name} <span style="font-size:0.7rem;opacity:0.7">${d.code}</span></div>
-        <div class="card-value">${d.price.toLocaleString('zh-CN')}</div>
-        <div class="card-change ${chgClass}">${chgSign}${d.change.toFixed(2)}%</div>
-        <div class="card-meta">成交: ${d.volume > 1000 ? (d.volume/10000).toFixed(1)+'万亿' : d.volume+'亿'} | PE: ${d.pe.toFixed(1)}</div>
-      </div>`;
+    const chg = fmtChg(d.change);
+    const vol = d.volume > 10000 ? (d.volume/10000).toFixed(2)+'万亿' : d.volume.toFixed(2)+'亿';
+    const pe = d.pe !== null ? d.pe.toFixed(2) : '暂缺';
+    return `<div class="card">
+      <div class="card-title">${d.name} <span style="font-size:0.7rem;opacity:0.7">${d.code}</span></div>
+      <div class="card-value">${d.price.toLocaleString('zh-CN')}</div>
+      <div class="card-change ${chg.cls}">${chg.txt}</div>
+      <div class="card-meta">成交: ${vol} | PE: ${pe}</div>
+    </div>`;
   }).join('');
 }
 
-// ========================
-// RENDER INDEX TABLE
-// ========================
 function renderIndexTable() {
   const tbody = document.getElementById('index-tbody');
   tbody.innerHTML = indexData.map(d => {
-    const chgClass = d.change > 0 ? 'up' : (d.change < 0 ? 'down' : 'neutral');
-    const chgSign = d.change > 0 ? '+' : '';
+    const chg = fmtChg(d.change);
+    const chg5d = fmtChg(d.chg5d);
+    const chg20d = fmtChg(d.chg20d);
+    const chgYTD = fmtChg(d.chgYTD);
 
     let peStatus = '';
     if (d.pePct !== null) {
@@ -528,122 +657,246 @@ function renderIndexTable() {
       peStatus = '<span style="color:var(--text-secondary)">暂缺</span>';
     }
 
-    const pePctStr = d.pePct !== null ? d.pePct.toFixed(1) + '%' : '暂缺';
-    const volumeStr = d.volume > 1000 ? (d.volume/10000).toFixed(2)+'万亿' : d.volume.toFixed(0)+'亿';
+    const peStr = d.pe !== null ? d.pe.toFixed(2) : '暂缺';
+    const pePctStr = d.pePct !== null ? d.pePct.toFixed(2)+'%' : '暂缺';
 
-    return `
-      <tr>
-        <td>${d.name}<br><span style="font-size:0.7rem;color:var(--text-secondary)">${d.source}</span></td>
-        <td>${d.price.toLocaleString('zh-CN')}</td>
-        <td class="${chgClass}">${chgSign}${d.change.toFixed(2)}%</td>
-        <td>${volumeStr}</td>
-        <td>${d.pe.toFixed(2)}</td>
-        <td>${pePctStr}</td>
-        <td>${peStatus}</td>
-        <td class="${d.chg5d > 0 ? 'up' : (d.chg5d < 0 ? 'down' : 'neutral')}">${d.chg5d > 0 ? '+' : ''}${d.chg5d.toFixed(2)}%</td>
-        <td class="${d.chg20d > 0 ? 'up' : (d.chg20d < 0 ? 'down' : 'neutral')}">${d.chg20d > 0 ? '+' : ''}${d.chg20d.toFixed(2)}%</td>
-        <td class="${d.chgYTD > 0 ? 'up' : (d.chgYTD < 0 ? 'down' : 'neutral')}">${d.chgYTD > 0 ? '+' : ''}${d.chgYTD.toFixed(2)}%</td>
-      </tr>`;
+    return `<tr>
+      <td>${d.name}<br><span style="font-size:0.7rem;color:var(--text-secondary)">${d.source}</span></td>
+      <td>${d.price.toLocaleString('zh-CN')}</td>
+      <td class="${chg.cls}">${chg.txt}</td>
+      <td>${fmtVol(d.volume)}</td>
+      <td>${peStr}</td>
+      <td>${pePctStr}</td>
+      <td>${peStatus}</td>
+      <td class="${chg5d.cls}">${chg5d.txt}</td>
+      <td class="${chg20d.cls}">${chg20d.txt}</td>
+      <td class="${chgYTD.cls}">${chgYTD.txt}</td>
+    </tr>`;
   }).join('');
 }
 
 // ========================
-// RENDER MACRO
+// MODULE 2: MARKET BREADTH
+// ========================
+function renderBreadth() {
+  const cards = document.getElementById('breadth-cards');
+  cards.innerHTML = breadthData.map(d => {
+    const isMissing = d.val.includes('暂缺') || d.val.includes('API');
+    return `<div class="card">
+      <div class="card-title">${d.name}</div>
+      <div class="card-value" style="${isMissing ? 'font-size:1.1rem;color:var(--warn)' : ''}">${d.val}</div>
+      <div class="card-meta">${d.note}</div>
+    </div>`;
+  }).join('');
+}
+
+// ========================
+// MODULE 3: OVERSEAS MARKETS
+// ========================
+function renderOverseas() {
+  const cards = document.getElementById('overseas-cards');
+  cards.innerHTML = overseasData.slice(0,5).map(d => {
+    const chg = fmtChg(d.change);
+    return `<div class="card">
+      <div class="card-title">${d.name}</div>
+      <div class="card-value" style="font-size:1.4rem">${d.price.toLocaleString('zh-CN')}</div>
+      <div class="card-change ${chg.cls}">${chg.txt}</div>
+      <div class="card-meta">${d.date} | ${d.source}</div>
+    </div>`;
+  }).join('');
+
+  const tbody = document.getElementById('overseas-tbody');
+  tbody.innerHTML = overseasData.map(d => {
+    const chg = fmtChg(d.change);
+    const chg5d = fmtChg(d.chg5d);
+    const chg20d = fmtChg(d.chg20d);
+    const chgY = fmtChg(d.chgYTD);
+    return `<tr>
+      <td>${d.name}</td>
+      <td>${d.price.toLocaleString('zh-CN')}</td>
+      <td class="${chg.cls}">${chg.txt}</td>
+      <td class="${chg5d.cls}">${chg5d.txt}</td>
+      <td class="${chg20d.cls}">${chg20d.txt}</td>
+      <td class="${chgY.cls}">${chgY.txt}</td>
+      <td>${d.date}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ========================
+// MODULE 4: FUTURES BASIS
+// ========================
+function renderFutures() {
+  const cards = document.getElementById('futures-cards');
+  cards.innerHTML = futuresData.map(d => {
+    if (d.price === null) {
+      return `<div class="card">
+        <div class="card-title">${d.name}</div>
+        <div class="card-value" style="font-size:1.1rem;color:var(--warn)">暂缺</div>
+        <div class="card-meta">${d.note} | ${d.source}</div>
+      </div>`;
+    }
+    const chg = fmtChg(d.change);
+    return `<div class="card">
+      <div class="card-title">${d.name}</div>
+      <div class="card-value" style="font-size:1.4rem">${d.price.toLocaleString('zh-CN')}</div>
+      <div class="card-change ${chg.cls}">${chg.txt}</div>
+      <div class="card-meta">${d.note} | ${d.source}</div>
+    </div>`;
+  }).join('');
+}
+
+// ========================
+// MODULE 5: COMMODITIES
+// ========================
+function renderCommodities() {
+  const cards = document.getElementById('commodity-cards');
+  cards.innerHTML = commodityData.map(d => {
+    if (d.price === null) {
+      return `<div class="card">
+        <div class="card-title">${d.name}</div>
+        <div class="card-value" style="font-size:1.1rem;color:var(--warn)">暂缺</div>
+        <div class="card-meta">${d.note} | ${d.source}</div>
+      </div>`;
+    }
+    const chg = fmtChg(d.change);
+    return `<div class="card">
+      <div class="card-title">${d.name}</div>
+      <div class="card-value" style="font-size:1.4rem">${d.price.toLocaleString('zh-CN')}</div>
+      <div class="card-change ${chg.cls}">${chg.txt}</div>
+      <div class="card-meta">${d.note} | ${d.source}</div>
+    </div>`;
+  }).join('');
+}
+
+// ========================
+// MODULE 6: MACRO
 // ========================
 function renderMacro() {
   const cards = document.getElementById('macro-cards');
   cards.innerHTML = `
-    <div class="card"><div class="card-title">制造业PMI (5月)</div><div class="card-value">50.0%</div><div class="card-change down">较4月 -0.3%</div><div class="card-meta">荣枯线边缘 | 国家统计局 5/31公布</div></div>
-    <div class="card"><div class="card-title">高技术制造业PMI</div><div class="card-value">52.9</div><div class="card-change up">较4月 +0.7</div><div class="card-meta">持续扩张 | 央行</div></div>
-    <div class="card"><div class="card-title">CPI同比 (5月)</div><div class="card-value">1.2%</div><div class="card-change neutral">持平</div><div class="card-meta">环比 -0.1% | 6/10公布</div></div>
-    <div class="card"><div class="card-title">PPI同比 (5月)</div><div class="card-value">3.9%</div><div class="card-change up">较4月 +1.1%</div><div class="card-meta">生产资料环比+0.7% | 6/10公布</div></div>
+    <div class="card"><div class="card-title">综合PMI产出 (5月)</div><div class="card-value">50.5%</div><div class="card-change up">较4月 +0.4%</div><div class="card-meta">荣枯线上方 | 国家统计局 5/31</div></div>
+    <div class="card"><div class="card-title">高技术制造业PMI</div><div class="card-value">52.9</div><div class="card-change up">较4月 +0.7</div><div class="card-meta">持续扩张 | 国家统计局</div></div>
+    <div class="card"><div class="card-title">CPI同比 (5月)</div><div class="card-value">1.2%</div><div class="card-change neutral">持平</div><div class="card-meta">环比-0.1% | 6/10公布</div></div>
+    <div class="card"><div class="card-title">PPI同比 (5月)</div><div class="card-value">3.9%</div><div class="card-change up">较4月 +1.1%</div><div class="card-meta">环比+0.5% | 创46个月新高</div></div>
   `;
 
   const tbody = document.getElementById('macro-tbody');
   tbody.innerHTML = macroData.map(d => {
     const isMissing = d.val.includes('暂缺');
     const chgClass = d.chg.startsWith('+') ? 'up' : (d.chg.startsWith('-') ? 'down' : 'neutral');
-    return `
-      <tr>
-        <td>${d.name}</td>
-        <td class="${isMissing ? 'missing' : ''}">${d.val}</td>
-        <td>${d.prev || '--'}</td>
-        <td class="${chgClass}">${d.chg || '--'}</td>
-        <td>${d.date || '--'}</td>
-        <td>${d.source}</td>
-      </tr>`;
+    return `<tr>
+      <td>${d.name}</td>
+      <td class="${isMissing ? 'missing' : ''}">${d.val}</td>
+      <td>${d.prev || '--'}</td>
+      <td class="${chgClass}">${d.chg || '--'}</td>
+      <td>${d.date || '--'}</td>
+      <td>${d.source}</td>
+    </tr>`;
   }).join('');
 }
 
 // ========================
-// RENDER LIQUIDITY
+// MODULE 7: LIQUIDITY
 // ========================
 function renderLiquidity() {
   const cards = document.getElementById('liquidity-cards');
   cards.innerHTML = `
-    <div class="card"><div class="card-title">10Y国债收益率</div><div class="card-value">1.7475%</div><div class="card-change up">较上周 +2.68bp</div><div class="card-meta">6/11 | 中债信息网</div></div>
-    <div class="card"><div class="card-title">14天逆回购利率</div><div class="card-value">1.65%</div><div class="card-change neutral">持平</div><div class="card-meta">7天1.40% 持平 | 中国人民银行</div></div>
-    <div class="card"><div class="card-title">今日逆回购操作</div><div class="card-value">1,885亿</div><div class="card-change up">较昨日 +295亿</div><div class="card-meta">6/11 | 中国人民银行</div></div>
-    <div class="card"><div class="card-title">DR007</div><div class="card-value missing" style="font-size:1rem;">暂缺</div><div class="card-meta">待查询</div></div>
+    <div class="card"><div class="card-title">10Y国债收益率</div><div class="card-value">1.7475%</div><div class="card-change up">较6/5 +2.68bp</div><div class="card-meta">6/11 | 中债信息网</div></div>
+    <div class="card"><div class="card-title">7天逆回购利率</div><div class="card-value">1.40%</div><div class="card-change neutral">持平</div><div class="card-meta">6/12操作1193亿 | 净回笼72亿</div></div>
+    <div class="card"><div class="card-title">今日逆回购操作</div><div class="card-value">1,193亿</div><div class="card-change down">较昨日 -692亿</div><div class="card-meta">到期1265亿 | 净回笼72亿</div></div>
+    <div class="card"><div class="card-title">DR007</div><div class="card-value" style="font-size:1rem;color:var(--warn)">暂缺</div><div class="card-meta">运行在逆回购利率下方</div></div>
   `;
 }
 
 // ========================
-// RENDER VALUATION
+// MODULE 8: VALUATION
 // ========================
 function renderValuation() {
   const cards = document.getElementById('valuation-cards');
-  // 上交所+深交所总市值 ≈ 114.1万亿 (不含重复计算)
-  const totalMCap = 1141167; // 671750 + 469417 ≈ 114.1万亿(单位:亿)
-  const gdpEst = 1400000; // 2026年GDP预估140万亿
-  const buffetIdx = (totalMCap / gdpEst * 100).toFixed(1);
-  const erp = ((1 / 14.35 * 100) - 1.7475).toFixed(2);
-
   cards.innerHTML = `
     <div class="card"><div class="card-title">巴菲特指数*</div><div class="card-value">${buffetIdx}%</div><div class="card-meta">沪深总市值≈114.1万亿 / GDP预估140万亿</div><div class="card-meta" style="font-size:0.7rem">*基于交易所数据估算</div></div>
-    <div class="card"><div class="card-title">股债性价比 ERP</div><div class="card-value">${erp}%</div><div class="card-meta">1/沪深300PE(14.35) - 10Y国债(1.7475%)</div><div class="card-meta"></div></div>
-    <div class="card"><div class="card-title">沪深300 PE分位</div><div class="card-value">暂缺</div><div class="card-meta">最新年报数据更新中</div></div>
-    <div class="card"><div class="card-title">沪深300股息率</div><div class="card-value">暂缺</div><div class="card-meta">待分红公告数据</div></div>
+    <div class="card"><div class="card-title">股债性价比 ERP</div><div class="card-value">${erp}%</div><div class="card-meta">1/沪深300PE(估14.35) - 10Y国债(1.7475%)</div></div>
+    <div class="card"><div class="card-title">沪深300 PE分位</div><div class="card-value" style="font-size:1.1rem;color:var(--warn)">暂缺</div><div class="card-meta">最新年报数据更新中</div></div>
+    <div class="card"><div class="card-title">沪深300股息率</div><div class="card-value" style="font-size:1.1rem;color:var(--warn)">暂缺</div><div class="card-meta">待分红公告数据</div></div>
   `;
 }
 
 // ========================
-// RENDER SENTIMENT
+// MODULE 9: SENTIMENT
 // ========================
 function renderSentiment() {
   const cards = document.getElementById('sentiment-cards');
   cards.innerHTML = `
-    <div class="card"><div class="card-title">两融余额 (6/11)</div><div class="card-value">28,736亿</div><div class="card-change down">较前日 -55亿</div><div class="card-meta">融资28527亿 | 融券209亿</div></div>
-    <div class="card"><div class="card-title">融资余额 (6/11)</div><div class="card-value">28,527亿</div><div class="card-change down">较前日 -53亿</div><div class="card-meta">连续回落 | 沪深交易所</div></div>
-    <div class="card"><div class="card-title">北向资金</div><div class="card-value" style="font-size:1rem;color:var(--warn)">盘中暂无</div><div class="card-meta">实时数据已于2024年停更</div></div>
-    <div class="card"><div class="card-title">ETF净流入TOP(6/9)</div><div class="card-value" style="font-size:0.95rem;">通信/机器人/纳指</div><div class="card-meta">通信ETF国泰+18.76亿居首</div></div>
+    <div class="card"><div class="card-title">两融余额 (6/8)</div><div class="card-value">28,535亿</div><div class="card-change down">较6/7 -234亿</div><div class="card-meta">沪14537亿 | 深13998亿</div></div>
+    <div class="card"><div class="card-title">融资余额 (6/8)</div><div class="card-value">28,535亿</div><div class="card-change down">较6/7 -234亿</div><div class="card-meta">连续回落 | 沪深交易所</div></div>
+    <div class="card"><div class="card-title">北向资金</div><div class="card-value" style="font-size:1rem;color:var(--warn)">暂缺</div><div class="card-meta">实时数据已于2024年停更</div></div>
+    <div class="card"><div class="card-title">ETF净流入(近一周)</div><div class="card-value" style="font-size:1rem;">沪深300ETF</div><div class="card-meta">沪深300相关ETF周净流入79.10亿</div></div>
   `;
 }
 
 // ========================
-// RENDER INDUSTRY TABLE
+// MODULE 10: HEATMAP
+// ========================
+function renderHeatmap() {
+  const grid = document.getElementById('heatmap-grid');
+  const items = [];
+
+  // Add available industry data
+  industryData.forEach(d => {
+    const pct = Math.abs(d.change);
+    let bg;
+    if (d.change >= 5) bg = 'rgba(220,38,38,0.35)';
+    else if (d.change >= 3) bg = 'rgba(220,38,38,0.25)';
+    else if (d.change >= 1) bg = 'rgba(220,38,38,0.15)';
+    else if (d.change > 0) bg = 'rgba(220,38,38,0.08)';
+    else if (d.change < 0) bg = 'rgba(22,163,74,0.15)';
+    else bg = '#f8fafc';
+
+    items.push({ name: d.name, change: d.change, leader: d.leader, bg });
+  });
+
+  // Add missing industries as grey
+  missingIndustries.forEach(name => {
+    items.push({ name, change: null, leader: '暂缺', bg: '#e5e7eb' });
+  });
+
+  grid.innerHTML = items.map(d => {
+    const chgTxt = d.change !== null ? ((d.change > 0 ? '+' : '') + d.change.toFixed(2) + '%') : '暂缺';
+    const chgCls = d.change !== null ? (d.change >= 3 ? 'up' : (d.change > 0 ? 'up' : (d.change < 0 ? 'down' : 'neutral'))) : 'neutral';
+    const icon = d.change !== null && d.change >= 3 ? '🔴 ' : (d.change !== null && d.change <= -3 ? '🟢 ' : '');
+    return `<div class="heatmap-cell" style="background:${d.bg}">
+      <div class="industry-name">${d.name}</div>
+      <div class="industry-change ${chgCls}">${icon}${chgTxt}</div>
+      <div class="industry-leader">${d.leader}</div>
+    </div>`;
+  }).join('');
+}
+
+// ========================
+// MODULE 11: INDUSTRY TABLE
 // ========================
 function renderIndustry() {
   const tbody = document.getElementById('industry-tbody');
   tbody.innerHTML = industryData.map(d => {
-    const chgClass = d.change > 3 ? 'up' : (d.change > 0 ? 'up' : (d.change < -3 ? 'down' : (d.change < 0 ? 'down' : 'neutral')));
-    const chgSign = d.change > 0 ? '+' : '';
+    const chg = fmtChg(d.change);
     const icon = d.change >= 3 ? '🔴 ' : (d.change <= -3 ? '🟢 ' : '');
     const inflowStr = d.inflow !== null ? (d.inflow > 0 ? '<span class="up">+'+d.inflow.toFixed(2)+'亿</span>' : '<span class="down">'+d.inflow.toFixed(2)+'亿</span>') : '暂缺';
-    const inflow5dStr = d.inflow5d !== null ? (d.inflow5d > 0 ? '<span class="up">+'+d.inflow5d.toFixed(2)+'</span>' : '<span class="down">'+d.inflow5d.toFixed(2)+'</span>') : '暂缺';
-    const inflow20dStr = d.inflow20d !== null ? (d.inflow20d > 0 ? '<span class="up">+'+d.inflow20d.toFixed(2)+'</span>' : '<span class="down">'+d.inflow20d.toFixed(2)+'</span>') : '暂缺';
+    const i5Str = d.inflow5d !== null ? (d.inflow5d > 0 ? '<span class="up">+'+d.inflow5d.toFixed(2)+'</span>' : '<span class="down">'+d.inflow5d.toFixed(2)+'</span>') : '暂缺';
+    const i20Str = d.inflow20d !== null ? (d.inflow20d > 0 ? '<span class="up">+'+d.inflow20d.toFixed(2)+'</span>' : '<span class="down">'+d.inflow20d.toFixed(2)+'</span>') : '暂缺';
+    const volStr = d.volume !== null ? d.volume.toFixed(2)+'亿' : '暂缺';
+    const toStr = d.turnover !== null ? d.turnover.toFixed(2)+'%' : '暂缺';
 
-    return `
-      <tr data-change="${d.change}">
-        <td>${icon}${d.name}</td>
-        <td class="${chgClass}">${chgSign}${d.change.toFixed(2)}%</td>
-        <td>${d.volume !== null ? d.volume.toFixed(0)+'亿' : '暂缺'}</td>
-        <td>${d.turnover !== null ? d.turnover.toFixed(2)+'%' : '暂缺'}</td>
-        <td>${inflowStr}</td>
-        <td>${inflow5dStr}</td>
-        <td>${inflow20dStr}</td>
-        <td>${d.leader}</td>
-      </tr>`;
+    return `<tr data-change="${d.change}">
+      <td>${icon}${d.name}${d.note ? '<br><span style="font-size:0.68rem;color:var(--text-secondary)">'+d.note+'</span>' : ''}</td>
+      <td class="${chg.cls}">${chg.txt}</td>
+      <td>${volStr}</td>
+      <td>${toStr}</td>
+      <td>${inflowStr}</td>
+      <td>${i5Str}</td>
+      <td>${i20Str}</td>
+      <td>${d.leader}</td>
+    </tr>`;
   }).join('');
 }
 
@@ -662,9 +915,6 @@ function switchTab(tab) {
   });
 }
 
-// ========================
-// FILTERS
-// ========================
 function filterIndustry() {
   const q = document.getElementById('industry-filter').value.toLowerCase();
   document.querySelectorAll('#industry-tbody tr').forEach(r => {
@@ -686,8 +936,8 @@ function sortTable(tableId, colIdx) {
   const dir = sortStates[key] === 'asc' ? 1 : -1;
 
   rows.sort((a, b) => {
-    let va = a.cells[colIdx].textContent.replace(/[+%,万亿]/g, '').trim();
-    let vb = b.cells[colIdx].textContent.replace(/[+%,万亿]/g, '').trim();
+    let va = a.cells[colIdx].textContent.replace(/[+%,万亿暂缺]/g, '').trim();
+    let vb = b.cells[colIdx].textContent.replace(/[+%,万亿暂缺]/g, '').trim();
     const na = parseFloat(va);
     const nb = parseFloat(vb);
     if (!isNaN(na) && !isNaN(nb)) return (na - nb) * dir;
@@ -700,12 +950,6 @@ function sortIndustry(colIdx) {
   sortTable('industry-table', colIdx);
 }
 
-// Add id to industry table
-document.addEventListener('DOMContentLoaded', function() {
-  const industryTable = document.querySelectorAll('table')[2];
-  if (industryTable) industryTable.id = 'industry-table';
-});
-
 // ========================
 // CHARTS
 // ========================
@@ -716,43 +960,43 @@ function renderCharts() {
 
   // Chart 1: Bar chart - index changes
   const chartBar = echarts.init(document.getElementById('chart-bar'));
-  const names = indexData.map(d => d.name);
-  const changes = indexData.map(d => d.change);
-
   chartBar.setOption({
     tooltip: { trigger: 'axis', formatter: p => `${p[0].name}<br/>涨跌幅: ${p[0].value > 0 ? '+' : ''}${p[0].value.toFixed(2)}%` },
     grid: { left: '3%', right: '4%', bottom: '15%', top: '8%', containLabel: true },
-    xAxis: { type: 'category', data: names, axisLabel: { rotate: 45, fontSize: 10, color: textColor }, axisLine: { lineStyle: { color: axisColor } } },
+    xAxis: { type: 'category', data: indexData.map(d => d.name), axisLabel: { rotate: 45, fontSize: 10, color: textColor }, axisLine: { lineStyle: { color: axisColor } } },
     yAxis: { type: 'value', name: '%', axisLabel: { color: textColor } },
     series: [{
-      type: 'bar', data: changes.map(v => ({ value: v, itemStyle: { color: v >= 0 ? '#dc2626' : '#16a34a' } })),
+      type: 'bar', data: indexData.map(d => ({ value: d.change, itemStyle: { color: d.change >= 0 ? '#dc2626' : '#16a34a' } })),
       label: { show: true, position: 'top', formatter: p => (p.value > 0 ? '+' : '') + p.value.toFixed(2) + '%', fontSize: 10, color: textColor }
     }]
   });
 
   // Chart 2: PE scatter
   const chartPE = echarts.init(document.getElementById('chart-pe'));
-  const peData = indexData.filter(d => d.pePct !== null);
+  const peData = indexData.filter(d => d.pe !== null && d.pePct !== null);
   chartPE.setOption({
     tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
     grid: { left: '8%', right: '4%', bottom: '10%', top: '8%' },
     xAxis: { type: 'value', name: 'PE(TTM)', axisLabel: { color: textColor } },
     yAxis: { type: 'value', name: 'PE分位(%)', axisLabel: { color: textColor },
       splitLine: { lineStyle: { color: axisColor } },
-      markLine: { silent: true, data: [{ yAxis: 80, label: { formatter: '高估线 80%', color: '#dc2626' }, lineStyle: { color: '#dc2626', type: 'dashed' } }, { yAxis: 20, label: { formatter: '低估线 20%', color: '#16a34a' }, lineStyle: { color: '#16a34a', type: 'dashed' } }] }
+      markLine: { silent: true, data: [
+        { yAxis: 80, label: { formatter: '高估线 80%', color: '#dc2626' }, lineStyle: { color: '#dc2626', type: 'dashed' } },
+        { yAxis: 20, label: { formatter: '低估线 20%', color: '#16a34a' }, lineStyle: { color: '#16a34a', type: 'dashed' } }
+      ]}
     },
     series: [{
       type: 'scatter', data: peData.map(d => [d.pe, d.pePct]),
-      symbolSize: 16,
+      symbolSize: 18,
       label: { show: true, formatter: p => peData[p.dataIndex].name, position: 'right', fontSize: 10, color: textColor },
       itemStyle: { color: '#f59e0b' }
     }]
   });
 
-  // Chart 3: Bond yield trend (近30日)
+  // Chart 3: Bond yield (real data from API)
   const chartBond = echarts.init(document.getElementById('chart-bond'));
-  const bondDates = ['5/11','5/12','5/13','5/14','5/15','5/18','5/19','5/20','5/21','5/22','5/25','5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11'];
-  const bondYields = [1.7622, 1.7592, 1.7514, 1.7588, 1.7658, 1.7585, 1.7345, 1.7382, 1.7448, 1.7519, 1.7484, 1.7405, 1.7216, 1.7193, 1.7090, 1.7009, 1.7036, 1.7128, 1.7081, 1.7207, 1.7275, 1.7376, 1.7476, 1.7475];
+  const bondDates = ['5/12','5/13','5/14','5/15','5/18','5/19','5/20','5/21','5/22','5/25','5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11'];
+  const bondYields = [1.7592,1.7514,1.7588,1.7658,1.7585,1.7345,1.7382,1.7448,1.7519,1.7484,1.7405,1.7216,1.7193,1.7090,1.7009,1.7036,1.7128,1.7081,1.7207,1.7275,1.7376,1.7476,1.7475];
   chartBond.setOption({
     tooltip: { trigger: 'axis', formatter: p => `${p[0].axisValue}<br/>10Y国债: ${p[0].value.toFixed(2)}%` },
     grid: { left: '3%', right: '4%', bottom: '3%', top: '8%', containLabel: true },
@@ -765,19 +1009,15 @@ function renderCharts() {
     }]
   });
 
-  // Chart 4: Reverse repo operations (近30日)
+  // Chart 4: Reverse repo
   const chartRepo = echarts.init(document.getElementById('chart-repo'));
-  const repoDates = ['5/12','5/13','5/14','5/15','5/18','5/19','5/20','5/21','5/22','5/25','5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11'];
-  const repoValsRaw = [0.5,0.5,0.5,0.5,10,5,500,1000,1530,2580,2490,1776,1013,1230,1100,200,0,0,2150,2185,1530,1590,1885];
-  const repoVals = repoValsRaw.map(v => v > 100 ? v/10000 : v);
+  const repoDates = ['5/12','5/13','5/14','5/15','5/18','5/19','5/20','5/21','5/22','5/25','5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11','6/12'];
+  const repoVals = [0.5,0.5,0.5,0.5,10,5,500,1000,1530,2580,2490,1776,1013,1230,1100,200,0,0,2150,2185,1530,1590,1885,1193];
   chartRepo.setOption({
-    tooltip: { trigger: 'axis', formatter: p => {
-      const val = p[0].value > 100 ? p[0].value : p[0].value * 10000;
-      return `${p[0].axisValue}<br/>逆回购: ${val.toFixed(0)}亿`;
-    }},
+    tooltip: { trigger: 'axis', formatter: p => `${p[0].axisValue}<br/>逆回购操作: ${p[0].value.toFixed(0)}亿` },
     grid: { left: '3%', right: '4%', bottom: '3%', top: '8%', containLabel: true },
     xAxis: { type: 'category', data: repoDates, axisLabel: { rotate: 45, fontSize: 9, color: textColor } },
-    yAxis: { type: 'value', name: '万亿', axisLabel: { color: textColor } },
+    yAxis: { type: 'value', name: '亿元', axisLabel: { color: textColor } },
     series: [{
       type: 'bar', data: repoVals, itemStyle: { color: '#3b82f6', borderRadius: [4,4,0,0] }
     }]
@@ -788,20 +1028,30 @@ function renderCharts() {
 // SUMMARY
 // ========================
 function renderSummary() {
-  const upCount = indexData.filter(d => d.change > 0).length;
-  const maxUp = indexData.reduce((m, d) => d.change > m.change ? d : m, indexData[0]);
-  const maxDown = indexData.reduce((m, d) => d.change < m.change ? d : m, indexData[0]);
-
   document.getElementById('daily-summary').innerHTML = `
-    今日A股市场早盘<a style="color:var(--red)">全线高开</a>，${upCount}/8个核心指数上涨，呈现普涨格局。
-    <strong>${maxUp.name}</strong>领涨 <span class="up">+${maxUp.change.toFixed(2)}%</span>，
-    半导体（神工股份+20%涨停、盛美上海+15.49%）、靶材（阿石创+12.70%）、HBM存储器等上游硬件板块涨幅居前。
-    宏观方面，5月制造业PMI回落至50.0荣枯线，中型企业PMI降至48.6%显示中小企业承压；但高技术制造业PMI仍维持52.9的扩张态势，
-    PPI同比升至3.9%（生产资料环比+0.7%），上游价格仍有支撑。5月CPI同比+1.2%持平，环比-0.1%略降。
-    流动性方面，10Y国债收益率维持1.7475%，央行6月11日逆回购操作1,885亿元（较前日+295亿），7天逆回购利率1.40%持平。
-    两融余额28,736亿，较前日微降55亿，散户端分歧加大。整体来看，市场呈现"科技成长领涨、权重稳步跟进"的格局，
-    科创50年初至今涨幅达28%领跑全市场。上证指数PE处于96.95%历史分位，⚠️估值偏高需关注。
-    建议关注午后量能能否持续、以及北向资金动向。
+    今日A股市场<a style="color:var(--red)">全线反弹</a>，8大核心指数全部上涨，<strong>中证500</strong>领涨 <span class="up">+2.29%</span>，
+    上证指数收报4049.29点 <span class="up">+1.56%</span>，深证成指 <span class="up">+1.69%</span>，创业板指 <span class="up">+1.27%</span>。
+    <br><br>
+    <strong>板块层面：</strong>工业金属板块暴涨 <span class="up">+7.50%</span> 居行业涨幅榜首（洛阳钼业、云南铜业、锡业股份涨停），
+    贵金属 <span class="up">+7.21%</span>、小金属 <span class="up">+5.45%</span>、能源金属 <span class="up">+5.23%</span> 紧随其后——有色资源板块全面爆发。
+    航空装备 <span class="up">+4.89%</span>，电池 <span class="up">+3.77%</span>（珠海冠宇+18%），半导体 <span class="up">+0.38%</span>（蓝箭电子+20%涨停）。
+    <br><br>
+    <strong>宏观方面：</strong>5月综合PMI产出指数50.5%（荣枯线上方），高技术制造业PMI 52.9延续扩张，但消费品PMI降至49.7%、高耗能PMI仅47.1%。
+    CPI同比+1.2%持平，环比-0.1%；PPI同比+3.9%（创46个月新高），环比+0.5%涨幅收窄。社融预估约1.97万亿（中金预测），实际数据待公布。
+    <br><br>
+    <strong>流动性：</strong>10Y国债收益率维持1.7475%。央行今日开展1193亿7天逆回购操作（利率1.40%），到期1265亿，净回笼72亿。
+    <br><br>
+    <strong>资金与情绪：</strong>两融余额约28,535亿（6/8数据），连续回落。北向资金实时数据已停更。
+    沪深300相关ETF近一周净流入79.10亿，市场增量资金仍以ETF渠道为主。
+    <br><br>
+    <strong>海外联动：</strong>富时A50期货 <span class="up">+1.86%</span> 报15477点。隔夜美股（6/11）强劲反弹，纳斯达克 <span class="up">+2.54%</span>，
+    标普500 <span class="up">+1.75%</span>。恒生科技指数 <span class="up">+1.72%</span>。美元人民币报6.7630 <span class="down">-0.13%</span>，人民币小幅走强。
+    <br><br>
+    <strong>大宗商品：</strong>黄金延续强势，伦敦金 <span class="up">+2.54%</span> 报4218美元/盎司，上海金 <span class="up">+1.87%</span> 报912.8元/克。
+    COMEX铜 <span class="up">+2.40%</span> 报6.426美元/磅。
+    <br><br>
+    <strong>⚠️ 估值警示：</strong>上证指数PE处于<span class="tag tag-high">96.95%</span>历史分位，深证成指PE处于<span class="tag tag-high">98.10%</span>分位——均处于历史极高水平，需关注回调风险；
+    创业板指PE分位58.14%处于中等水平。年初至今科创50以<span class="up">+23.66%</span>领跑，北证50 <span class="down">-12.45%</span>表现最弱。
   `;
 }
 
@@ -811,19 +1061,19 @@ function renderSummary() {
 window.addEventListener('DOMContentLoaded', function() {
   renderIndexCards();
   renderIndexTable();
+  renderBreadth();
+  renderOverseas();
+  renderFutures();
+  renderCommodities();
   renderMacro();
   renderLiquidity();
   renderValuation();
   renderSentiment();
+  renderHeatmap();
   renderIndustry();
   renderSummary();
   renderCharts();
 
-  // Assign id to industry table
-  const tables = document.querySelectorAll('table');
-  if (tables.length >= 3) tables[2].id = 'industry-table';
-
-  // Handle resize
   window.addEventListener('resize', () => {
     ['chart-bar','chart-pe','chart-bond','chart-repo'].forEach(id => {
       const el = document.getElementById(id);
