@@ -179,14 +179,20 @@ const liquidityData=[
 ];
 const industryData=[
 {name:"玻璃玻纤",change:9.82,turnover:6.24,inflow:null,inflow5d:20.22,leader:"国际复材 +20.01%"},
+{name:"电子布",change:9.99,turnover:5.32,inflow:null,inflow5d:21.83,leader:"国际复材 +20.01%"},
+{name:"MLCC",change:9.49,turnover:9.19,inflow:null,inflow5d:7.10,leader:"达利凯普 +20.01%"},
+{name:"锗镓概念",change:9.48,turnover:7.79,inflow:null,inflow5d:23.66,leader:"光智科技 +20.00%"},
+{name:"纳米压印",change:9.06,turnover:4.52,inflow:null,inflow5d:6.66,leader:"炬光科技 +20.00%"},
 {name:"元件",change:8.97,turnover:7.34,inflow:null,inflow5d:11.51,leader:"达利凯普 +20.01%"},
+{name:"博通概念",change:8.68,turnover:5.36,inflow:null,inflow5d:15.21,leader:"太辰光 +20.00%"},
+{name:"激光",change:8.56,turnover:6.11,inflow:null,inflow5d:6.85,leader:"光库科技 +20.00%"},
 {name:"非金属材料Ⅱ",change:7.79,turnover:4.54,inflow:null,inflow5d:14.16,leader:"联瑞新材 +13.32%"},
 {name:"其他电子Ⅱ",change:7.53,turnover:6.98,inflow:null,inflow5d:11.88,leader:"瑞可达 +14.15%"},
 {name:"通信设备",change:7.04,turnover:5.38,inflow:null,inflow5d:5.86,leader:"长芯博创 +20.00%"},
 {name:"电子化学品Ⅱ",change:6.76,turnover:9.53,inflow:null,inflow5d:15.80,leader:"天承科技 +20.00%"},
-{name:"煤炭开采",change:-4.75,turnover:1.84,inflow:-1.21,inflow5d:-5.60,leader:"江钨装备 +3.06%"},
+{name:"光伏设备",change:1.29,turnover:2.82,inflow:-0.94,inflow5d:-0.31,leader:"金博股份 +16.14%"},
 {name:"航天装备Ⅱ",change:-1.34,turnover:3.07,inflow:-1.09,inflow5d:-2.43,leader:"理工导航 +5.47%"},
-{name:"光伏设备",change:1.29,turnover:2.82,inflow:-0.94,inflow5d:-0.31,leader:"金博股份 +16.14%"}
+{name:"煤炭开采",change:-4.75,turnover:1.84,inflow:-1.21,inflow5d:-5.60,leader:"江钨装备 +3.06%"}
 ];
 
 // ====== RENDER ======
@@ -214,7 +220,7 @@ document.getElementById('futures-cards').innerHTML=futuresData.map(d=>
 `<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${d.price.toLocaleString()}</div><div class="card-change ${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</div><div class="card-meta">${d.note}</div></div>`).join('')}
 function renderCommodity(){
 document.getElementById('commodity-cards').innerHTML=commodityData.map(d=>
-`<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1rem">${d.price}</div><div class="card-change ${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</div><div class="card-meta">${d.note}</div></div>`).join('')}
+`<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1rem">${d.price}</div><div class="card-change ${chgC(d.change)}">${d.change!=null?chgS(d.change)+d.change.toFixed(2)+'%':''}</div><div class="card-meta">${d.note}</div></div>`).join('')}
 function renderMacro(){
 document.getElementById('macro-cards').innerHTML=`
 <div class="card"><div class="card-title">制造业PMI(5月)</div><div class="card-value">50.0%</div><div class="card-change down">-0.3%</div><div class="card-meta">荣枯线 | 5/31 | 国家统计局</div></div>
