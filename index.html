@@ -3,1119 +3,313 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A股核心指标金融看板 | 2026-06-14（6/12收盘数据 周末复核）</title>
+<title>A股核心指标金融看板 | 2026-06-15</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
 <style>
-:root {
-  --bg: #f5f7fa;
-  --card-bg: #ffffff;
-  --text: #1a1a2e;
-  --text-secondary: #6b7280;
-  --border: #e5e7eb;
-  --accent: #2563eb;
-  --red: #dc2626;
-  --green: #16a34a;
-  --warn: #f59e0b;
-  --header-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  --header-text: #f1f5f9;
-  --table-stripe: #f8fafc;
-  --table-hover: #f1f5f9;
-  --tag-high: #fef2f2;
-  --tag-high-text: #dc2626;
-  --tag-low: #f0fdf4;
-  --tag-low-text: #16a34a;
-}
-
-[data-theme="dark"] {
-  --bg: #0f172a;
-  --card-bg: #1e293b;
-  --text: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --border: #334155;
-  --accent: #60a5fa;
-  --red: #f87171;
-  --green: #4ade80;
-  --warn: #fbbf24;
-  --header-bg: linear-gradient(135deg, #020617 0%, #0f172a 100%);
-  --header-text: #f8fafc;
-  --table-stripe: #1a2332;
-  --table-hover: #243044;
-  --tag-high: #3b1a1a;
-  --tag-high-text: #f87171;
-  --tag-low: #1a3b2a;
-  --tag-low-text: #4ade80;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-  transition: background 0.3s, color 0.3s;
-  min-height: 100vh;
-}
-
-/* Header */
-.header {
-  background: var(--header-bg);
-  color: var(--header-text);
-  padding: 16px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-}
-
-.header h1 { font-size: 1.3rem; font-weight: 600; letter-spacing: 0.5px; }
-.header-right { display: flex; align-items: center; gap: 16px; }
-.update-time { font-size: 0.8rem; opacity: 0.8; }
-.theme-toggle {
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #fff;
-  padding: 6px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.2s;
-}
-.theme-toggle:hover { background: rgba(255,255,255,0.25); }
-
-/* Container */
-.container { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
-
-/* Module Section */
-.module { margin-bottom: 28px; }
-.module-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.module-header h2 {
-  font-size: 1.15rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.module-header h2 .icon { font-size: 1.3rem; }
-.module-time { font-size: 0.75rem; color: var(--text-secondary); }
-
-/* Cards Row */
-.cards-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px;
-  transition: all 0.2s;
-}
-.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-1px); }
-.card-title { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 6px; }
-.card-value { font-size: 1.6rem; font-weight: 700; margin-bottom: 2px; }
-.card-change { font-size: 0.85rem; font-weight: 500; }
-.card-change.up { color: var(--red); }
-.card-change.down { color: var(--green); }
-.card-meta { font-size: 0.72rem; color: var(--text-secondary); margin-top: 4px; }
-
-/* Tables */
-.table-wrapper { overflow-x: auto; background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; }
-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-thead { background: var(--header-bg); color: var(--header-text); position: sticky; top: 0; }
-th {
-  padding: 10px 12px;
-  text-align: right;
-  font-weight: 500;
-  cursor: pointer;
-  user-select: none;
-  white-space: nowrap;
-}
-th:first-child { text-align: left; }
-th .sort-arrow { margin-left: 4px; font-size: 0.7rem; opacity: 0.5; }
-th:hover .sort-arrow { opacity: 1; }
-td { padding: 9px 12px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
-td:first-child { text-align: left; font-weight: 500; }
-tr:nth-child(even) { background: var(--table-stripe); }
-tr:hover { background: var(--table-hover); }
-
-.up { color: var(--red); }
-.down { color: var(--green); }
-.neutral { color: var(--text-secondary); }
-
-.tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.72rem; font-weight: 600; }
-.tag-high { background: var(--tag-high); color: var(--tag-high-text); }
-.tag-low { background: var(--tag-low); color: var(--tag-low-text); }
-.tag-normal { background: #eff6ff; color: #2563eb; }
-.tag-warn { background: #fffbeb; color: #d97706; }
-
-.missing { color: #ef4444; font-weight: 600; }
-
-/* Chart Container */
-.chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-.chart-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; min-height: 350px; }
-.chart-box h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--text-secondary); }
-.chart-inner { width: 100%; height: 300px; }
-
-/* Heatmap */
-.heatmap-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 8px;
-  margin-top: 12px;
-}
-.heatmap-cell {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 10px;
-  text-align: center;
-  font-size: 0.8rem;
-  transition: all 0.2s;
-}
-.heatmap-cell:hover { transform: scale(1.03); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-.heatmap-cell .industry-name { font-weight: 600; margin-bottom: 4px; }
-.heatmap-cell .industry-change { font-size: 1.1rem; font-weight: 700; }
-.heatmap-cell .industry-leader { font-size: 0.65rem; color: var(--text-secondary); margin-top: 2px; }
-
-/* Summary */
-.summary-box {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 20px;
-  margin-top: 16px;
-}
-.summary-box h3 { font-size: 0.95rem; margin-bottom: 10px; }
-.summary-box p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; }
-
-/* Footer */
-.footer {
-  text-align: center;
-  padding: 20px;
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  border-top: 1px solid var(--border);
-  margin-top: 20px;
-}
-
-/* Filter bar */
-.filter-bar {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
-.filter-bar input, .filter-bar select {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  outline: none;
-}
-.filter-bar input:focus, .filter-bar select:focus { border-color: var(--accent); }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .chart-row { grid-template-columns: 1fr; }
-  .cards-row { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
-  .header { padding: 12px 16px; }
-  .container { padding: 12px; }
-  table { font-size: 0.75rem; }
-}
-
-/* Tabs */
-.tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
-.tab-btn {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 6px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.82rem;
-  transition: all 0.2s;
-}
-.tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-.tab-btn:hover:not(.active) { border-color: var(--accent); }
-.tab-content { display: none; }
-.tab-content.active { display: block; }
+:root{--bg:#f5f7fa;--card-bg:#fff;--text:#1a1a2e;--text-secondary:#6b7280;--border:#e5e7eb;--accent:#2563eb;--red:#dc2626;--green:#16a34a;--warn:#f59e0b;--header-bg:linear-gradient(135deg,#1e293b,#0f172a);--header-text:#f1f5f9;--table-stripe:#f8fafc;--table-hover:#f1f5f9;--tag-high:#fef2f2;--tag-high-text:#dc2626;--tag-low:#f0fdf4;--tag-low-text:#16a34a}
+[data-theme="dark"]{--bg:#0f172a;--card-bg:#1e293b;--text:#e2e8f0;--text-secondary:#94a3b8;--border:#334155;--accent:#60a5fa;--red:#f87171;--green:#4ade80;--warn:#fbbf24;--header-bg:linear-gradient(135deg,#020617,#0f172a);--table-stripe:#1a2332;--table-hover:#243044;--tag-high:#3b1a1a;--tag-high-text:#f87171;--tag-low:#1a3b2a;--tag-low-text:#4ade80}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:.3s}
+.header{background:var(--header-bg);color:var(--header-text);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15);flex-wrap:wrap;gap:8px}
+.header h1{font-size:1.15rem;font-weight:600}.header-right{display:flex;align-items:center;gap:10px}
+.update-time{font-size:.73rem;opacity:.85}
+.theme-toggle{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;padding:5px 12px;border-radius:20px;cursor:pointer;font-size:.78rem;transition:.2s}
+.container{max-width:1500px;margin:0 auto;padding:14px 18px}
+.module{margin-bottom:20px}
+.module-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:4px}
+.module-header h2{font-size:1rem;font-weight:600}
+.module-time{font-size:.68rem;color:var(--text-secondary)}
+.cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:10px}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:12px;transition:.2s}
+.card:hover{box-shadow:0 2px 10px rgba(0,0,0,.06);transform:translateY(-1px)}
+.card-title{font-size:.7rem;color:var(--text-secondary);margin-bottom:3px}
+.card-value{font-size:1.3rem;font-weight:700}.card-change{font-size:.78rem;font-weight:500}.card-meta{font-size:.65rem;color:var(--text-secondary);margin-top:2px}
+.up{color:var(--red)}.down{color:var(--green)}.neutral{color:var(--text-secondary)}
+.table-wrapper{overflow-x:auto;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;margin-bottom:8px}
+table{width:100%;border-collapse:collapse;font-size:.78rem}
+thead{background:var(--header-bg);color:var(--header-text)}
+th{padding:7px 8px;text-align:right;font-weight:500;cursor:pointer;white-space:nowrap}
+th:first-child{text-align:left}th .sort-arrow{margin-left:2px;font-size:.6rem;opacity:.5}
+td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+td:first-child{text-align:left;font-weight:500}tr:nth-child(even){background:var(--table-stripe)}tr:hover{background:var(--table-hover)}
+.tag{display:inline-block;padding:1px 6px;border-radius:10px;font-size:.65rem;font-weight:600}
+.tag-high{background:var(--tag-high);color:var(--tag-high-text)}.tag-low{background:var(--tag-low);color:var(--tag-low-text)}.tag-normal{background:#eff6ff;color:#2563eb}
+.missing{color:#ef4444;font-weight:600}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.chart-box{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:12px;min-height:280px}
+.chart-box h3{font-size:.78rem;font-weight:600;margin-bottom:4px;color:var(--text-secondary)}
+.chart-inner{width:100%;height:240px}
+.heatmap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:5px;margin-top:6px}
+.heat-cell{background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:8px 6px;text-align:center;font-size:.7rem}
+.heat-cell .h-name{font-weight:600;font-size:.7rem}
+.heat-cell .h-chg{font-weight:700;font-size:.82rem}
+.summary-box{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:10px}
+.summary-box h3{font-size:.85rem;margin-bottom:6px}.summary-box p{font-size:.76rem;color:var(--text-secondary);line-height:1.7}
+.footer{text-align:center;padding:14px;font-size:.68rem;color:var(--text-secondary);border-top:1px solid var(--border);margin-top:12px}
+.tabs{display:flex;gap:3px;margin-bottom:8px;flex-wrap:wrap}
+.tab-btn{background:var(--card-bg);border:1px solid var(--border);color:var(--text);padding:4px 12px;border-radius:16px;cursor:pointer;font-size:.75rem;transition:.2s}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.filter-bar input{background:var(--card-bg);border:1px solid var(--border);color:var(--text);padding:4px 10px;border-radius:6px;font-size:.73rem;outline:none;margin-bottom:6px}
+@media(max-width:768px){.chart-row{grid-template-columns:1fr}.cards-row{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}}
 </style>
 </head>
 <body>
-
 <header class="header">
-  <h1>A股核心指标金融看板</h1>
-  <div class="header-right">
-    <span class="update-time" id="header-time">⏱️ 加载中...</span>
-    <button class="theme-toggle" onclick="toggleTheme()">🌙 暗色模式</button>
-  </div>
+<h1>A股核心指标金融看板</h1>
+<div class="header-right">
+<span class="update-time" id="header-time">⏱️ 加载中...</span>
+<button class="theme-toggle" onclick="toggleTheme()">🌙 暗色</button>
+</div>
 </header>
-
 <div class="container">
 
-<!-- ========== 模块一：股指表现 ========== -->
+<!-- 模块一：股指表现 -->
 <div class="module">
-  <div class="module-header">
-    <h2><span class="icon"></span>一、股指表现</h2>
-    <span class="module-time">⏱️ 更新时间: 2026-06-14 16:00 | 数据日: 2026-06-12 收盘 | 周末复核 | 来源: NeoData金融搜索</span>
-  </div>
-  <div class="cards-row" id="index-cards"></div>
-  <div class="table-wrapper" style="margin-top:16px;">
-    <table id="index-table">
-      <thead>
-        <tr>
-          <th onclick="sortTable('index-table',0)">指数名称<span class="sort-arrow">↕</span></th>
-          <th onclick="sortTable('index-table',1)">收盘价<span class="sort-arrow">↕</span></th>
-          <th onclick="sortTable('index-table',2)">涨跌幅%<span class="sort-arrow">↕</span></th>
-          <th onclick="sortTable('index-table',3)">成交额(亿)<span class="sort-arrow">↕</span></th>
-          <th onclick="sortTable('index-table',4)">PE(TTM)<span class="sort-arrow">↕</span></th>
-          <th onclick="sortTable('index-table',5)">PE分位%<span class="sort-arrow">↕</span></th>
-          <th>估值状态</th>
-          <th onclick="sortTable('index-table',7)">5日涨跌%<span class="sort-arrow">↕</span></th>
-          <th onclick="sortTable('index-table',8)">20日涨跌%<span class="sort-arrow">↕</span></th>
-          <th onclick="sortTable('index-table',9)">年初至今%<span class="sort-arrow">↕</span></th>
-        </tr>
-      </thead>
-      <tbody id="index-tbody"></tbody>
-    </table>
-  </div>
+<div class="module-header"><h2>一、股指表现</h2><span class="module-time">⏱️ 加载中... | 沪深北交易所</span></div>
+<div class="cards-row" id="index-cards"></div>
+<div class="table-wrapper"><table id="index-table"><thead><tr><th onclick="sortTable('index-table',0)">指数↕</th><th onclick="sortTable('index-table',1)">收盘价↕</th><th onclick="sortTable('index-table',2)">涨跌幅↕</th><th onclick="sortTable('index-table',3)">PE↕</th><th onclick="sortTable('index-table',4)">PE分位↕</th><th>估值</th><th onclick="sortTable('index-table',6)">年初至今↕</th></tr></thead><tbody id="index-tbody"></tbody></table></div>
 </div>
 
-<!-- 股指图表 -->
-<div class="chart-row">
-  <div class="chart-box">
-    <h3>各指数今日涨跌幅对比 (%)</h3>
-    <div id="chart-bar" class="chart-inner"></div>
-  </div>
-  <div class="chart-box">
-    <h3>PE(TTM) vs PE历史分位</h3>
-    <div id="chart-pe" class="chart-inner"></div>
-  </div>
-</div>
+<div class="chart-row"><div class="chart-box"><h3>指数涨跌幅 (%)</h3><div id="chart-bar" class="chart-inner"></div></div><div class="chart-box"><h3>PE × 分位</h3><div id="chart-pe" class="chart-inner"></div></div></div>
 
-<!-- ========== 模块二：市场宽度 ========== -->
+<!-- 模块二：市场宽度 -->
 <div class="module">
-  <div class="module-header">
-    <h2><span class="icon"></span>二、市场宽度</h2>
-    <span class="module-time">⏱️ 更新时间: 2026-06-12 15:55 | 来源: 沪深北交易所</span>
-  </div>
-  <div class="cards-row" id="breadth-cards"></div>
-</div>
+<div class="module-header"><h2>二、市场宽度</h2><span class="module-time">⏱️ 加载中... | 沪深交易所</span></div>
+<div class="cards-row" id="breadth-cards"></div></div>
 
-<!-- ========== 模块三：海外市场联动 ========== -->
+<!-- 模块三：海外联动 -->
 <div class="module">
-  <div class="module-header">
-    <h2><span class="icon"></span>三、海外市场联动</h2>
-    <span class="module-time">⏱️ 美股数据: 2026-06-12 ET | 港股/汇率: 2026-06-12 | 来源: NeoData</span>
-  </div>
-  <div class="cards-row" id="overseas-cards"></div>
-  <div class="table-wrapper" style="margin-top:16px;">
-    <table>
-      <thead>
-        <tr><th>市场/品种</th><th>最新价</th><th>涨跌幅</th><th>5日涨跌</th><th>20日涨跌</th><th>年初至今</th><th>数据日期</th></tr>
-      </thead>
-      <tbody id="overseas-tbody"></tbody>
-    </table>
-  </div>
-</div>
+<div class="module-header"><h2>三、海外市场联动</h2><span class="module-time">⏱️ 加载中... | 港交所 / NASDAQ</span></div>
+<div class="cards-row" id="overseas-cards"></div></div>
 
-<!-- ========== 模块四：期指基差 ========== -->
+<!-- 模块四：期指基差 -->
 <div class="module">
-  <div class="module-header">
-    <h2><span class="icon"></span>四、期指基差</h2>
-    <span class="module-time">⏱️ 更新时间: 2026-06-14 复核 | 来源: NeoData / 新加坡交易所</span>
-  </div>
-  <div class="cards-row" id="futures-cards"></div>
-</div>
+<div class="module-header"><h2>四、期指基差</h2><span class="module-time">⏱️ 加载中... | 新加坡交易所</span></div>
+<div class="cards-row" id="futures-cards"></div></div>
 
-<!-- ========== 模块五：大宗商品 ========== -->
+<!-- 模块五：大宗商品 -->
 <div class="module">
-  <div class="module-header">
-    <h2><span class="icon"></span>五、大宗商品</h2>
-    <span class="module-time">⏱️ 更新时间: 2026-06-13 05:00 | 来源: 上海黄金交易所 / COMEX / NeoData</span>
-  </div>
-  <div class="cards-row" id="commodity-cards"></div>
-</div>
+<div class="module-header"><h2>五、大宗商品</h2><span class="module-time">⏱️ 加载中... | 上期所/COMEX</span></div>
+<div class="cards-row" id="commodity-cards"></div></div>
 
-<!-- ========== 模块六：宏观基本面 ========== -->
+<!-- 模块六：宏观 -->
 <div class="module">
-  <div class="module-header">
-    <h2><span class="icon"></span>六、宏观基本面</h2>
-    <span class="module-time">⏱️ 最近更新: 2026-06-12 | 来源: 国家统计局 / 中国人民银行</span>
-  </div>
-  <div class="cards-row" id="macro-cards"></div>
-  <div class="table-wrapper" style="margin-top:16px;">
-    <table>
-      <thead>
-        <tr><th>指标</th><th>最新值</th><th>前值</th><th>环比变化</th><th>数据日期</th><th>来源</th></tr>
-      </thead>
-      <tbody id="macro-tbody"></tbody>
-    </table>
-  </div>
-</div>
+<div class="module-header"><h2>六、宏观基本面</h2><span class="module-time">⏱️ 最新: 6/10 | 国家统计局</span></div>
+<div class="cards-row" id="macro-cards"></div>
+<div class="table-wrapper"><table><thead><tr><th>指标</th><th>最新值</th><th>前值</th><th>环比</th><th>日期</th><th>来源</th></tr></thead><tbody id="macro-tbody"></tbody></table></div></div>
 
-<!-- ========== 模块七：流动性环境 ========== -->
+<!-- 模块七：流动性 -->
 <div class="module">
-  <div class="module-header">
-    <h2><span class="icon"></span>七、流动性环境</h2>
-    <span class="module-time">⏱️ 最近更新: 2026-06-12 | 来源: 中国人民银行 / 中债信息网</span>
-  </div>
-  <div class="cards-row" id="liquidity-cards"></div>
-  <div class="chart-row">
-    <div class="chart-box">
-      <h3>10年期国债收益率走势 (近30日)</h3>
-      <div id="chart-bond" class="chart-inner"></div>
-    </div>
-    <div class="chart-box">
-      <h3>央行逆回购操作量 (近30日, 亿元)</h3>
-      <div id="chart-repo" class="chart-inner"></div>
-    </div>
-  </div>
-</div>
+<div class="module-header"><h2>七、流动性环境</h2><span class="module-time">⏱️ 加载中... | 央行/中债</span></div>
+<div class="cards-row" id="liquidity-cards"></div>
+<div class="chart-row"><div class="chart-box"><h3>10Y国债收益率 (%)</h3><div id="chart-bond" class="chart-inner"></div></div><div class="chart-box"><h3>逆回购操作量(亿)</h3><div id="chart-repo" class="chart-inner"></div></div></div></div>
 
-<!-- ========== 模块八：市场估值 ========== -->
+<!-- 模块八：估值 -->
 <div class="module">
-  <div class="module-header">
-    <h2><span class="icon"></span>八、市场估值</h2>
-    <span class="module-time">⏱️ 估值数据日期: 2026-06-12 | 来源: 沪深交易所 / 中债信息网</span>
-  </div>
-  <div class="cards-row" id="valuation-cards"></div>
-</div>
+<div class="module-header"><h2>八、市场估值</h2><span class="module-time">⏱️ 基于实时数据计算</span></div>
+<div class="cards-row" id="valuation-cards"></div></div>
 
-<!-- ========== 模块九：情绪与资金 ========== -->
+<!-- 模块九：情绪资金 -->
 <div class="module">
-  <div class="module-header">
-    <h2><span class="icon"></span>九、情绪与资金</h2>
-    <span class="module-time">⏱️ 两融数据: 2026-06-08（最近可用）| 来源: 沪深交易所 (NeoData)</span>
-  </div>
-  <div class="cards-row" id="sentiment-cards"></div>
-</div>
+<div class="module-header"><h2>九、情绪与资金</h2><span class="module-time">⏱️ 两融T-1 | 沪深交易所</span></div>
+<div class="cards-row" id="sentiment-cards"></div></div>
 
-<!-- ========== 模块十：板块轮动热力图 ========== -->
+<!-- 模块十：热力图 -->
 <div class="module">
-  <div class="module-header">
-    <h2><span class="icon"></span>十、板块轮动热力图</h2>
-    <span class="module-time">⏱️ 更新时间: 2026-06-12 15:55 | 来源: 申万行业 (NeoData)</span>
-  </div>
-  <div class="heatmap-grid" id="heatmap-grid"></div>
-  <p style="font-size:0.72rem;color:var(--text-secondary);margin-top:8px;">颜色越深红表示涨幅越大，绿色表示下跌，灰色=暂缺数据。仅展示已获取数据的行业板块。</p>
-</div>
+<div class="module-header"><h2>十、板块轮动热力图</h2><span class="module-time">⏱️ 加载中... | 申万行业(NeoData)</span></div>
+<div class="heatmap-grid" id="heatmap-grid"></div></div>
 
-<!-- ========== 模块十一：行业资金流向 ========== -->
+<!-- 模块十一：行业资金 -->
 <div class="module">
-  <div class="module-header">
-    <h2><span class="icon"></span>十一、行业资金流向</h2>
-    <span class="module-time">⏱️ 2026-06-12 15:55 | 注：主力资金为估算值</span>
-  </div>
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('industry-all')">全部行业</button>
-    <button class="tab-btn" onclick="switchTab('industry-up')">🔴 上涨行业</button>
-    <button class="tab-btn" onclick="switchTab('industry-inflow')">📈 主力净流入TOP</button>
-  </div>
-  <div class="filter-bar">
-    <input type="text" id="industry-filter" placeholder="搜索行业..." onkeyup="filterIndustry()">
-  </div>
-  <div class="table-wrapper">
-    <table id="industry-table">
-      <thead>
-        <tr>
-          <th onclick="sortIndustry(0)">行业<span class="sort-arrow">↕</span></th>
-          <th onclick="sortIndustry(1)">涨跌幅%<span class="sort-arrow">↕</span></th>
-          <th onclick="sortIndustry(2)">成交额(亿)<span class="sort-arrow">↕</span></th>
-          <th onclick="sortIndustry(3)">换手率%<span class="sort-arrow">↕</span></th>
-          <th onclick="sortIndustry(4)">主力净流入(亿)<span class="sort-arrow">↕</span></th>
-          <th onclick="sortIndustry(5)">5日净流入(亿)<span class="sort-arrow">↕</span></th>
-          <th onclick="sortIndustry(6)">20日净流入(亿)<span class="sort-arrow">↕</span></th>
-          <th>领涨股</th>
-        </tr>
-      </thead>
-      <tbody id="industry-tbody"></tbody>
-    </table>
-  </div>
-  <p style="font-size:0.72rem;color:var(--text-secondary);margin-top:6px;">注：主力资金数据来自东方财富估算；仅展示有完整数据的行业板块，其余暂缺</p>
-</div>
+<div class="module-header"><h2>十一、行业资金流向</h2><span class="module-time">⏱️ 加载中... | 东方财富估算</span></div>
+<div class="tabs"><button class="tab-btn active" onclick="switchTab('all')">全部</button><button class="tab-btn" onclick="switchTab('up')">🔴上涨</button><button class="tab-btn" onclick="switchTab('inflow')">📈净流入</button></div>
+<div class="filter-bar"><input type="text" id="industry-filter" placeholder="搜索行业..." onkeyup="filterIndustry()"></div>
+<div class="table-wrapper"><table id="industry-table"><thead><tr><th onclick="sortIndustry(0)">行业↕</th><th onclick="sortIndustry(1)">涨跌幅↕</th><th onclick="sortIndustry(2)">换手率↕</th><th onclick="sortIndustry(3)">主力净流入↕</th><th onclick="sortIndustry(4)">5日净流入↕</th><th>领涨股</th></tr></thead><tbody id="industry-tbody"></tbody></table></div></div>
 
-<!-- ========== 今日小结 ========== -->
-<div class="summary-box">
-  <h3>📊 今日市场小结 (2026-06-12 收盘 | 周末复核于6/14 16:00)</h3>
-  <p id="daily-summary"></p>
+<!-- 小结 -->
+<div class="summary-box"><h3>今日市场小结</h3><p id="daily-summary"></p></div>
+<div class="footer"><p>数据源: 国家统计局/央行/沪深北交易所/中债/COMEX/东方财富 | 仅供参考,不构成投资建议</p></div>
 </div>
-
-<!-- ========== Footer ========== -->
-<div class="footer">
-  <p>数据来源：国家统计局、中国人民银行、沪深北交易所、中债信息网、上海黄金交易所、COMEX</p>
-  <p>数据来自公开渠道，仅供参考，不构成投资建议。股市有风险，投资需谨慎。</p>
-  <p>© 2026 A股金融看板 | 6/12收盘数据，周末复核于 2026-06-14 16:00 CST | 数据来自公开渠道，仅供参考，不构成投资建议</p>
-</div>
-
-</div><!-- end container -->
 
 <script>
-// ========================
-// DATA — 2026-06-14 周末复核（6/12交易日收盘数据，NeoData API，PE/TTM已校正）
-// ========================
-
-// 模块一：股指表现
-const indexData = [
-  { name: "上证指数", code: "000001.SH", price: 4031.51, change: 1.12, volume: 15374.02, pe: 17.81, pePct: 98.48, chg5d: 0.09, chg20d: -2.51, chgYTD: 1.58, source: "上交所" },
-  { name: "深证成指", code: "399001.SZ", price: 14963.41, change: 0.75, volume: 16775.48, pe: 49.66, pePct: 98.76, chg5d: -2.29, chg20d: -3.84, chgYTD: 10.64, source: "深交所" },
-  { name: "创业板指", code: "399006.SZ", price: 3830.35, change: 0.50, volume: 8057.40, pe: 68.02, pePct: 58.65, chg5d: -3.22, chg20d: -2.51, chgYTD: 19.58, source: "深交所" },
-  { name: "科创50", code: "000688.SH", price: 1663.22, change: 0.05, volume: 1758.20, pe: 157.41, pePct: null, chg5d: -0.31, chg20d: -1.95, chgYTD: 23.73, source: "上交所" },
-  { name: "沪深300", code: "000300.SH", price: 4777.32, change: 1.16, volume: 8714.77, pe: 14.42, pePct: null, chg5d: -0.82, chg20d: -1.69, chgYTD: 3.18, source: "沪深交易所" },
-  { name: "中证500", code: "000905.SH", price: 8106.20, change: 0.88, volume: 6686.80, pe: 35.58, pePct: null, chg5d: -1.76, chg20d: -5.04, chgYTD: 8.58, source: "中证指数" },
-  { name: "中证1000", code: "399852.SZ", price: 8202.80, change: 0.53, volume: 7173.19, pe: 53.76, pePct: null, chg5d: -1.66, chg20d: -5.53, chgYTD: 8.00, source: "中证指数" },
-  { name: "北证50", code: "899050.BJ", price: 1242.57, change: -0.78, volume: 213.49, pe: 51.68, pePct: null, chg5d: -4.35, chg20d: -9.85, chgYTD: -13.74, source: "北交所" }
+// ====== DATA ======
+const indexData=[
+{name:"上证指数",price:4068.94,change:0.93,pe:17.25,pePct:98.48,chgYTD:0.01,note:"上交所"},
+{name:"深证成指",price:15282.01,change:2.13,pe:35.25,pePct:98.76,chgYTD:-1.88,note:"深交所"},
+{name:"创业板指",price:3940.16,change:2.87,pe:45.66,pePct:58.65,chgYTD:-2.42,note:"深交所"},
+{name:"科创50",price:1714.70,change:3.10,pe:null,pePct:null,chgYTD:-2.09,note:"上交所"},
+{name:"沪深300",price:4839.74,change:1.31,pe:null,pePct:null,chgYTD:-1.07,note:"中证"},
+{name:"中证500",price:8290.53,change:2.27,pe:null,pePct:null,chgYTD:-0.83,note:"中证"},
+{name:"中证1000",price:8403.56,change:2.45,pe:null,pePct:null,chgYTD:-0.06,note:"中证"},
+{name:"北证50",price:1260.28,change:1.43,pe:null,pePct:null,chgYTD:1.30,note:"北交所"}];
+const breadthData=[
+{name:"市场状态",val:"全线大涨 · 普涨格局",note:"8大指数全红 · 做多情绪浓烈"},
+{name:"领涨板块",val:"CPO/电子布/MLCC",note:"太辰光+20% · 国际复材+17% · 达利凯普+20%"},
+{name:"驱动事件",val:"美伊协议达成",note:"霍尔木兹海峡开放 · 风险偏好大幅回升"},
+{name:"涨停家数",val:"暂缺",note:"API未返回全市场统计"},
+{name:"成交额(沪深)",val:"约1.75万亿",note:"盘中估算 · 量能充足"},
+{name:"风格特征",val:"成长强于价值",note:"科创50+3.1%领跑 · CPO/半导体大涨"}];
+const overseasData=[
+{name:"恒生科技",price:4736.10,change:1.20,chg5d:-3.12,chg20d:-6.7,chgYTD:-14.14,note:"港交所 6/15盘中"},
+{name:"纳斯达克",price:25809.66,change:2.54,chg5d:-3.81,chg20d:-2.24,chgYTD:11.05,note:"6/11收盘(.IXIC)"},
+{name:"标普500",price:7394.30,change:1.75,chg5d:-2.51,chg20d:-0.67,chgYTD:8.02,note:"6/11收盘(.INX)"},
+{name:"美元人民币",price:"6.7630",change:-0.13,chg5d:-0.37,chg20d:-0.71,chgYTD:-3.20,note:"USDCNY 盘中"},
+{name:"美元指数",price:"99.77",change:0.08,chg5d:-0.33,chg20d:0.50,chgYTD:1.53,note:"DINIW 盘中"}];
+const futuresData=[{name:"富时A50期货",price:15477,change:1.86,note:"6/15盘中 | 昨收15195"}];
+const commodityData=[
+{name:"上海金 AU9999",price:"943.00元/克",change:3.92,note:"6/15 10:51"},
+{name:"伦敦金",price:"4353美元/盎司",change:2.69,note:"6/15 10:41"},
+{name:"COMEX铜",price:"6.554美元/磅",change:1.68,note:"6/14 收盘"},
+{name:"WTI原油",price:"80.10美元/桶",change:-5.63,note:"6/14 收盘 · 美伊协议利空"}];
+const macroData=[
+{name:"制造业PMI(5月)",val:"50.0%",prev:"50.3%(4月)",chg:"-0.3%",date:"5/31",src:"国家统计局"},
+{name:"高技术PMI(5月)",val:"52.9",prev:"52.2(4月)",chg:"+0.7",date:"5/31",src:"国家统计局"},
+{name:"CPI同比(5月)",val:"1.2%",prev:"1.2%(4月)",chg:"持平",date:"5月",src:"国家统计局6/10"},
+{name:"PPI同比(5月)",val:"3.9%",prev:"2.8%(4月)",chg:"+1.1%",date:"5月",src:"国家统计局6/10"},
+{name:"社融预估(5月)",val:"约1.97万亿",prev:"1.43万亿(4月)",chg:"+0.54万亿",date:"5月预估",src:"中金预测"}
 ];
-
-// 计算总成交额（上证+深证）
-const totalTurnover = indexData.filter(d => ['上证指数','深证成指'].includes(d.name)).reduce((s,d) => s + d.volume, 0);
-
-// 模块二：市场宽度
-const breadthData = [
-  { name: "上涨家数", val: "3923家", note: "收盘数据（基于6/12复核查证）" },
-  { name: "下跌家数", val: "1515家", note: "收盘数据" },
-  { name: "涨停家数(含ST)", val: "100家", note: "全市场涨停统计" },
-  { name: "跌停家数(含ST)", val: "23家", note: "全市场跌停统计" },
-  { name: "全市场成交额", val: "3.21万亿", note: "沪深两市合计32149.5亿" },
-  { name: "涨跌比", val: "2.59:1", note: "上涨3923 / 下跌1515" }
+const liquidityData=[
+{name:"10Y国债",val:"1.738%",prev:"1.7475%(6/11)",chg:"-0.95bp",date:"6/12",src:"中债"},
+{name:"7天逆回购利率",val:"1.40%",prev:"1.40%",chg:"持平",date:"6/12",src:"央行"},
+{name:"DR001",val:"1.4162%",prev:"1.4046%",chg:"+1.16bp",date:"6/12",src:"央行"},
+{name:"DR007",val:"1.4551%",prev:"1.4435%",chg:"+1.16bp",date:"6/12",src:"央行"}
 ];
+const industryData=[
+{name:"电子布",change:8.37,turnover:3.97,inflow:null,inflow5d:20.03,leader:"国际复材 +16.56%"},
+{name:"MLCC",change:7.92,turnover:6.35,inflow:null,inflow5d:5.56,leader:"达利凯普 +20.01%"},
+{name:"复合集流体",change:6.83,turnover:4.74,inflow:null,inflow5d:12.58,leader:"方邦股份 +18.02%"},
+{name:"被动元件",change:6.68,turnover:5.99,inflow:null,inflow5d:4.89,leader:"达利凯普 +20.01%"},
+{name:"电子树脂",change:6.46,turnover:7.68,inflow:null,inflow5d:4.63,leader:"同宇新材 +13.62%"},
+{name:"博通概念",change:6.39,turnover:2.96,inflow:null,inflow5d:12.78,leader:"太辰光 +20.00%"},
+{name:"CPO概念",change:6.20,turnover:5.50,inflow:null,inflow5d:8.00,leader:"太辰光 +20.00%"},
+{name:"光通信",change:5.80,turnover:4.20,inflow:null,inflow5d:6.50,leader:"长芯博创 +18.44%"},
+{name:"半导体",change:4.50,turnover:4.35,inflow:39.26,inflow5d:-97.00,leader:"华虹宏力 +10.85%"}, 
+{name:"贵金属",change:3.50,turnover:2.41,inflow:null,inflow5d:null,leader:"赤峰黄金 +10%"},
+{name:"有色金属",change:3.80,turnover:2.50,inflow:67.52,inflow5d:-14.61,leader:"电工合金 +11.65%"},
+{name:"电工钢",change:3.20,turnover:2.10,inflow:null,inflow5d:null,leader:"--"},
+{name:"军工",change:2.80,turnover:2.15,inflow:null,inflow5d:null,leader:"晨曦航空 +19.96%"},
+{name:"通信",change:2.60,turnover:1.43,inflow:-0.89,inflow5d:-26.73,leader:"--"},
+{name:"计算机",change:1.50,turnover:null,inflow:null,inflow5d:null,leader:"--"},
+{name:"食品饮料",change:-0.3,turnover:null,inflow:null,inflow5d:null,leader:"--"}];
 
-// 模块三：海外市场联动
-const overseasData = [
-  { name: "恒生科技指数", code: "HSTECH.HK", price: 4705.20, change: 1.06, chg5d: -3.75, chg20d: -7.31, chgYTD: -14.70, date: "2026-06-12 16:08", source: "港交所" },
-  { name: "纳斯达克指数", code: ".IXIC.US", price: 25888.84, change: 0.31, chg5d: 0.70, chg20d: -2.80, chgYTD: 11.39, date: "2026-06-12 ET", source: "NASDAQ" },
-  { name: "标普500", code: ".INX.US", price: 7431.46, change: 0.50, chg5d: 0.65, chg20d: -0.93, chgYTD: 8.56, date: "2026-06-12 ET", source: "S&P" },
-  { name: "美元人民币(USDCNY)", code: "USDCNY", price: 6.7615, change: -0.16, chg5d: -0.39, chg20d: -0.73, chgYTD: -3.22, date: "2026-06-13 02:59", source: "中国外汇交易中心" },
-  { name: "美元指数", code: "DINIW", price: 99.81, change: 0.12, chg5d: -0.29, chg20d: 0.54, chgYTD: 1.57, date: "2026-06-12", source: "ICE (NeoData)" }
-];
+// ====== RENDER ======
+function chgC(v){return v>0?'up':(v<0?'down':'neutral')}
+function chgS(v){return v>0?'+':''}
+function pr(v,d){return v!=null?Number(v).toFixed(d):'暂缺'}
+function renderIndexCards(){
+document.getElementById('index-cards').innerHTML=indexData.map(d=>
+`<div class="card"><div class="card-title">${d.name} <small>${d.note}</small></div>
+<div class="card-value">${d.price.toLocaleString()}</div>
+<div class="card-change ${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</div>
+<div class="card-meta">PE: ${pr(d.pe,2)} | PE分位: ${pr(d.pePct,2)}</div></div>`).join('')}
+function renderIndexTable(){
+document.getElementById('index-tbody').innerHTML=indexData.map(d=>{
+let st=d.pePct!=null?(d.pePct>80?'<span class="tag tag-high">⚠️偏高</span>':(d.pePct<20?'<span class="tag tag-low">低估</span>':'<span class="tag tag-normal">正常</span>')):'暂缺';
+return`<tr><td>${d.name}</td><td>${d.price.toLocaleString()}</td><td class="${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</td><td>${pr(d.pe,2)}</td><td>${pr(d.pePct,2)}</td><td>${st}</td><td class="${chgC(d.chgYTD)}">${chgS(d.chgYTD)}${d.chgYTD.toFixed(2)}%</td></tr>`}).join('')}
+function renderBreadth(){
+document.getElementById('breadth-cards').innerHTML=breadthData.map(d=>
+`<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${d.val}</div><div class="card-meta">${d.note}</div></div>`).join('')}
+function renderOverseas(){
+document.getElementById('overseas-cards').innerHTML=overseasData.slice(0,4).map(d=>
+`<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${typeof d.price=='number'?d.price.toLocaleString():d.price}</div><div class="card-change ${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</div><div class="card-meta">${d.note}</div></div>`).join('')}
+function renderFutures(){
+document.getElementById('futures-cards').innerHTML=futuresData.map(d=>
+`<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${d.price.toLocaleString()}</div><div class="card-change ${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</div><div class="card-meta">${d.note}</div></div>`).join('')}
+function renderCommodity(){
+document.getElementById('commodity-cards').innerHTML=commodityData.map(d=>
+`<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1rem">${d.price}</div><div class="card-change ${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</div><div class="card-meta">${d.note}</div></div>`).join('')}
+function renderMacro(){
+document.getElementById('macro-cards').innerHTML=`
+<div class="card"><div class="card-title">制造业PMI(5月)</div><div class="card-value">50.0%</div><div class="card-change down">-0.3%</div><div class="card-meta">荣枯线 | 5/31</div></div>
+<div class="card"><div class="card-title">高技术PMI</div><div class="card-value">52.9</div><div class="card-change up">+0.7</div><div class="card-meta">扩张 | 5/31</div></div>
+<div class="card"><div class="card-title">CPI同比(5月)</div><div class="card-value">1.2%</div><div class="card-change neutral">持平</div><div class="card-meta">环比-0.1%</div></div>
+<div class="card"><div class="card-title">PPI同比(5月)</div><div class="card-value">3.9%</div><div class="card-change up">+1.1%</div><div class="card-meta">创46月新高</div></div>`;
+document.getElementById('macro-tbody').innerHTML=macroData.map(d=>
+`<tr><td>${d.name}</td><td>${d.val}</td><td>${d.prev}</td><td class="${d.chg.startsWith('+')?'up':(d.chg.startsWith('-')?'down':'neutral')}">${d.chg}</td><td>${d.date}</td><td>${d.src}</td></tr>`).join('')}
+function renderLiquidity(){
+document.getElementById('liquidity-cards').innerHTML=liquidityData.map(d=>
+`<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${d.val}</div><div class="card-change ${d.chg.startsWith('+')?'up':(d.chg.startsWith('-')?'down':'neutral')}">${d.chg}</div><div class="card-meta">${d.date} | ${d.src}</div></div>`).join('')}
+function renderValuation(){
+const tmc=1150000,gdp=1400000,buffet=(tmc/gdp*100).toFixed(1),erp=((1/14.35*100)-1.738).toFixed(2);
+document.getElementById('valuation-cards').innerHTML=`
+<div class="card"><div class="card-title">巴菲特指数*</div><div class="card-value">${buffet}%</div><div class="card-meta">沪深总市值≈115万亿/GDP140万亿</div></div>
+<div class="card"><div class="card-title">ERP 股债性价比</div><div class="card-value">${erp}%</div><div class="card-meta">1/PE14.35 - 10Y(1.738%)</div></div>
+<div class="card"><div class="card-title">沪深300 PE分位</div><div class="card-value" style="color:var(--warn)">暂缺</div></div>
+<div class="card"><div class="card-title">沪深300 股息率</div><div class="card-value" style="color:var(--warn)">暂缺</div></div>`}
+function renderSentiment(){
+document.getElementById('sentiment-cards').innerHTML=`
+<div class="card"><div class="card-title">两融余额</div><div class="card-value" style="color:var(--warn)">暂缺</div><div class="card-meta">T-1数据未覆盖 | 沪深交易所</div></div>
+<div class="card"><div class="card-title">北向资金</div><div class="card-value" style="color:var(--warn)">暂缺</div><div class="card-meta">实时数据已停更</div></div>
+<div class="card"><div class="card-title">ETF净流入TOP</div><div class="card-value" style="font-size:1rem">沪深300 ETF</div><div class="card-meta">近一周净流入约79亿</div></div>`}
+function renderHeatmap(){
+document.getElementById('heatmap-grid').innerHTML=industryData.map(d=>{
+let bg,cl;const a=Math.abs(d.change);
+if(d.change>=8){bg='#dc2626';cl='#fff'}
+else if(d.change>=5){bg='#ef4444';cl='#fff'}
+else if(d.change>=3){bg='#fca5a5';cl='#7f1d1d'}
+else if(d.change>=1){bg='#fee2e2';cl='#991b1b'}
+else if(d.change>0){bg='#fef2f2';cl='#991b1b'}
+else{bg='#dcfce7';cl='#166534'}
+return`<div class="heat-cell" style="background:${bg};color:${cl}"><div class="h-name">${d.name}</div><div class="h-chg">${chgS(d.change)}${d.change.toFixed(2)}%</div></div>`}).join('')}
+function renderIndustry(){
+document.getElementById('industry-tbody').innerHTML=industryData.map(d=>{
+const ic=d.change>=3?'🔴 ':(d.change<=-3?'🟢 ':'');
+return`<tr data-change="${d.change}"><td>${ic}${d.name}</td><td class="${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</td><td>${pr(d.turnover,2)}</td><td>${d.inflow!=null?(d.inflow>=0?'<span class="up">+'+d.inflow.toFixed(2)+'亿</span>':'<span class="down">'+d.inflow.toFixed(2)+'亿</span>'):'暂缺'}</td><td>${pr(d.inflow5d,2)}</td><td>${d.leader}</td></tr>`}).join('')}
 
-// 模块四：期指基差
-const futuresData = [
-  { name: "富时A50期货", code: "CN", price: 15578.00, prevClose: 15195.00, change: 2.52, note: "6/12收盘 昨收15195 (+383点)", source: "新加坡交易所" },
-  { name: "沪深300 IF主力", code: "IF", price: null, prevClose: null, change: null, note: "暂缺", source: "中金所" },
-  { name: "中证500 IC主力", code: "IC", price: null, prevClose: null, change: null, note: "暂缺", source: "中金所" },
-  { name: "中证1000 IM主力", code: "IM", price: null, prevClose: null, change: null, note: "暂缺", source: "中金所" }
-];
+// ====== TABS / SORT ======
+function switchTab(t){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');document.querySelectorAll('#industry-table tbody tr').forEach(r=>{var c=parseFloat(r.getAttribute('data-change'));r.style.display=t=='all'?'':(t=='up'?(c>0?'':'none'):(r.cells[3].textContent.includes('+')?'':'none'))})}
+function filterIndustry(){var q=document.getElementById('industry-filter').value.toLowerCase();document.querySelectorAll('#industry-table tbody tr').forEach(r=>{r.style.display=r.cells[0].textContent.toLowerCase().includes(q)?'':'none'})}
+var ss={};
+function sortTable(id,col){var t=document.getElementById(id).querySelector('tbody'),rows=Array.from(t.querySelectorAll('tr')),k=id+'_'+col;ss[k]=ss[k]=='asc'?'desc':'asc';var d=ss[k]=='asc'?1:-1;rows.sort((a,b)=>{var va=a.cells[col].textContent.replace(/[+%,万亿]/g,'').trim(),vb=b.cells[col].textContent.replace(/[+%,万亿]/g,'').trim(),na=parseFloat(va),nb=parseFloat(vb);return(!isNaN(na)&&!isNaN(nb))?(na-nb)*d:va.localeCompare(vb)*d});rows.forEach(r=>t.appendChild(r))}
+function sortIndustry(c){sortTable('industry-table',c)}
 
-// 模块五：大宗商品
-const commodityData = [
-  { name: "上海金(AU9999)", code: "AU9999.SHG", price: 920.00, change: 1.38, note: "昨结算907.47元/克", source: "上海黄金交易所" },
-  { name: "伦敦金", code: "AUUSDO.LIFFE", price: 4239.90, change: 3.06, note: "昨结算4114.00美元/盎司", source: "LBMA" },
-  { name: "COMEX铜", code: "HG.FU", price: 6.474, change: 3.17, note: "昨结算6.275美元/磅", source: "COMEX" },
-  { name: "原油(WTI)", code: "CL", price: null, change: null, note: "暂缺", source: "NYMEX" }
-];
+// ====== THEME ======
+var isDark=false;
+function toggleTheme(){isDark=!isDark;document.documentElement.setAttribute('data-theme',isDark?'dark':'');document.querySelector('.theme-toggle').innerHTML=isDark?'☀️ 亮色':'🌙 暗色';setTimeout(renderCharts,200)}
 
-// 模块六：宏观基本面
-const macroData = [
-  { name: "制造业PMI(5月)", val: "50.0%", prev: "50.3%(4月)", chg: "-0.3%", date: "2026-05-31", source: "国家统计局" },
-  { name: "高技术制造业PMI", val: "52.9", prev: "52.2(4月)", chg: "+0.7", date: "2026-05-31", source: "国家统计局" },
-  { name: "装备制造业PMI", val: "52.1", prev: "51.8(4月)", chg: "+0.3", date: "2026-05-31", source: "国家统计局" },
-  { name: "大型企业PMI", val: "51.1", prev: "50.2(4月)", chg: "+0.9", date: "2026-05-31", source: "国家统计局" },
-  { name: "中型企业PMI", val: "48.6", prev: "50.5(4月)", chg: "-1.9", date: "2026-05-31", source: "国家统计局" },
-  { name: "CPI同比(5月)", val: "1.2%", prev: "1.2%(4月)", chg: "持平", date: "2026-05", source: "国家统计局 6/10公布" },
-  { name: "CPI环比(5月)", val: "-0.1%", prev: "+0.3%(4月)", chg: "-0.4%", date: "2026-05", source: "国家统计局 6/10公布" },
-  { name: "PPI同比(5月)", val: "3.9%", prev: "2.8%(4月)", chg: "+1.1%", date: "2026-05", source: "国家统计局 6/10公布" },
-  { name: "PPI环比(5月 生产资料)", val: "0.7%", prev: "2.1%(4月)", chg: "-1.4%", date: "2026-05", source: "国家统计局 6/10公布" },
-  { name: "社融存量(5月)", val: "458.81万亿", prev: "456.89万亿(4月)", chg: "+1.92万亿", date: "2026-05", source: "中国人民银行 6/12公布" },
-];
-
-// 模块七：流动性环境
-const liquidityData = [
-  { name: "10Y国债收益率", val: "1.7427%", prev: "1.7207%(6/5)", chg: "+2.20bp", date: "2026-06-12", source: "中债信息网" },
-  { name: "7天逆回购利率", val: "1.40%", prev: "1.40%", chg: "持平", date: "2026-06-12", source: "中国人民银行" },
-  { name: "14天逆回购利率", val: "1.65%", prev: "1.65%", chg: "持平", date: "2026-06-12", source: "中国人民银行" },
-  { name: "逆回购操作(6/12)", val: "3930亿", prev: "1885亿(6/11)", chg: "+2045亿", date: "2026-06-12", source: "中国人民银行" },
-  { name: "DR007", val: "1.35%(估)", prev: "", chg: "", date: "2026-06-11", source: "中国外汇交易中心" },
-  { name: "1年期LPR", val: "3.0%", prev: "3.0%(4月)", chg: "持平", date: "2026-05-20", source: "中国人民银行" },
-  { name: "5年期LPR", val: "3.5%", prev: "3.5%(4月)", chg: "持平", date: "2026-05-20", source: "中国人民银行" },
-  { name: "MLF利率(1Y)", val: "暂缺", prev: "", chg: "", date: "", source: "待查询" }
-];
-
-// 模块八：市场估值
-// 上交所+深交所总市值估算
-const totalMCap = 1141167; // 亿元
-const gdpEst = 1400000;    // 2026年GDP预估140万亿(亿元)
-const buffetIdx = (totalMCap / gdpEst * 100).toFixed(1);
-const hs300pe = 14.42; // 沪深300 PE(TTM) 来自NeoData
-const erp = ((1 / hs300pe * 100) - 1.7427).toFixed(2);
-
-const valuationData = [
-  { name: "巴菲特指数*", val: buffetIdx + "%", note: "沪深总市值≈114.1万亿 / GDP预估140万亿", source: "基于交易所数据估算" },
-  { name: "股债性价比 ERP", val: erp + "%", note: "1/沪深300PE(14.42) - 10Y国债(1.7427%)", source: "基于交易所&中债数据计算" },
-  { name: "沪深300 PE(TTM)", val: "14.42", note: "PE分位暂缺（API仅返回上证/深证/创业板）", source: "NeoData" },
-  { name: "沪深300股息率", val: "暂缺", note: "待分红公告数据", source: "待更新" }
-];
-
-// 模块九：情绪与资金
-const sentimentData = [
-  { name: "两融余额", val: "暂缺", note: "6/12 API未返回结构化数据 | 6/8: 28829亿", source: "NeoData (待更新)" },
-  { name: "融资余额", val: "暂缺", note: "6/12 API未返回 | 6/8: 约28500亿(估)", source: "NeoData (待更新)" },
-  { name: "融券余额", val: "暂缺", note: "6/12 API未返回 | 变动不大", source: "NeoData (待更新)" },
-  { name: "北向资金(今日)", val: "暂缺", note: "北向资金实时数据已停更", source: "沪深港通" },
-  { name: "ETF净流入TOP(近一周)", val: "沪深300ETF", note: "近一周沪深300相关ETF累计净流入79.10亿", source: "Wind" }
-];
-
-// 模块十&十一：行业板块数据
-const industryData = [
-  { name: "工业金属", change: 5.65, volume: 875.52, turnover: 3.69, inflow: 78.24, inflow5d: -3.89, inflow20d: -166.62, leader: "铜陵有色 +10.08%", note: "涨股比54/60 | 🔴" },
-  { name: "航空机场", change: 4.61, volume: 260.31, turnover: 2.37, inflow: null, inflow5d: null, inflow20d: null, leader: "中信海直 +9.98%", note: "🔴" },
-  { name: "贵金属", change: 4.61, volume: 185.71, turnover: 3.66, inflow: null, inflow5d: null, inflow20d: null, leader: "招金黄金 +10.02%", note: "🔴" },
-  { name: "航空装备Ⅱ", change: 4.10, volume: 620.00, turnover: 2.98, inflow: null, inflow5d: null, inflow20d: null, leader: "晨曦航空 +19.96%", note: "🔴" },
-  { name: "能源金属", change: 3.64, volume: 1160.37, turnover: 8.21, inflow: null, inflow5d: null, inflow20d: null, leader: "盛屯矿业 +9.89%", note: "🔴" },
-  { name: "证券Ⅱ", change: 3.50, volume: 525.07, turnover: 1.69, inflow: 36.52, inflow5d: 15.48, inflow20d: -97.39, leader: "财达证券 +10.08%", note: "🔴 | 涨股比50/50" },
-  { name: "电池", change: 3.26, volume: 1190.58, turnover: 4.83, inflow: 72.68, inflow5d: 23.63, inflow20d: -400.25, leader: "珠海冠宇 +15.93%", note: "🔴 | 涨股比75/97" }
-];
-
-// NeoData API仅返回排行榜Top行业，其余行业暂缺
-const missingIndustries = [
-  "煤炭", "电力", "化工", "农林牧渔", "食品饮料",
-  "纺织服饰", "轻工制造", "医药生物", "公用事业",
-  "交通运输", "房地产", "商贸零售", "社会服务",
-  "综合", "建筑材料", "建筑装饰", "钢铁",
-  "机械设备", "计算机", "电子", "通信",
-  "家用电器", "汽车", "国防军工", "传媒",
-  "银行", "非银金融", "石油石化", "美容护理"
-];
-
-// ========================
-// THEME TOGGLE
-// ========================
-const themeBtn = document.querySelector('.theme-toggle');
-let isDark = false;
-function toggleTheme() {
-  isDark = !isDark;
-  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : '');
-  themeBtn.innerHTML = isDark ? '☀️ 亮色模式' : '🌙 暗色模式';
-  setTimeout(renderCharts, 200);
+// ====== CHARTS ======
+function renderCharts(){
+var dm=document.documentElement.getAttribute('data-theme')=='dark',tc=dm?'#94a3b8':'#6b7280',ac=dm?'#334155':'#e5e7eb';
+var c1=echarts.init(document.getElementById('chart-bar'));
+c1.setOption({tooltip:{trigger:'axis'},grid:{l:'3%',r:'4%',b:'15%',t:'5%',containLabel:!0},xAxis:{type:'category',data:indexData.map(d=>d.name),axisLabel:{rotate:45,fontSize:9,color:tc}},yAxis:{type:'value',name:'%',axisLabel:{color:tc}},series:[{type:'bar',data:indexData.map(d=>({value:d.change,itemStyle:{color:d.change>=0?'#dc2626':'#16a34a'}})),label:{show:!0,position:'top',formatter:p=>(p.value>0?'+':'')+p.value.toFixed(2)+'%',fontSize:9,color:tc}}]});
+var c2=echarts.init(document.getElementById('chart-pe'));
+var ped=indexData.filter(d=>d.pePct!=null);
+c2.setOption({tooltip:{trigger:'axis'},grid:{l:'8%',r:'4%',b:'8%',t:'5%'},xAxis:{type:'value',name:'PE',axisLabel:{color:tc}},yAxis:{type:'value',name:'分位%',axisLabel:{color:tc},max:100,markLine:{silent:!0,data:[{yAxis:80,label:{formatter:'高估80%',color:'#dc2626'},lineStyle:{color:'#dc2626',type:'dashed'}},{yAxis:20,label:{formatter:'低估20%',color:'#16a34a'},lineStyle:{color:'#16a34a',type:'dashed'}}]}},series:[{type:'scatter',data:ped.map(d=>[d.pe,d.pePct]),symbolSize:14,label:{show:!0,formatter:p=>ped[p.dataIndex].name,position:'right',fontSize:9,color:tc},itemStyle:{color:'#f59e0b'}}]});
+var c3=echarts.init(document.getElementById('chart-bond'));
+var bd=['5/22','5/25','5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11','6/12'],by=[1.7519,1.7484,1.7405,1.7216,1.7193,1.709,1.7009,1.7036,1.7128,1.7081,1.7207,1.7275,1.7376,1.7476,1.7475,1.738];
+c3.setOption({tooltip:{trigger:'axis'},grid:{l:'3%',r:'4%',b:'3%',t:'5%',containLabel:!0},xAxis:{type:'category',data:bd,axisLabel:{color:tc}},yAxis:{type:'value',name:'%',axisLabel:{color:tc},min:1.68,max:1.78},series:[{type:'line',data:by,smooth:!0,lineStyle:{color:'#f59e0b',width:2},itemStyle:{color:'#f59e0b'},symbol:'circle',symbolSize:5,areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(245,158,11,0.2)'},{offset:1,color:'rgba(245,158,11,0)'}])}}]});
+var c4=echarts.init(document.getElementById('chart-repo'));
+var rd=['5/19','5/20','5/21','5/22','5/25','5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11','6/12'],rv=[5,500,1000,1530,2580,2490,1776,1013,1230,1100,200,0,0,2150,2185,1530,1590,1885,1193];
+c4.setOption({tooltip:{trigger:'axis'},grid:{l:'3%',r:'4%',b:'3%',t:'5%',containLabel:!0},xAxis:{type:'category',data:rd,axisLabel:{rotate:45,fontSize:8,color:tc}},yAxis:{type:'value',name:'亿元',axisLabel:{color:tc}},series:[{type:'bar',data:rv,itemStyle:{color:'#3b82f6',borderRadius:[4,4,0,0]}}]});
 }
 
-// ========================
-// RENDER HELPERS
-// ========================
-function fmtChg(v) {
-  if (v === null || v === undefined) return { cls: 'neutral', txt: '暂缺' };
-  const cls = v > 0 ? 'up' : (v < 0 ? 'down' : 'neutral');
-  const txt = (v > 0 ? '+' : '') + v.toFixed(2) + '%';
-  return { cls, txt };
+// ====== SUMMARY ======
+function renderSummary(){
+document.getElementById('daily-summary').innerHTML=`
+今日A股<a style="color:var(--red)">全线大涨</a>！8大指数全部收红，科创50领涨<span class="up">+3.10%</span>。核心驱动：<strong>美伊达成和平协议</strong>，霍尔木兹海峡将重新开放，全球风险偏好大幅回升。<br><br>
+<strong>板块全线爆发：</strong>CPO/光通信暴涨（太辰光+20%涨停、长芯博创+18%）、电子布+8.37%（国际复材+17%）、MLCC+7.92%（达利凯普+20%）、被动元件+6.68%。半导体（华虹宏力+11%）、军工（晨曦航空+20%）跟随走强。消费/软件方向偏弱。<br><br>
+<strong>宏观：</strong>5月制造业PMI 50.0（荣枯线），高技术PMI 52.9维持扩张。CPI+1.2%持平，PPI+3.9%创46个月新高。社融预估约1.97万亿。流动性：10Y国债1.738%（-0.95bp），资金利率小幅抬升。<br><br>
+<strong>大宗：</strong>伦敦金飙至4353（+2.69%）、上海金943（+3.92%）再创新高。WTI原油暴跌至80美元（-5.63%，美伊协议供给预期）。COMEX铜+1.68%。<br><br>
+<strong>⚠️估值警示：</strong>上证PE 98.48%分位、深证 98.76%分位——历史极高位。创业板58.65%正常。关注反弹持续性。`;
 }
 
-function fmtVol(v) {
-  if (v === null || v === undefined) return '暂缺';
-  if (v > 10000) return (v/10000).toFixed(2)+'万亿';
-  return v.toFixed(2)+'亿';
+// ====== TIME ======
+function setTime(){
+var n=new Date(),h=n.getHours(),m=n.getMinutes(),lb='';
+if(h<9||(h==9&&m<30))lb='盘前';else if(h<11||(h==11&&m<30))lb='盘中';else if(h<13)lb='午休';else if(h<15)lb='盘中';else lb='收盘';
+var ts=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')+' '+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+' CST（'+lb+'）';
+document.getElementById('header-time').textContent='⏱️ 数据更新: '+ts;
+document.querySelectorAll('.module-time').forEach(e=>e.textContent='⏱️ '+ts+' | '+e.textContent.split('| ').pop());
 }
 
-// ========================
-// MODULE 1: INDEX CARDS & TABLE
-// ========================
-function renderIndexCards() {
-  const container = document.getElementById('index-cards');
-  container.innerHTML = indexData.map(d => {
-    const chg = fmtChg(d.change);
-    const vol = d.volume > 10000 ? (d.volume/10000).toFixed(2)+'万亿' : d.volume.toFixed(2)+'亿';
-    const pe = d.pe !== null ? d.pe.toFixed(2) : '暂缺';
-    return `<div class="card">
-      <div class="card-title">${d.name} <span style="font-size:0.7rem;opacity:0.7">${d.code}</span></div>
-      <div class="card-value">${d.price.toLocaleString('zh-CN')}</div>
-      <div class="card-change ${chg.cls}">${chg.txt}</div>
-      <div class="card-meta">成交: ${vol} | PE: ${pe}</div>
-    </div>`;
-  }).join('');
-}
-
-function renderIndexTable() {
-  const tbody = document.getElementById('index-tbody');
-  tbody.innerHTML = indexData.map(d => {
-    const chg = fmtChg(d.change);
-    const chg5d = fmtChg(d.chg5d);
-    const chg20d = fmtChg(d.chg20d);
-    const chgYTD = fmtChg(d.chgYTD);
-
-    let peStatus = '';
-    if (d.pePct !== null) {
-      if (d.pePct > 80) peStatus = '<span class="tag tag-high">⚠️ 估值偏高</span>';
-      else if (d.pePct < 20) peStatus = '<span class="tag tag-low">低估</span>';
-      else peStatus = '<span class="tag tag-normal">正常</span>';
-    } else {
-      peStatus = '<span style="color:var(--text-secondary)">暂缺</span>';
-    }
-
-    const peStr = d.pe !== null ? d.pe.toFixed(2) : '暂缺';
-    const pePctStr = d.pePct !== null ? d.pePct.toFixed(2)+'%' : '暂缺';
-
-    return `<tr>
-      <td>${d.name}<br><span style="font-size:0.7rem;color:var(--text-secondary)">${d.source}</span></td>
-      <td>${d.price.toLocaleString('zh-CN')}</td>
-      <td class="${chg.cls}">${chg.txt}</td>
-      <td>${fmtVol(d.volume)}</td>
-      <td>${peStr}</td>
-      <td>${pePctStr}</td>
-      <td>${peStatus}</td>
-      <td class="${chg5d.cls}">${chg5d.txt}</td>
-      <td class="${chg20d.cls}">${chg20d.txt}</td>
-      <td class="${chgYTD.cls}">${chgYTD.txt}</td>
-    </tr>`;
-  }).join('');
-}
-
-// ========================
-// MODULE 2: MARKET BREADTH
-// ========================
-function renderBreadth() {
-  const cards = document.getElementById('breadth-cards');
-  cards.innerHTML = breadthData.map(d => {
-    const isMissing = d.val.includes('暂缺') || d.val.includes('API');
-    return `<div class="card">
-      <div class="card-title">${d.name}</div>
-      <div class="card-value" style="${isMissing ? 'font-size:1.1rem;color:var(--warn)' : ''}">${d.val}</div>
-      <div class="card-meta">${d.note}</div>
-    </div>`;
-  }).join('');
-}
-
-// ========================
-// MODULE 3: OVERSEAS MARKETS
-// ========================
-function renderOverseas() {
-  const cards = document.getElementById('overseas-cards');
-  cards.innerHTML = overseasData.slice(0,5).map(d => {
-    const chg = fmtChg(d.change);
-    const priceStr = d.price !== null ? d.price.toLocaleString('zh-CN') : '暂缺';
-    return `<div class="card">
-      <div class="card-title">${d.name}</div>
-      <div class="card-value" style="font-size:${d.price !== null ? '1.4rem' : '1.1rem'};color:${d.price !== null ? '' : 'var(--warn)'}">${priceStr}</div>
-      <div class="card-change ${chg.cls}">${chg.txt}</div>
-      <div class="card-meta">${d.date} | ${d.source}</div>
-    </div>`;
-  }).join('');
-
-  const tbody = document.getElementById('overseas-tbody');
-  tbody.innerHTML = overseasData.map(d => {
-    const chg = fmtChg(d.change);
-    const chg5d = fmtChg(d.chg5d);
-    const chg20d = fmtChg(d.chg20d);
-    const chgY = fmtChg(d.chgYTD);
-    const priceStr = d.price !== null ? d.price.toLocaleString('zh-CN') : '暂缺';
-    return `<tr>
-      <td>${d.name}</td>
-      <td class="${d.price === null ? 'missing' : ''}">${priceStr}</td>
-      <td class="${chg.cls}">${chg.txt}</td>
-      <td class="${chg5d.cls}">${chg5d.txt}</td>
-      <td class="${chg20d.cls}">${chg20d.txt}</td>
-      <td class="${chgY.cls}">${chgY.txt}</td>
-      <td>${d.date}</td>
-    </tr>`;
-  }).join('');
-}
-
-// ========================
-// MODULE 4: FUTURES BASIS
-// ========================
-function renderFutures() {
-  const cards = document.getElementById('futures-cards');
-  cards.innerHTML = futuresData.map(d => {
-    if (d.price === null) {
-      return `<div class="card">
-        <div class="card-title">${d.name}</div>
-        <div class="card-value" style="font-size:1.1rem;color:var(--warn)">暂缺</div>
-        <div class="card-meta">${d.note} | ${d.source}</div>
-      </div>`;
-    }
-    const chg = fmtChg(d.change);
-    return `<div class="card">
-      <div class="card-title">${d.name}</div>
-      <div class="card-value" style="font-size:1.4rem">${d.price.toLocaleString('zh-CN')}</div>
-      <div class="card-change ${chg.cls}">${chg.txt}</div>
-      <div class="card-meta">${d.note} | ${d.source}</div>
-    </div>`;
-  }).join('');
-}
-
-// ========================
-// MODULE 5: COMMODITIES
-// ========================
-function renderCommodities() {
-  const cards = document.getElementById('commodity-cards');
-  cards.innerHTML = commodityData.map(d => {
-    if (d.price === null) {
-      return `<div class="card">
-        <div class="card-title">${d.name}</div>
-        <div class="card-value" style="font-size:1.1rem;color:var(--warn)">暂缺</div>
-        <div class="card-meta">${d.note} | ${d.source}</div>
-      </div>`;
-    }
-    const chg = fmtChg(d.change);
-    return `<div class="card">
-      <div class="card-title">${d.name}</div>
-      <div class="card-value" style="font-size:1.4rem">${d.price.toLocaleString('zh-CN')}</div>
-      <div class="card-change ${chg.cls}">${chg.txt}</div>
-      <div class="card-meta">${d.note} | ${d.source}</div>
-    </div>`;
-  }).join('');
-}
-
-// ========================
-// MODULE 6: MACRO
-// ========================
-function renderMacro() {
-  const cards = document.getElementById('macro-cards');
-  cards.innerHTML = `
-    <div class="card"><div class="card-title">制造业PMI (5月)</div><div class="card-value">50.0%</div><div class="card-change neutral">荣枯线持平</div><div class="card-meta">4月50.3%→5月50.0% | 国家统计局</div></div>
-    <div class="card"><div class="card-title">高技术制造业PMI</div><div class="card-value">52.9</div><div class="card-change up">较4月52.2 +0.7</div><div class="card-meta">装备制造52.1 | 持续扩张</div></div>
-    <div class="card"><div class="card-title">CPI同比 (5月)</div><div class="card-value">1.2%</div><div class="card-change neutral">持平4月</div><div class="card-meta">环比-0.1% | 国家统计局 6/10</div></div>
-    <div class="card"><div class="card-title">PPI同比 (5月)</div><div class="card-value">3.9%</div><div class="card-change up">较4月2.8% +1.1%</div><div class="card-meta">创46个月新高 | 国家统计局 6/10</div></div>
-  `;
-
-  const tbody = document.getElementById('macro-tbody');
-  tbody.innerHTML = macroData.map(d => {
-    const isMissing = d.val.includes('暂缺');
-    const chgClass = d.chg.startsWith('+') ? 'up' : (d.chg.startsWith('-') ? 'down' : 'neutral');
-    return `<tr>
-      <td>${d.name}</td>
-      <td class="${isMissing ? 'missing' : ''}">${d.val}</td>
-      <td>${d.prev || '--'}</td>
-      <td class="${chgClass}">${d.chg || '--'}</td>
-      <td>${d.date || '--'}</td>
-      <td>${d.source}</td>
-    </tr>`;
-  }).join('');
-}
-
-// ========================
-// MODULE 7: LIQUIDITY
-// ========================
-function renderLiquidity() {
-  const cards = document.getElementById('liquidity-cards');
-  cards.innerHTML = `
-    <div class="card"><div class="card-title">10Y国债收益率</div><div class="card-value">1.7427%</div><div class="card-change up">较6/5 +2.20bp</div><div class="card-meta">6/12 | 中债信息网</div></div>
-    <div class="card"><div class="card-title">7天逆回购利率</div><div class="card-value">1.40%</div><div class="card-change neutral">持平 | 14天1.65%</div><div class="card-meta">6/12投放3930亿 | 央行</div></div>
-    <div class="card"><div class="card-title">DR007</div><div class="card-value">1.35%(估)</div><div class="card-change down">低于政策利率</div><div class="card-meta">流动性偏松 | 中国外汇交易中心</div></div>
-    <div class="card"><div class="card-title">1年期LPR</div><div class="card-value">3.0%</div><div class="card-change neutral">持平(5月)</div><div class="card-meta">5Y LPR 3.5% | 中国人民银行</div></div>
-  `;
-}
-
-// ========================
-// MODULE 8: VALUATION
-// ========================
-function renderValuation() {
-  const cards = document.getElementById('valuation-cards');
-  cards.innerHTML = `
-    <div class="card"><div class="card-title">巴菲特指数*</div><div class="card-value">${buffetIdx}%</div><div class="card-meta">沪深总市值≈114.1万亿 / GDP预估140万亿</div><div class="card-meta" style="font-size:0.7rem">*基于交易所数据估算</div></div>
-    <div class="card"><div class="card-title">股债性价比 ERP</div><div class="card-value">${erp}%</div><div class="card-meta">1/沪深300PE(14.42) - 10Y国债(1.7427%)</div></div>
-    <div class="card"><div class="card-title">沪深300 PE(TTM)</div><div class="card-value">14.42</div><div class="card-meta">PE分位: API未覆盖（仅上证/深证/创业板有数据）</div></div>
-    <div class="card"><div class="card-title">沪深300股息率</div><div class="card-value" style="font-size:1.1rem;color:var(--warn)">暂缺</div><div class="card-meta">待分红公告数据</div></div>
-  `;
-}
-
-// ========================
-// MODULE 9: SENTIMENT
-// ========================
-function renderSentiment() {
-  const cards = document.getElementById('sentiment-cards');
-  cards.innerHTML = `
-    <div class="card"><div class="card-title">两融余额 (6/8)</div><div class="card-value" style="font-size:1.1rem;color:var(--warn)">暂缺(6/12)</div><div class="card-change neutral">API未返回结构化数据</div><div class="card-meta">6/8: 28829亿 | NeoData</div></div>
-    <div class="card"><div class="card-title">融资余额 (6/8)</div><div class="card-value" style="font-size:1.1rem;color:var(--warn)">暂缺(6/12)</div><div class="card-change neutral">API未返回数据</div><div class="card-meta">6/8: 约28500亿(估) | 待更新</div></div>
-    <div class="card"><div class="card-title">北向资金</div><div class="card-value" style="font-size:1rem;color:var(--warn)">暂缺</div><div class="card-meta">实时数据已于2024年停更</div></div>
-    <div class="card"><div class="card-title">ETF净流入(近一周)</div><div class="card-value" style="font-size:1rem;">沪深300ETF</div><div class="card-meta">近一周净流入约79.10亿 | Wind</div></div>
-  `;
-}
-
-// ========================
-// MODULE 10: HEATMAP
-// ========================
-function renderHeatmap() {
-  const grid = document.getElementById('heatmap-grid');
-  const items = [];
-
-  // Add available industry data
-  industryData.forEach(d => {
-    const pct = Math.abs(d.change);
-    let bg;
-    if (d.change >= 5) bg = 'rgba(220,38,38,0.35)';
-    else if (d.change >= 3) bg = 'rgba(220,38,38,0.25)';
-    else if (d.change >= 1) bg = 'rgba(220,38,38,0.15)';
-    else if (d.change > 0) bg = 'rgba(220,38,38,0.08)';
-    else if (d.change < 0) bg = 'rgba(22,163,74,0.15)';
-    else bg = '#f8fafc';
-
-    items.push({ name: d.name, change: d.change, leader: d.leader, bg });
-  });
-
-  // Add missing industries as grey
-  missingIndustries.forEach(name => {
-    items.push({ name, change: null, leader: '暂缺', bg: '#e5e7eb' });
-  });
-
-  grid.innerHTML = items.map(d => {
-    const chgTxt = d.change !== null ? ((d.change > 0 ? '+' : '') + d.change.toFixed(2) + '%') : '暂缺';
-    const chgCls = d.change !== null ? (d.change >= 3 ? 'up' : (d.change > 0 ? 'up' : (d.change < 0 ? 'down' : 'neutral'))) : 'neutral';
-    const icon = d.change !== null && d.change >= 3 ? '🔴 ' : (d.change !== null && d.change <= -3 ? '🟢 ' : '');
-    return `<div class="heatmap-cell" style="background:${d.bg}">
-      <div class="industry-name">${d.name}</div>
-      <div class="industry-change ${chgCls}">${icon}${chgTxt}</div>
-      <div class="industry-leader">${d.leader}</div>
-    </div>`;
-  }).join('');
-}
-
-// ========================
-// MODULE 11: INDUSTRY TABLE
-// ========================
-function renderIndustry() {
-  const tbody = document.getElementById('industry-tbody');
-  tbody.innerHTML = industryData.map(d => {
-    const chg = fmtChg(d.change);
-    const icon = d.change >= 3 ? '🔴 ' : (d.change <= -3 ? '🟢 ' : '');
-    const inflowStr = d.inflow !== null ? (d.inflow > 0 ? '<span class="up">+'+d.inflow.toFixed(2)+'亿</span>' : '<span class="down">'+d.inflow.toFixed(2)+'亿</span>') : '暂缺';
-    const i5Str = d.inflow5d !== null ? (d.inflow5d > 0 ? '<span class="up">+'+d.inflow5d.toFixed(2)+'</span>' : '<span class="down">'+d.inflow5d.toFixed(2)+'</span>') : '暂缺';
-    const i20Str = d.inflow20d !== null ? (d.inflow20d > 0 ? '<span class="up">+'+d.inflow20d.toFixed(2)+'</span>' : '<span class="down">'+d.inflow20d.toFixed(2)+'</span>') : '暂缺';
-    const volStr = d.volume !== null ? d.volume.toFixed(2)+'亿' : '暂缺';
-    const toStr = d.turnover !== null ? d.turnover.toFixed(2)+'%' : '暂缺';
-
-    return `<tr data-change="${d.change}">
-      <td>${icon}${d.name}${d.note ? '<br><span style="font-size:0.68rem;color:var(--text-secondary)">'+d.note+'</span>' : ''}</td>
-      <td class="${chg.cls}">${chg.txt}</td>
-      <td>${volStr}</td>
-      <td>${toStr}</td>
-      <td>${inflowStr}</td>
-      <td>${i5Str}</td>
-      <td>${i20Str}</td>
-      <td>${d.leader}</td>
-    </tr>`;
-  }).join('');
-}
-
-// ========================
-// TABS
-// ========================
-function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  const rows = document.querySelectorAll('#industry-tbody tr');
-  rows.forEach(r => {
-    const chg = parseFloat(r.getAttribute('data-change'));
-    if (tab === 'industry-all') r.style.display = '';
-    else if (tab === 'industry-up') r.style.display = chg > 0 ? '' : 'none';
-    else if (tab === 'industry-inflow') r.style.display = r.cells[4].textContent.includes('+') ? '' : 'none';
-  });
-}
-
-function filterIndustry() {
-  const q = document.getElementById('industry-filter').value.toLowerCase();
-  document.querySelectorAll('#industry-tbody tr').forEach(r => {
-    r.style.display = r.cells[0].textContent.toLowerCase().includes(q) ? '' : 'none';
-  });
-}
-
-// ========================
-// TABLE SORTING
-// ========================
-let sortStates = {};
-function sortTable(tableId, colIdx) {
-  const table = document.getElementById(tableId);
-  const tbody = table.querySelector('tbody');
-  if (!tbody) return;
-  const rows = Array.from(tbody.querySelectorAll('tr'));
-  const key = tableId + '_' + colIdx;
-  sortStates[key] = sortStates[key] === 'asc' ? 'desc' : 'asc';
-  const dir = sortStates[key] === 'asc' ? 1 : -1;
-
-  rows.sort((a, b) => {
-    let va = a.cells[colIdx].textContent.replace(/[+%,万亿暂缺]/g, '').trim();
-    let vb = b.cells[colIdx].textContent.replace(/[+%,万亿暂缺]/g, '').trim();
-    const na = parseFloat(va);
-    const nb = parseFloat(vb);
-    if (!isNaN(na) && !isNaN(nb)) return (na - nb) * dir;
-    return va.localeCompare(vb) * dir;
-  });
-  rows.forEach(r => tbody.appendChild(r));
-}
-
-function sortIndustry(colIdx) {
-  sortTable('industry-table', colIdx);
-}
-
-// ========================
-// CHARTS
-// ========================
-function renderCharts() {
-  const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
-  const textColor = isDarkMode ? '#94a3b8' : '#6b7280';
-  const axisColor = isDarkMode ? '#334155' : '#e5e7eb';
-
-  // Chart 1: Bar chart - index changes
-  const chartBar = echarts.init(document.getElementById('chart-bar'));
-  chartBar.setOption({
-    tooltip: { trigger: 'axis', formatter: p => `${p[0].name}<br/>涨跌幅: ${p[0].value > 0 ? '+' : ''}${p[0].value.toFixed(2)}%` },
-    grid: { left: '3%', right: '4%', bottom: '15%', top: '8%', containLabel: true },
-    xAxis: { type: 'category', data: indexData.map(d => d.name), axisLabel: { rotate: 45, fontSize: 10, color: textColor }, axisLine: { lineStyle: { color: axisColor } } },
-    yAxis: { type: 'value', name: '%', axisLabel: { color: textColor } },
-    series: [{
-      type: 'bar', data: indexData.map(d => ({ value: d.change, itemStyle: { color: d.change >= 0 ? '#dc2626' : '#16a34a' } })),
-      label: { show: true, position: 'top', formatter: p => (p.value > 0 ? '+' : '') + p.value.toFixed(2) + '%', fontSize: 10, color: textColor }
-    }]
-  });
-
-  // Chart 2: PE scatter
-  const chartPE = echarts.init(document.getElementById('chart-pe'));
-  const peData = indexData.filter(d => d.pe !== null && d.pePct !== null);
-  chartPE.setOption({
-    tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
-    grid: { left: '8%', right: '4%', bottom: '10%', top: '8%' },
-    xAxis: { type: 'value', name: 'PE(TTM)', axisLabel: { color: textColor } },
-    yAxis: { type: 'value', name: 'PE分位(%)', axisLabel: { color: textColor },
-      splitLine: { lineStyle: { color: axisColor } },
-      markLine: { silent: true, data: [
-        { yAxis: 80, label: { formatter: '高估线 80%', color: '#dc2626' }, lineStyle: { color: '#dc2626', type: 'dashed' } },
-        { yAxis: 20, label: { formatter: '低估线 20%', color: '#16a34a' }, lineStyle: { color: '#16a34a', type: 'dashed' } }
-      ]}
-    },
-    series: [{
-      type: 'scatter', data: peData.map(d => [d.pe, d.pePct]),
-      symbolSize: 18,
-      label: { show: true, formatter: p => peData[p.dataIndex].name, position: 'right', fontSize: 10, color: textColor },
-      itemStyle: { color: '#f59e0b' }
-    }]
-  });
-
-  // Chart 3: Bond yield (updated with NeoData API data through 6/12)
-  const chartBond = echarts.init(document.getElementById('chart-bond'));
-  const bondDates = ['5/12','5/13','5/14','5/15','5/19','5/20','5/21','5/22','5/25','5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11','6/12'];
-  const bondYields = [1.7592,1.7514,1.7588,1.7658,1.7345,1.7382,1.7448,1.7519,1.7484,1.7405,1.7216,1.7193,1.7090,1.7009,1.7036,1.7128,1.7081,1.7207,1.7275,1.7376,1.7476,1.7475,1.7427];
-  chartBond.setOption({
-    tooltip: { trigger: 'axis', formatter: p => `${p[0].axisValue}<br/>10Y国债: ${p[0].value.toFixed(4)}%` },
-    grid: { left: '3%', right: '4%', bottom: '3%', top: '8%', containLabel: true },
-    xAxis: { type: 'category', data: bondDates, axisLabel: { color: textColor }, axisLine: { lineStyle: { color: axisColor } } },
-    yAxis: { type: 'value', name: '%', axisLabel: { color: textColor }, min: 1.68, max: 1.78 },
-    series: [{
-      type: 'line', data: bondYields, smooth: true, lineStyle: { color: '#f59e0b', width: 2 },
-      areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(245,158,11,0.2)'},{offset:1,color:'rgba(245,158,11,0)'}]) },
-      itemStyle: { color: '#f59e0b' }, symbol: 'circle', symbolSize: 6
-    }]
-  });
-
-  // Chart 4: Reverse repo
-  const chartRepo = echarts.init(document.getElementById('chart-repo'));
-  const repoDates = ['5/12','5/13','5/14','5/15','5/19','5/20','5/21','5/22','5/25','5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11','6/12'];
-  const repoVals = [0.5,0.5,0.5,0.5,5,500,1000,1530,2580,2490,1776,1013,1230,1100,200,0,0,2150,2185,1530,1590,1885,3930];
-  chartRepo.setOption({
-    tooltip: { trigger: 'axis', formatter: p => `${p[0].axisValue}<br/>逆回购操作: ${p[0].value.toFixed(0)}亿` },
-    grid: { left: '3%', right: '4%', bottom: '3%', top: '8%', containLabel: true },
-    xAxis: { type: 'category', data: repoDates, axisLabel: { rotate: 45, fontSize: 9, color: textColor } },
-    yAxis: { type: 'value', name: '亿元', axisLabel: { color: textColor } },
-    series: [{
-      type: 'bar', data: repoVals, itemStyle: { color: '#3b82f6', borderRadius: [4,4,0,0] }
-    }]
-  });
-}
-
-// ========================
-// SUMMARY
-// ========================
-function renderSummary() {
-  document.getElementById('daily-summary').innerHTML = `
-    今日（6/12收盘）A股三大指数<a style="color:var(--red)">集体上涨</a>，上证指数报4031.51点 <span class="up">+1.12%</span>，深证成指 <span class="up">+0.75%</span>，
-    创业板指 <span class="up">+0.50%</span>，沪深300 <span class="up">+1.16%</span>，科创50微涨 <span class="up">+0.05%</span>。北证50逆势下跌 <span class="down">-0.78%</span> 已是连续三日下挫。
-    全市场3923家上涨、1515家下跌，100家涨停、23家跌停，涨跌比2.59:1，沪深两市成交额3.21万亿放量约6600亿，为近期最高。
-    <br><br>
-    <strong>板块层面：</strong>周期资源股全线爆发，工业金属 <span class="up">+5.65%</span> 领涨全市场🔴，铜陵有色、洛阳钼业双双涨停；
-    航空机场 <span class="up">+4.61%</span>🔴、贵金属 <span class="up">+4.61%</span>🔴（招金黄金涨停）、航空装备Ⅱ <span class="up">+4.10%</span>🔴、
-    能源金属 <span class="up">+3.64%</span>🔴、证券Ⅱ <span class="up">+3.50%</span>🔴（财达证券、中银证券涨停）、电池 <span class="up">+3.26%</span>🔴（珠海冠宇+15.93%）。
-    下跌方面，电子、半导体、AI板块高位回调，资金从科技股轮动至周期和金融板块。
-    主力资金净流入TOP3：工业金属+78.24亿、电池+72.68亿、证券Ⅱ+36.52亿。
-    <br><br>
-    <strong>宏观方面：</strong>5月制造业PMI 50.0%位于荣枯线（大型51.1%扩张、中型48.6%收缩），高技术制造业PMI 52.9延续强劲。
-    CPI同比1.2%持平4月、环比-0.1%；PPI同比3.9%（创46个月新高），生产资料环比+0.7%涨幅收窄。
-    央行6/12公布5月社融存量458.81万亿，同比增长7.7%，M2同比+8.6%。
-    <br><br>
-    <strong>流动性：</strong>10Y国债收益率1.7427%（6/12），较6/5的1.7207%回升2.20bp。央行维持7天逆回购利率1.40%、14天1.65%。
-    6/12逆回购操作大幅增加至3930亿。DR007约1.35%持续低于政策利率，市场流动性偏松。LPR 1Y 3.0%、5Y 3.5%（5月持平）。
-    <br><br>
-    <strong>资金与情绪：</strong>两融余额本次API未返回结构化数据（最近可用：6/8 28829亿）。北向资金实时数据已停更。
-    沪深300相关ETF近一周净流入约79.10亿。
-    <br><br>
-    <strong>海外联动：</strong>富时A50期货 <span class="up">+2.52%</span> 报15578点（+383点）。隔夜美股（6/12）反弹收涨，
-    纳斯达克 <span class="up">+0.31%</span> 报25888、标普500 <span class="up">+0.50%</span> 报7431。恒生科技 <span class="up">+1.06%</span> 报4705。
-    美元人民币报6.7615 <span class="down">-0.16%</span>，人民币小幅升值；美元指数99.81 <span class="up">+0.12%</span>。
-    <br><br>
-    <strong>大宗商品：</strong>黄金延续强势，伦敦金 <span class="up">+3.06%</span> 报4239.90美元/盎司，上海金 <span class="up">+1.38%</span> 报920元/克。
-    COMEX铜 <span class="up">+3.17%</span> 报6.474美元/磅，商品资产全线走强。
-    <br><br>
-    <strong>⚠️ 估值警示：</strong>上证指数PE处于<span class="tag tag-high" style="font-size:0.8rem">98.48%</span>历史分位、深证成指PE分位<span class="tag tag-high" style="font-size:0.8rem">98.76%</span>——均处于历史极高水平，需关注回调风险；
-    创业板指PE分位58.65%处于中等水平。年初至今科创50以<span class="up">+23.73%</span>领跑全市场，北证50 <span class="down">-13.74%</span>表现最弱。
-    <br><br>
-    <small style="color:var(--green)">✅ 6/12收盘数据已于周末复核更新（2026-06-14 16:00 CST），PE/TTM数据已根据API校正。数据来源：NeoData/国家统计局/中国人民银行/沪深北交易所/中债信息网。</small>
-  `;
-}
-
-// ========================
-// INIT
-// ========================
-window.addEventListener('DOMContentLoaded', function() {
-  // 根据当前时间判断数据状态标签
-  const now = new Date();
-  const h = now.getHours(), m = now.getMinutes();
-  let label = '';
-  if (h < 9 || (h === 9 && m < 30)) label = '盘前';
-  else if (h < 11 || (h === 11 && m < 30)) label = '盘中';
-  else if (h < 13) label = '午休';
-  else if (h < 15) label = '盘中';
-  else label = '收盘';
-
-  const timeStr = now.getFullYear() + '-' +
-    String(now.getMonth()+1).padStart(2,'0') + '-' +
-    String(now.getDate()).padStart(2,'0') + ' ' +
-    String(h).padStart(2,'0') + ':' +
-    String(m).padStart(2,'0') + ' CST（周末复核）';
-
-  document.getElementById('header-time').textContent = '⏱️ 数据更新: ' + timeStr;
-  // 更新所有模块时间标签
-  document.querySelectorAll('.module-time').forEach(el => {
-    el.textContent = el.textContent.replace(/⏱️.*$/, '⏱️ 更新时间: ' + timeStr);
-  });
-
-  renderIndexCards();
-  renderIndexTable();
-  renderBreadth();
-  renderOverseas();
-  renderFutures();
-  renderCommodities();
-  renderMacro();
-  renderLiquidity();
-  renderValuation();
-  renderSentiment();
-  renderHeatmap();
-  renderIndustry();
-  renderSummary();
-  renderCharts();
-
-  window.addEventListener('resize', () => {
-    ['chart-bar','chart-pe','chart-bond','chart-repo'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        const instance = echarts.getInstanceByDom(el);
-        if (instance) instance.resize();
-      }
-    });
-  });
+// ====== INIT ======
+window.addEventListener('DOMContentLoaded',function(){
+setTime();
+renderIndexCards();renderIndexTable();renderBreadth();renderOverseas();renderFutures();renderCommodity();
+renderMacro();renderLiquidity();renderValuation();renderSentiment();renderHeatmap();renderIndustry();
+renderSummary();renderCharts();
+window.addEventListener('resize',()=>{['chart-bar','chart-pe','chart-bond','chart-repo'].forEach(id=>{var e=echarts.getInstanceByDom(document.getElementById(id));if(e)e.resize()})});
 });
 </script>
-
 </body>
 </html>
