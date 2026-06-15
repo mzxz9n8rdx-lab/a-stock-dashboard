@@ -135,18 +135,18 @@ td:first-child{text-align:left;font-weight:500}tr:nth-child(even){background:var
 <script>
 // ====== DATA ======
 const indexData=[
-{name:"上证指数",price:4096.47,change:1.61,pe:17.25,pePct:98.48,chgYTD:3.31,note:"上交所"},
-{name:"深证成指",price:15531.11,change:3.79,pe:35.25,pePct:98.76,chgYTD:14.17,note:"深交所"},
-{name:"创业板指",price:4033.53,change:5.30,pe:45.66,pePct:58.65,chgYTD:24.38,note:"深交所"},
-{name:"科创50",price:1748.33,change:5.12,pe:null,pePct:null,chgYTD:28.57,note:"上交所"},
-{name:"沪深300",price:4891.71,change:2.39,pe:null,pePct:null,chgYTD:5.17,note:"中证"},
-{name:"中证500",price:8406.75,change:3.71,pe:null,pePct:null,chgYTD:12.71,note:"中证"},
-{name:"中证1000",price:8521.23,change:3.88,pe:null,pePct:null,chgYTD:12.16,note:"中证"},
-{name:"北证50",price:1263.84,change:1.71,pe:null,pePct:null,chgYTD:-12.88,note:"北交所"}];
+{name:"上证指数",price:4096.47,change:1.61,pe:17.25,pePct:98.48,chgYTD:3.31,note:"上交所 · NeoData"},
+{name:"深证成指",price:15531.11,change:3.79,pe:35.25,pePct:98.76,chgYTD:14.17,note:"深交所 · NeoData"},
+{name:"创业板指",price:4033.53,change:5.30,pe:45.66,pePct:58.65,chgYTD:24.38,note:"深交所 · NeoData"},
+{name:"科创50",price:1748.33,change:5.12,pe:206.74,pePct:null,chgYTD:28.57,note:"上交所 · 腾讯财经"},
+{name:"沪深300",price:4891.71,change:2.39,pe:14.79,pePct:null,chgYTD:5.17,note:"中证 · 腾讯财经"},
+{name:"中证500",price:8406.75,change:3.71,pe:39.50,pePct:null,chgYTD:12.71,note:"中证 · 腾讯财经"},
+{name:"中证1000",price:8521.23,change:3.88,pe:51.39,pePct:null,chgYTD:12.16,note:"中证 · 腾讯财经"},
+{name:"北证50",price:1263.84,change:1.71,pe:51.11,pePct:null,chgYTD:-12.88,note:"北交所 · 腾讯财经"}];
 const breadthData=[
-{name:"市场状态",val:"全线大涨 · 全面开花",note:"8大指数全红 · 创业板+5.30%领涨 · 科创50+5.12%"},
+{name:"涨跌分布",val:"7059涨 / 2472跌",note:"涨跌比 2.86:1 · 普涨格局 · 东财行业汇总"},
 {name:"领涨板块",val:"玻璃玻纤/元件/通信设备",note:"国际复材+20%涨停 · 达利凯普+20% · 长芯博创+20%"},
-{name:"驱动事件",val:"陆家嘴论坛前夕",note:"6/17陆家嘴论坛召开在即 · AI/半导体政策预期 · 科技股集体爆发"},
+{name:"驱动事件",val:"陆家嘴论坛前夕",note:"6/17陆家嘴论坛召开 · AI/半导体政策预期"},
 {name:"涨停家数",val:"暂缺",note:"API未返回全市场统计"},
 {name:"成交额(沪深)",val:"约3.03万亿",note:"上证1.40万亿+深证1.63万亿 · 量能充沛"},
 {name:"风格特征",val:"创业板+科创领涨",note:"创业板+5.30% · 科创50+5.12% · 科技成长全面爆发"}];
@@ -238,8 +238,8 @@ const tmc=1150000,gdp=1470000,buffet=(tmc/gdp*100).toFixed(1),erp=((1/17.25*100)
 document.getElementById('valuation-cards').innerHTML=`
 <div class="card"><div class="card-title">巴菲特指数*</div><div class="card-value">${buffet}%</div><div class="card-meta">沪深总市值≈115万亿/GDP≈147万亿</div></div>
 <div class="card"><div class="card-title">ERP 股债性价比</div><div class="card-value">${erp}%</div><div class="card-meta">1/上证PE17.25 - 10Y(1.7427%)</div></div>
-<div class="card"><div class="card-title">沪深300 PE分位</div><div class="card-value" style="color:var(--warn)">暂缺</div></div>
-<div class="card"><div class="card-title">沪深300 股息率</div><div class="card-value" style="color:var(--warn)">暂缺</div></div>`}
+<div class="card"><div class="card-title">沪深300 PE</div><div class="card-value">14.79</div><div class="card-meta">PE分位暂缺 | 腾讯财经</div></div>
+<div class="card"><div class="card-title">科创50 PE</div><div class="card-value" style="color:var(--warn)">206.74</div><div class="card-meta">PE分位暂缺 | 腾讯财经</div></div>`}
 function renderSentiment(){
 document.getElementById('sentiment-cards').innerHTML=`
 <div class="card"><div class="card-title">两融余额</div><div class="card-value" style="font-size:1.1rem">2.88万亿</div><div class="card-meta">6/8: 28828.95亿 | -237.93亿 | 沪深交易所</div></div>
@@ -290,7 +290,7 @@ c4.setOption({tooltip:{trigger:'axis'},grid:{l:'3%',r:'4%',b:'3%',t:'5%',contain
 // ====== SUMMARY ======
 function renderSummary(){
 document.getElementById('daily-summary').innerHTML=`
-今日A股<a style="color:var(--red)">强劲上攻，全面开花！</a>8大指数全部收红，创业板指<span class="up">+5.30%</span>领涨全场，深证成指<span class="up">+3.79%</span>、科创50<span class="up">+5.12%</span>。核心驱动：<strong>6/17陆家嘴论坛召开在即</strong>，市场对AI/半导体/科创板新政策寄予厚望；美伊局势缓和推动全球风险偏好回暖。<br><br>
+今日A股<a style="color:var(--red)">强劲上攻，全面开花！</a>8大指数全部收红，<span class="up">7059家上涨 / 2472家下跌</span>（涨跌比2.86:1）。创业板指<span class="up">+5.30%</span>领涨全场，深证成指<span class="up">+3.79%</span>、科创50<span class="up">+5.12%</span>。核心驱动：<strong>6/17陆家嘴论坛召开在即</strong>，市场对AI/半导体/科创板新政策寄予厚望；美伊局势缓和推动全球风险偏好回暖。<br><br>
 <strong>板块方面：</strong>科技成长全线爆发。玻璃玻纤<span class="up">+9.82%</span>领涨所有行业，元件<span class="up">+8.97%</span>、非金属材料<span class="up">+7.79%</span>、其他电子<span class="up">+7.53%</span>、通信设备<span class="up">+7.04%</span>、电子化学品<span class="up">+6.76%</span>悉数大涨。国际复材、达利凯普、长芯博创、天承科技等多股20%涨停。反观煤炭开采<span class="down">-4.75%</span>独自大跌，航天装备<span class="down">-1.34%</span>小幅调整。<br><br>
 <strong>资金面：</strong>半导体主力净流入<span class="up">+162.68亿</span>、通信设备<span class="up">+145.59亿</span>、元件<span class="up">+121.53亿</span>（腾讯自选股数据）。AI硬件方向资金聚集效应明显，半导体5日累计净流入达<span class="up">+206.78亿</span>。煤炭开采主力净流出<span class="down">-1.21亿</span>、航天装备<span class="down">-1.09亿</span>。<br><br>
 <strong>宏观背景：</strong>5月制造业PMI 50.0（荣枯线），高技术PMI 52.9维持扩张。CPI同比1.2%持平，PPI同比3.9%上行（前值2.8%）。社融存量458.81万亿。流动性宽松：10Y国债1.7427%（-0.48bp），7天逆回购利率维持1.40%，6/12逆回购操作3930亿放量。<br><br>
