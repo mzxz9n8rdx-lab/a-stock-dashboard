@@ -229,7 +229,7 @@ function renderBreadth(){
 document.getElementById('breadth-cards').innerHTML=breadthData.map(d=>
 `<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${d.val}</div><div class="card-meta">${d.note}</div></div>`).join('')}
 function renderOverseas(){
-document.getElementById('overseas-cards').innerHTML=overseasData.slice(0,4).map(d=>
+document.getElementById('overseas-cards').innerHTML=overseasData.map(d=>
 `<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${typeof d.price=='number'?d.price.toLocaleString():d.price}</div><div class="card-change ${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</div><div class="card-meta">${d.note}</div></div>`).join('')}
 function renderFutures(){
 document.getElementById('futures-cards').innerHTML=futuresData.map(d=>
