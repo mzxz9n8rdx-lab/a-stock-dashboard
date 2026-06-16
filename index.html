@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A股核心指标金融看板 | 2026-06-15 收盘</title>
-<meta name="update-time" content="2026-06-15 16:00 CST">
+<title>A股核心指标金融看板 | 2026-06-16 收盘</title>
+<meta name="update-time" content="2026-06-16 16:00 CST">
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
 <style>
 :root{--bg:#f5f7fa;--card-bg:#fff;--text:#1a1a2e;--text-secondary:#6b7280;--border:#e5e7eb;--accent:#2563eb;--red:#dc2626;--green:#16a34a;--warn:#f59e0b;--header-bg:linear-gradient(135deg,#1e293b,#0f172a);--header-text:#f1f5f9;--table-stripe:#f8fafc;--table-hover:#f1f5f9;--tag-high:#fef2f2;--tag-high-text:#dc2626;--tag-low:#f0fdf4;--tag-low-text:#16a34a}
@@ -138,44 +138,44 @@ td:first-child{text-align:left;font-weight:500}tr:nth-child(even){background:var
 <script>
 // ====== DATA ======
 const indexData=[
-{name:"上证指数",price:4096.47,change:1.61,pe:17.25,pePct:98.48,chgYTD:3.31,note:"上交所 · NeoData"},
-{name:"深证成指",price:15531.11,change:3.79,pe:35.25,pePct:98.76,chgYTD:14.17,note:"深交所 · NeoData"},
-{name:"创业板指",price:4033.53,change:5.30,pe:45.66,pePct:58.65,chgYTD:24.38,note:"深交所 · NeoData"},
-{name:"科创50",price:1748.33,change:5.12,pe:206.74,pePct:null,chgYTD:28.57,note:"上交所 · 腾讯财经"},
-{name:"沪深300",price:4891.71,change:2.39,pe:14.79,pePct:null,chgYTD:5.17,note:"中证 · 腾讯财经"},
-{name:"中证500",price:8406.75,change:3.71,pe:39.50,pePct:null,chgYTD:12.71,note:"中证 · 腾讯财经"},
-{name:"中证1000",price:8521.23,change:3.88,pe:51.39,pePct:null,chgYTD:12.16,note:"中证 · 腾讯财经"},
-{name:"北证50",price:1263.84,change:1.71,pe:51.11,pePct:null,chgYTD:-12.88,note:"北交所 · 腾讯财经"}];
+{name:"上证指数",price:4091.89,change:-0.11,pe:17.28,pePct:98.56,chgYTD:3.20,note:"上交所 · NeoData"},
+{name:"深证成指",price:15675.25,change:0.93,pe:37.08,pePct:99.71,chgYTD:15.22,note:"深交所 · NeoData"},
+{name:"创业板指",price:4102.94,change:1.72,pe:50.90,pePct:68.11,chgYTD:26.52,note:"深交所 · NeoData"},
+{name:"科创50",price:1758.42,change:0.58,pe:null,pePct:null,chgYTD:29.31,note:"上交所 · NeoData"},
+{name:"沪深300",price:4884.23,change:-0.15,pe:null,pePct:null,chgYTD:5.01,note:"中证 · NeoData"},
+{name:"中证500",price:8507.98,change:1.20,pe:null,pePct:null,chgYTD:14.06,note:"中证 · NeoData"},
+{name:"中证1000",price:8646.40,change:1.47,pe:null,pePct:null,chgYTD:13.81,note:"中证 · NeoData"},
+{name:"北证50",price:1276.81,change:1.03,pe:null,pePct:null,chgYTD:-11.98,note:"北交所 · NeoData"}];
 const breadthData=[
-{name:"市场状态",val:"全线大涨 · 全面开花",note:"8大指数全红 · 创业板+5.30%领涨 · 行业几乎全线上涨"},
-{name:"涨跌家数",val:"暂缺",note:"无可靠数据源 · 行业级统计存在跨行业重复计数"},
-{name:"领涨板块",val:"玻璃玻纤/元件/通信设备",note:"国际复材+20%涨停 · 达利凯普+20% · 长芯博创+20%"},
-{name:"驱动事件",val:"陆家嘴论坛前夕",note:"6/17陆家嘴论坛召开 · AI/半导体政策预期"},
-{name:"成交额(沪深)",val:"约3.03万亿",note:"上证1.40万亿+深证1.63万亿 · 量能充沛"},
-{name:"风格特征",val:"创业板+科创领涨",note:"创业板+5.30% · 科创50+5.12% · 科技成长全面爆发"}];
+{name:"涨跌家数",val:"涨2730 / 跌2677",note:"涨停141家 · 跌停11家 · 持平121家 · 上涨率~49.4%"},
+{name:"成交额(沪深)",val:"约3.07万亿",note:"上证1.370万亿+深证1.695万亿 · 两市放量"},
+{name:"领涨板块",val:"玻璃玻纤/元件/小金属",note:"玻璃玻纤+8.63% · 元件+4.04% · 电池+3.17%"},
+{name:"领跌板块",val:"暂缺 (行业分化)",note:"有色金属-0.46%小幅回调 · 6/16市场整体偏强"},
+{name:"驱动事件",val:"陆家嘴论坛前夕",note:"6/17陆家嘴论坛召开在即 · AI/半导体政策预期"},
+{name:"市场风格",val:"小盘强势 · 大盘分化",note:"中证1000+1.47% · 创业板+1.72% · 上证-0.11%沪深300-0.15%"}];
 const overseasData=[
-{name:"恒生科技",price:4767.81,change:1.33,chg5d:0.25,chg20d:-3.51,chgYTD:-13.56,note:"港交所 6/15实时"},
-{name:"纳斯达克",price:25888.84,change:0.31,chg5d:0.70,chg20d:-2.80,chgYTD:11.39,note:"6/12收盘(.IXIC)"},
-{name:"标普500",price:7431.46,change:0.50,chg5d:0.65,chg20d:-0.93,chgYTD:8.56,note:"6/12收盘(.INX)"},
-{name:"10Y美债",price:"4.540",change:-2.39,chg5d:0.81,chg20d:-1.18,chgYTD:null,note:"6/10 NY收盘 · 6/11涨+2.39bp"},
-{name:"美元人民币",price:"6.7572",change:-0.06,chg5d:-0.37,chg20d:-0.62,chgYTD:-3.29,note:"USDCNY 实时"},
-{name:"美元指数",price:"99.53",change:-0.28,chg5d:-0.49,chg20d:0.34,chgYTD:1.28,note:"DINIW 实时"}];
+{name:"恒生科技",price:4651.22,change:-2.40,chg5d:null,chg20d:null,chgYTD:null,note:"港交所 6/16 16:00"},
+{name:"纳斯达克",price:26683.94,change:3.07,chg5d:null,chg20d:null,chgYTD:14.81,note:"6/15收盘(.IXIC) 美东"},
+{name:"标普500",price:7554.29,change:1.65,chg5d:null,chg20d:null,chgYTD:10.35,note:"6/15收盘(.INX) 美东"},
+{name:"10Y美债",price:"暂缺",change:null,chg5d:null,chg20d:null,chgYTD:null,note:"API未返回"},
+{name:"美元人民币",price:"6.7583",change:0.02,chg5d:null,chg20d:null,chgYTD:null,note:"USDCNY 6/16 15:08"},
+{name:"美元指数",price:"99.64",change:-0.02,chg5d:-0.31,chg20d:0.33,chgYTD:1.39,note:"DINIW 6/16 15:08"}];
 const futuresData=[
-{name:"富时A50期货",price:15761,change:1.17,note:"6/16盘前 | 昨收15578"},
-{name:"IC2606(当月)",price:8384.8,change:3.45,note:"6/15收盘 | 现货8406.75"},
-{name:"中证500现货",price:8406.75,change:3.71,note:"6/15收盘 | 昨收8106.20"}
+{name:"富时A50期货",price:15650,change:-0.74,note:"6/16 16:02 | 昨收15767 | 新交所"},
+{name:"IC2606(当月)",price:"暂缺",change:null,note:"中金所数据未获取"},
+{name:"中证500现货",price:8507.98,change:1.20,note:"6/16收盘 | 昨收8406.75"}
 ];
 // 中证500期货合约分析数据
 const icContracts=[
-{name:"IC2606(当月)",price:8384.8,change:3.45,spot:8406.75,basis:-21.95,basisAnn:-2.95,oi:104500,oiChg:5200,volume:89135,date:"6/15"},
-{name:"IC2607(下月)",price:8352.0,change:3.52,spot:8406.75,basis:-54.75,basisAnn:-3.12,oi:85200,oiChg:3100,volume:35120,date:"6/15"},
-{name:"IC2609(当季)",price:8260.0,change:3.60,spot:8406.75,basis:-146.75,basisAnn:-2.81,oi:62100,oiChg:1800,volume:12200,date:"6/15"},
-{name:"IC2612(下季)",price:8150.0,change:3.68,spot:8406.75,basis:-256.75,basisAnn:-2.42,oi:35800,oiChg:900,volume:4500,date:"6/15"}
+{name:"IC2606(当月)",price:null,change:null,spot:8507.98,basis:null,basisAnn:null,oi:null,oiChg:null,volume:null,date:"6/16暂缺"},
+{name:"IC2607(下月)",price:null,change:null,spot:8507.98,basis:null,basisAnn:null,oi:null,oiChg:null,volume:null,date:"6/16暂缺"},
+{name:"IC2609(当季)",price:null,change:null,spot:8507.98,basis:null,basisAnn:null,oi:null,oiChg:null,volume:null,date:"6/16暂缺"},
+{name:"IC2612(下季)",price:null,change:null,spot:8507.98,basis:null,basisAnn:null,oi:null,oiChg:null,volume:null,date:"6/16暂缺"}
 ];
 const commodityData=[
-{name:"上海金 AU9999",price:"937.51元/克",change:3.31,note:"6/15 15:29"},
-{name:"伦敦金",price:"4341.40美元/盎司",change:2.42,note:"6/15 15:53"},
-{name:"COMEX铜",price:"6.520美元/磅",change:1.16,note:"6/15 03:54"},
+{name:"上海金 AU9999",price:"940.80元/克",change:0.35,note:"6/16 15:29"},
+{name:"伦敦金",price:"4349.60美元/盎司",change:-0.05,note:"6/16 15:50"},
+{name:"COMEX铜",price:"暂缺",change:null,note:"API未返回实时数据"},
 {name:"WTI原油",price:"暂缺",change:null,note:"API未返回实时数据"}];
 const macroData=[
 {name:"制造业PMI(5月)",val:"50.0%",prev:"50.3%(4月)",chg:"-0.3%",date:"5/31",src:"国家统计局"},
@@ -187,28 +187,26 @@ const macroData=[
 {name:"社融存量(5月)",val:"458.81万亿",prev:"456.89万亿(4月)",chg:"+1.92万亿",date:"6/12发布",src:"央行"}
 ];
 const liquidityData=[
-{name:"10Y国债",val:"1.7427%",prev:"1.7475%(6/11)",chg:"-0.48bp",date:"6/12",src:"中债"},
+{name:"10Y国债",val:"1.7446%",prev:"1.7427%(6/12)",chg:"+0.19bp",date:"6/15",src:"中债"},
 {name:"7天逆回购利率",val:"1.40%",prev:"1.40%",chg:"持平",date:"最新",src:"央行"},
 {name:"14天逆回购利率",val:"1.65%",prev:"1.65%",chg:"持平",date:"最新",src:"央行"},
-{name:"逆回购操作(6/12)",val:"3930亿",prev:"1885亿(6/11)",chg:"+2045亿",date:"6/12",src:"央行"}
+{name:"逆回购操作(6/15)",val:"4250亿",prev:"3930亿(6/12)",chg:"+320亿",date:"6/15",src:"央行"}
 ];
 const industryData=[
-{name:"玻璃玻纤",change:9.82,turnover:6.24,inflow:null,inflow5d:20.22,leader:"国际复材 +20.01%"},
-{name:"电子布",change:9.99,turnover:5.32,inflow:null,inflow5d:21.83,leader:"国际复材 +20.01%"},
-{name:"MLCC",change:9.49,turnover:9.19,inflow:null,inflow5d:7.10,leader:"达利凯普 +20.01%"},
-{name:"锗镓概念",change:9.48,turnover:7.79,inflow:null,inflow5d:23.66,leader:"光智科技 +20.00%"},
-{name:"纳米压印",change:9.06,turnover:4.52,inflow:null,inflow5d:6.66,leader:"炬光科技 +20.00%"},
-{name:"元件",change:8.97,turnover:7.34,inflow:121.53,inflow5d:28.60,leader:"达利凯普 +20.01%"},
-{name:"博通概念",change:8.68,turnover:5.36,inflow:null,inflow5d:15.21,leader:"太辰光 +20.00%"},
-{name:"激光",change:8.56,turnover:6.11,inflow:null,inflow5d:6.85,leader:"光库科技 +20.00%"},
-{name:"非金属材料Ⅱ",change:7.79,turnover:4.54,inflow:null,inflow5d:14.16,leader:"联瑞新材 +13.32%"},
-{name:"其他电子Ⅱ",change:7.53,turnover:6.98,inflow:null,inflow5d:11.88,leader:"瑞可达 +14.15%"},
-{name:"通信设备",change:7.04,turnover:5.38,inflow:145.59,inflow5d:-118.21,leader:"长芯博创 +20.00%"},
-{name:"电子化学品Ⅱ",change:6.76,turnover:9.53,inflow:null,inflow5d:15.80,leader:"天承科技 +20.00%"},
-{name:"半导体",change:6.08,turnover:null,inflow:162.68,inflow5d:206.78,leader:"炬光科技 +20.00%"},
-{name:"光伏设备",change:1.29,turnover:2.82,inflow:-0.94,inflow5d:-0.31,leader:"金博股份 +16.14%"},
-{name:"航天装备Ⅱ",change:-1.34,turnover:3.07,inflow:-1.09,inflow5d:-2.43,leader:"理工导航 +5.47%"},
-{name:"煤炭开采",change:-4.75,turnover:1.84,inflow:-1.21,inflow5d:-5.60,leader:"江钨装备 +3.06%"}
+{name:"玻璃玻纤",change:8.63,turnover:7.37,inflow:null,inflow5d:20.50,leader:"国际复材 +13.33%"},
+{name:"其他电源设备Ⅱ",change:4.30,turnover:2.48,inflow:null,inflow5d:1.79,leader:"欧陆通 +16.12%"},
+{name:"元件",change:4.04,turnover:8.39,inflow:null,inflow5d:8.14,leader:"本川智能 +20.00%"},
+{name:"金属新材料",change:4.01,turnover:7.90,inflow:null,inflow5d:8.72,leader:"悦安新材 +10.86%"},
+{name:"小金属",change:3.82,turnover:8.57,inflow:null,inflow5d:16.90,leader:"长裕集团 +10.01%"},
+{name:"塑料",change:3.72,turnover:6.45,inflow:null,inflow5d:9.43,leader:"聚石化学 +15.13%"},
+{name:"电池",change:3.17,turnover:5.15,inflow:46.77,inflow5d:100.67,leader:"ST南都 +20.00%"},
+{name:"通信设备",change:2.81,turnover:5.86,inflow:25.19,inflow5d:-185.79,leader:"长进光子 +20.00%"},
+{name:"电力设备",change:2.73,turnover:3.58,inflow:null,inflow5d:3.49,leader:"暂缺"},
+{name:"光伏设备",change:2.18,turnover:2.85,inflow:23.45,inflow5d:8.23,leader:"微导纳米 +8.66%"},
+{name:"电子",change:2.18,turnover:5.85,inflow:null,inflow5d:5.93,leader:"暂缺"},
+{name:"机械设备",change:1.69,turnover:2.83,inflow:null,inflow5d:1.72,leader:"暂缺"},
+{name:"计算机设备",change:1.63,turnover:2.51,inflow:null,inflow5d:2.69,leader:"暂缺"},
+{name:"有色金属",change:-0.46,turnover:4.37,inflow:null,inflow5d:9.15,leader:"暂缺"}
 ];
 
 // ====== RENDER ======
@@ -230,12 +228,12 @@ document.getElementById('breadth-cards').innerHTML=breadthData.map(d=>
 `<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${d.val}</div><div class="card-meta">${d.note}</div></div>`).join('')}
 function renderOverseas(){
 document.getElementById('overseas-cards').innerHTML=overseasData.map(d=>
-`<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${typeof d.price=='number'?d.price.toLocaleString():d.price}</div><div class="card-change ${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</div><div class="card-meta">${d.note}</div></div>`).join('')}
+`<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${typeof d.price=='number'?d.price.toLocaleString():d.price}</div><div class="card-change ${chgC(d.change)}">${d.change!=null?(chgS(d.change)+d.change.toFixed(2)+'%'):''}</div><div class="card-meta">${d.note}</div></div>`).join('')}
 function renderFutures(){
 document.getElementById('futures-cards').innerHTML=futuresData.map(d=>
-`<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${d.price.toLocaleString()}</div><div class="card-change ${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</div><div class="card-meta">${d.note}</div></div>`).join('');
+`<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${d.price!=null?d.price.toLocaleString():'暂缺'}</div><div class="card-change ${chgC(d.change)}">${d.change!=null?(chgS(d.change)+d.change.toFixed(2)+'%'):''}</div><div class="card-meta">${d.note}</div></div>`).join('');
 document.getElementById('ic-tbody').innerHTML=icContracts.map(d=>
-`<tr><td>${d.name}</td><td>${d.price.toFixed(1)}</td><td class="${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</td><td>${d.spot.toFixed(2)}</td><td class="${d.basis>0?'up':'down'}">${d.basis>0?'+':''}${d.basis.toFixed(2)}</td><td class="${d.basisAnn>0?'up':'down'}">${d.basisAnn>0?'+':''}${d.basisAnn.toFixed(2)}%</td><td>${(d.oi/10000).toFixed(1)}万</td><td class="${d.oiChg>0?'up':'down'}">${d.oiChg>0?'+':''}${d.oiChg.toFixed(0)}</td><td>${(d.volume/10000).toFixed(1)}万</td><td>${d.date}</td></tr>`).join('');}
+`<tr><td>${d.name}</td><td>${d.price!=null?d.price.toFixed(1):'暂缺'}</td><td class="${chgC(d.change)}">${d.change!=null?(chgS(d.change)+d.change.toFixed(2)+'%'):'暂缺'}</td><td>${d.spot.toFixed(2)}</td><td class="${d.basis!=null?(d.basis>0?'up':'down'):''}">${d.basis!=null?(d.basis>0?'+':'')+d.basis.toFixed(2):'暂缺'}</td><td class="${d.basisAnn!=null?(d.basisAnn>0?'up':'down'):''}">${d.basisAnn!=null?(d.basisAnn>0?'+':'')+d.basisAnn.toFixed(2)+'%':'暂缺'}</td><td>${d.oi!=null?(d.oi/10000).toFixed(1)+'万':'暂缺'}</td><td class="${d.oiChg!=null?(d.oiChg>0?'up':'down'):''}">${d.oiChg!=null?(d.oiChg>0?'+':'')+d.oiChg.toFixed(0):'暂缺'}</td><td>${d.volume!=null?(d.volume/10000).toFixed(1)+'万':'暂缺'}</td><td>${d.date}</td></tr>`).join('');}
 function renderCommodity(){
 document.getElementById('commodity-cards').innerHTML=commodityData.map(d=>
 `<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1rem">${d.price}</div><div class="card-change ${chgC(d.change)}">${d.change!=null?chgS(d.change)+d.change.toFixed(2)+'%':''}</div><div class="card-meta">${d.note}</div></div>`).join('')}
@@ -251,17 +249,17 @@ function renderLiquidity(){
 document.getElementById('liquidity-cards').innerHTML=liquidityData.map(d=>
 `<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${d.val}</div><div class="card-change ${d.chg.startsWith('+')?'up':(d.chg.startsWith('-')?'down':'neutral')}">${d.chg}</div><div class="card-meta">${d.date} | ${d.src}</div></div>`).join('')}
 function renderValuation(){
-const tmc=1150000,gdp=1470000,buffet=(tmc/gdp*100).toFixed(1),erp=((1/17.25*100)-1.7427).toFixed(2);
+const tmc=1150000,gdp=1470000,buffet=(tmc/gdp*100).toFixed(1),erp=((1/17.28*100)-1.7446).toFixed(2);
 document.getElementById('valuation-cards').innerHTML=`
 <div class="card"><div class="card-title">巴菲特指数*</div><div class="card-value">${buffet}%</div><div class="card-meta">沪深总市值≈115万亿/GDP≈147万亿</div></div>
-<div class="card"><div class="card-title">ERP 股债性价比</div><div class="card-value">${erp}%</div><div class="card-meta">1/上证PE17.25 - 10Y(1.7427%)</div></div>
-<div class="card"><div class="card-title">沪深300 PE</div><div class="card-value">14.79</div><div class="card-meta">PE分位暂缺 | 腾讯财经</div></div>
-<div class="card"><div class="card-title">科创50 PE</div><div class="card-value" style="color:var(--warn)">206.74</div><div class="card-meta">PE分位暂缺 | 腾讯财经</div></div>`}
+<div class="card"><div class="card-title">ERP 股债性价比</div><div class="card-value">${erp}%</div><div class="card-meta">1/上证PE17.28 - 10Y(1.7446%)</div></div>
+<div class="card"><div class="card-title">沪深300 PE</div><div class="card-value" style="color:var(--warn)">暂缺</div><div class="card-meta">PE分位暂缺 | 腾讯财经API未连通</div></div>
+<div class="card"><div class="card-title">科创50 PE</div><div class="card-value" style="color:var(--warn)">暂缺</div><div class="card-meta">PE分位暂缺 | 腾讯财经API未连通</div></div>`}
 function renderSentiment(){
 document.getElementById('sentiment-cards').innerHTML=`
 <div class="card"><div class="card-title">两融余额</div><div class="card-value" style="font-size:1.1rem">2.88万亿</div><div class="card-meta">6/8: 28828.95亿 | -237.93亿 | 沪深交易所</div></div>
-<div class="card"><div class="card-title">北向资金</div><div class="card-value" style="color:var(--warn)">暂缺</div><div class="card-meta">实时数据已停更</div></div>
-<div class="card"><div class="card-title">ETF净流入TOP</div><div class="card-value" style="font-size:1rem">暂缺</div><div class="card-meta">API未返回</div></div>`}
+<div class="card"><div class="card-title">北向资金</div><div class="card-value" style="color:var(--warn)">暂缺</div><div class="card-meta">实时数据已停更 · 暂无新数据源</div></div>
+<div class="card"><div class="card-title">ETF净流入TOP</div><div class="card-value" style="font-size:1rem">暂缺</div><div class="card-meta">API未返回 · 待后续集成</div></div>`}
 function renderHeatmap(){
 document.getElementById('heatmap-grid').innerHTML=industryData.map(d=>{
 let bg,cl;const a=Math.abs(d.change);
@@ -297,22 +295,22 @@ var c2=echarts.init(document.getElementById('chart-pe'));
 var ped=indexData.filter(d=>d.pePct!=null);
 c2.setOption({tooltip:{trigger:'axis'},grid:{l:'8%',r:'4%',b:'8%',t:'5%'},xAxis:{type:'value',name:'PE',axisLabel:{color:tc}},yAxis:{type:'value',name:'分位%',axisLabel:{color:tc},max:100,markLine:{silent:!0,data:[{yAxis:80,label:{formatter:'高估80%',color:'#dc2626'},lineStyle:{color:'#dc2626',type:'dashed'}},{yAxis:20,label:{formatter:'低估20%',color:'#16a34a'},lineStyle:{color:'#16a34a',type:'dashed'}}]}},series:[{type:'scatter',data:ped.map(d=>[d.pe,d.pePct]),symbolSize:14,label:{show:!0,formatter:p=>ped[p.dataIndex].name,position:'right',fontSize:9,color:tc},itemStyle:{color:'#f59e0b'}}]});
 var c3=echarts.init(document.getElementById('chart-bond'));
-var bd=['5/22','5/25','5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11','6/12'],by=[1.7519,1.7484,1.7405,1.7216,1.7193,1.7090,1.7009,1.7036,1.7128,1.7081,1.7207,1.7275,1.7376,1.7476,1.7475,1.7427];
+var bd=['5/22','5/25','5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11','6/12','6/15'],by=[1.7519,1.7484,1.7405,1.7216,1.7193,1.7090,1.7009,1.7036,1.7128,1.7081,1.7207,1.7275,1.7376,1.7476,1.7475,1.7427,1.7446];
 c3.setOption({tooltip:{trigger:'axis'},grid:{l:'3%',r:'4%',b:'3%',t:'5%',containLabel:!0},xAxis:{type:'category',data:bd,axisLabel:{color:tc}},yAxis:{type:'value',name:'%',axisLabel:{color:tc},min:1.68,max:1.78},series:[{type:'line',data:by,smooth:!0,lineStyle:{color:'#f59e0b',width:2},itemStyle:{color:'#f59e0b'},symbol:'circle',symbolSize:5,areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(245,158,11,0.2)'},{offset:1,color:'rgba(245,158,11,0)'}])}}]});
 var c4=echarts.init(document.getElementById('chart-repo'));
-var rd=['5/21','5/22','5/25','5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11','6/12'],rv=[1000,1530,2580,2490,1776,1013,1230,1100,200,0,0,2150,2185,1530,1590,1885,3930];
+var rd=['5/21','5/22','5/25','5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11','6/12','6/15'],rv=[1000,1530,2580,2490,1776,1013,1230,1100,200,0,0,2150,2185,1530,1590,1885,3930,4250];
 c4.setOption({tooltip:{trigger:'axis'},grid:{l:'3%',r:'4%',b:'3%',t:'5%',containLabel:!0},xAxis:{type:'category',data:rd,axisLabel:{rotate:45,fontSize:8,color:tc}},yAxis:{type:'value',name:'亿元',axisLabel:{color:tc}},series:[{type:'bar',data:rv,itemStyle:{color:'#3b82f6',borderRadius:[4,4,0,0]}}]});
 }
 
 // ====== SUMMARY ======
 function renderSummary(){
 document.getElementById('daily-summary').innerHTML=`
-今日A股<a style="color:var(--red)">强劲上攻，全面开花！</a>8大指数全部收红，创业板指<span class="up">+5.30%</span>领涨全场，深证成指<span class="up">+3.79%</span>、科创50<span class="up">+5.12%</span>。核心驱动：<strong>6/17陆家嘴论坛召开在即</strong>，市场对AI/半导体/科创板新政策寄予厚望；美伊局势缓和推动全球风险偏好回暖。<br><br>
-<strong>板块方面：</strong>科技成长全线爆发。玻璃玻纤<span class="up">+9.82%</span>领涨所有行业，元件<span class="up">+8.97%</span>、非金属材料<span class="up">+7.79%</span>、其他电子<span class="up">+7.53%</span>、通信设备<span class="up">+7.04%</span>、电子化学品<span class="up">+6.76%</span>悉数大涨。国际复材、达利凯普、长芯博创、天承科技等多股20%涨停。反观煤炭开采<span class="down">-4.75%</span>独自大跌，航天装备<span class="down">-1.34%</span>小幅调整。<br><br>
-<strong>资金面：</strong>半导体主力净流入<span class="up">+162.68亿</span>、通信设备<span class="up">+145.59亿</span>、元件<span class="up">+121.53亿</span>（腾讯自选股数据）。AI硬件方向资金聚集效应明显，半导体5日累计净流入达<span class="up">+206.78亿</span>。煤炭开采主力净流出<span class="down">-1.21亿</span>、航天装备<span class="down">-1.09亿</span>。<br><br>
-<strong>宏观背景：</strong>5月制造业PMI 50.0（荣枯线），高技术PMI 52.9维持扩张。CPI同比1.2%持平，PPI同比3.9%上行（前值2.8%）。社融存量458.81万亿。流动性宽松：10Y国债1.7427%（-0.48bp），7天逆回购利率维持1.40%，6/12逆回购操作3930亿放量。<br><br>
-<strong>大宗与海外：</strong>上海金937.51元/克（+3.31%）、伦敦金4341.40美元（+2.42%）继续高位运行。COMEX铜6.520美元（+1.16%）。富时A50期货15761点（+1.17%）。恒生科技+1.33%报4767，纳斯达克+0.31%、标普500+0.50%（6/12）。美元指数99.53（-0.28%），人民币6.7572。<br><br>
-<strong>⚠️估值警示：</strong>上证PE分位98.48%、深证98.76%——双双处于历史极高位。创业板58.65%尚处正常区间。关注6/17陆家嘴论坛政策信号及反弹持续性。`;
+今日A股<a style="color:var(--green)">走势分化，大盘震荡整理。</a>上证指数<span class="down">-0.11%</span>、沪深300<span class="down">-0.15%</span>小幅收跌，但中小盘表现活跃——创业板指<span class="up">+1.72%</span>、中证1000<span class="up">+1.47%</span>、中证500<span class="up">+1.20%</span>悉数上涨。核心驱动：<strong>6/17陆家嘴论坛即将召开</strong>，市场对科技/AI/科创板新政策预期升温，科技成长方向持续受益。继昨日大涨后，今日大盘股出现获利回吐，但中小盘热点继续轮动。<br><br>
+<strong>板块方面：</strong>材料类板块领涨。玻璃玻纤<span class="up">+8.63%</span>独占鳌头，其他电源设备<span class="up">+4.30%</span>、元件<span class="up">+4.04%</span>、金属新材料<span class="up">+4.01%</span>、小金属<span class="up">+3.82%</span>、塑料<span class="up">+3.72%</span>涨幅居前。电池<span class="up">+3.17%</span>、通信设备<span class="up">+2.81%</span>、电力设备<span class="up">+2.73%</span>保持强势。国际复材+13.33%、欧陆通+16.12%、本川智能+20%涨停、长裕集团+10.01%、聚石化学+15.13%表现突出。有色金属<span class="down">-0.46%</span>小幅回调。<br><br>
+<strong>资金面：</strong>主力资金净流入前三：电池<span class="up">+46.77亿</span>、通信设备<span class="up">+25.19亿</span>、光伏设备<span class="up">+23.45亿</span>（NeoData估算）。电池5日累计净流入<span class="up">+100.67亿</span>，持续受资金青睐。通信设备5日净流出-185.79亿，短线资金有分歧。<br><br>
+<strong>宏观背景：</strong>5月制造业PMI 50.0（荣枯线上），高技术PMI 52.9维持扩张，PPI同比3.9%（+1.1pp），显示工业端持续改善。CPI同比1.2%持平。社融存量458.81万亿（+1.92万亿/月）。流动性：10Y国债1.7446%（+0.19bp），7天/14天逆回购利率维持1.40%/1.65%，6/15逆回购操作4250亿延续放量。陆家嘴论坛（6/17）即将召开，关注货币政策信号。<br><br>
+<strong>海外与大宗：</strong>美股强势反弹——纳斯达克<span class="up">+3.07%</span>（6/15美东收盘26683.94）、标普500<span class="up">+1.65%</span>（7554.29），主要受AI行情驱动。恒生科技<span class="down">-2.40%</span>报4651.22（6/16 16:00），情绪波动。上海金940.80元/克（+0.35%）、伦敦金4349.60美元（-0.05%）高位震荡。美元指数99.64（-0.02%），人民币6.7583（+0.02%）。富时A50期货15650点（-0.74%），期货端偏谨慎。<br><br>
+<strong>⚠️估值警示：</strong>上证PE分位<span class="up" style="color:var(--warn)">98.56%</span>、深证<span class="up" style="color:var(--warn)">99.71%</span>——双双处于历史极高位。创业板PE分位68.11%尚处正常区间。注意科创50/沪深300/中证500/中证1000/北证50 PE数据今日暂缺（腾讯财经API未连通）。关注6/17陆家嘴论坛政策信号及反弹持续性。`;
 }
 
 // ====== TIME ======
