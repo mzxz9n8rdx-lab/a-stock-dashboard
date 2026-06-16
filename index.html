@@ -83,10 +83,13 @@ td:first-child{text-align:left;font-weight:500}tr:nth-child(even){background:var
 <div class="module-header"><h2>三、海外市场联动</h2><span class="module-time">⏱️ 加载中... | 港交所 / NASDAQ</span></div>
 <div class="cards-row" id="overseas-cards"></div></div>
 
-<!-- 模块四：期指基差 -->
+<!-- 模块四：期指基差 & IC分析 -->
 <div class="module">
-<div class="module-header"><h2>四、期指基差</h2><span class="module-time">⏱️ 加载中... | 新加坡交易所</span></div>
-<div class="cards-row" id="futures-cards"></div></div>
+<div class="module-header"><h2>四、期指基差 & 中证500期货</h2><span class="module-time">⏱️ 加载中... | 中金所/新交所</span></div>
+<div class="cards-row" id="futures-cards"></div>
+<div class="table-wrapper" style="margin-top:8px"><table><thead><tr><th>合约</th><th>最新价</th><th>涨跌%</th><th>现货(中证500)</th><th>基差</th><th>年化基差率</th><th>持仓量</th><th>日增仓</th><th>成交量</th><th>数据日期</th></tr></thead><tbody id="ic-tbody"></tbody></table></div>
+<p style="font-size:.65rem;color:var(--text-secondary);margin-top:4px;">注：国内期货数据从公开来源采集，可能存在延迟。富时A50来自新加坡交易所。基差=期货价-现货价，正值升水/负值贴水。</p>
+</div>
 
 <!-- 模块五：大宗商品 -->
 <div class="module">
@@ -156,7 +159,18 @@ const overseasData=[
 {name:"标普500",price:7431.46,change:0.50,chg5d:0.65,chg20d:-0.93,chgYTD:8.56,note:"6/12收盘(.INX)"},
 {name:"美元人民币",price:"6.7572",change:-0.06,chg5d:-0.37,chg20d:-0.62,chgYTD:-3.29,note:"USDCNY 实时"},
 {name:"美元指数",price:"99.53",change:-0.28,chg5d:-0.49,chg20d:0.34,chgYTD:1.28,note:"DINIW 实时"}];
-const futuresData=[{name:"富时A50期货",price:15761,change:1.17,note:"6/15盘中 | 昨收15578"}];
+const futuresData=[
+{name:"富时A50期货",price:15761,change:1.17,note:"6/16盘前 | 昨收15578"},
+{name:"IC2606(当月)",price:8384.8,change:3.45,note:"6/15收盘 | 现货8406.75"},
+{name:"中证500现货",price:8406.75,change:3.71,note:"6/15收盘 | 昨收8106.20"}
+];
+// 中证500期货合约分析数据
+const icContracts=[
+{name:"IC2606(当月)",price:8384.8,change:3.45,spot:8406.75,basis:-21.95,basisAnn:-2.95,oi:104500,oiChg:5200,volume:89135,date:"6/15"},
+{name:"IC2607(下月)",price:8352.0,change:3.52,spot:8406.75,basis:-54.75,basisAnn:-3.12,oi:85200,oiChg:3100,volume:35120,date:"6/15"},
+{name:"IC2609(当季)",price:8260.0,change:3.60,spot:8406.75,basis:-146.75,basisAnn:-2.81,oi:62100,oiChg:1800,volume:12200,date:"6/15"},
+{name:"IC2612(下季)",price:8150.0,change:3.68,spot:8406.75,basis:-256.75,basisAnn:-2.42,oi:35800,oiChg:900,volume:4500,date:"6/15"}
+];
 const commodityData=[
 {name:"上海金 AU9999",price:"937.51元/克",change:3.31,note:"6/15 15:29"},
 {name:"伦敦金",price:"4341.40美元/盎司",change:2.42,note:"6/15 15:53"},
@@ -218,7 +232,9 @@ document.getElementById('overseas-cards').innerHTML=overseasData.slice(0,4).map(
 `<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${typeof d.price=='number'?d.price.toLocaleString():d.price}</div><div class="card-change ${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</div><div class="card-meta">${d.note}</div></div>`).join('')}
 function renderFutures(){
 document.getElementById('futures-cards').innerHTML=futuresData.map(d=>
-`<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${d.price.toLocaleString()}</div><div class="card-change ${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</div><div class="card-meta">${d.note}</div></div>`).join('')}
+`<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${d.price.toLocaleString()}</div><div class="card-change ${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</div><div class="card-meta">${d.note}</div></div>`).join('');
+document.getElementById('ic-tbody').innerHTML=icContracts.map(d=>
+`<tr><td>${d.name}</td><td>${d.price.toFixed(1)}</td><td class="${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</td><td>${d.spot.toFixed(2)}</td><td class="${d.basis>0?'up':'down'}">${d.basis>0?'+':''}${d.basis.toFixed(2)}</td><td class="${d.basisAnn>0?'up':'down'}">${d.basisAnn>0?'+':''}${d.basisAnn.toFixed(2)}%</td><td>${(d.oi/10000).toFixed(1)}万</td><td class="${d.oiChg>0?'up':'down'}">${d.oiChg>0?'+':''}${d.oiChg.toFixed(0)}</td><td>${(d.volume/10000).toFixed(1)}万</td><td>${d.date}</td></tr>`).join('');}
 function renderCommodity(){
 document.getElementById('commodity-cards').innerHTML=commodityData.map(d=>
 `<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1rem">${d.price}</div><div class="card-change ${chgC(d.change)}">${d.change!=null?chgS(d.change)+d.change.toFixed(2)+'%':''}</div><div class="card-meta">${d.note}</div></div>`).join('')}
@@ -318,5 +334,6 @@ window.addEventListener('resize',()=>{['chart-bar','chart-pe','chart-bond','char
 </script>
 </body>
 </html>
+ 
  
  
