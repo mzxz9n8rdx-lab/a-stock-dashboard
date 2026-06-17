@@ -199,8 +199,7 @@ const industryData=[
 {name:"半导体",change:5.37,turnover:6.62,inflow:153.34,inflow5d:31.40,leader:"盛美上海 +20.00%"},
 {name:"其他电子Ⅱ",change:4.73,turnover:6.57,inflow:null,inflow5d:16.77,leader:"香农芯创 +20.00%"},
 {name:"综合Ⅱ",change:4.23,turnover:2.59,inflow:null,inflow5d:1.88,leader:"东阳光 +9.99%"},
-{name:"元件",change:4.22,turnover:8.53,inflow:23.82,inflow5d:13.24,leader:"科翔股份 +20.00%"},
-{name:"其余25个行业",change:null,turnover:null,inflow:null,inflow5d:null,leader:"API仅返回Top6(暂缺)"}
+{name:"元件",change:4.22,turnover:8.53,inflow:23.82,inflow5d:13.24,leader:"科翔股份 +20.00%"}
 ];
 
 // ====== RENDER ======
@@ -255,7 +254,7 @@ document.getElementById('sentiment-cards').innerHTML=`
 <div class="card"><div class="card-title">北向资金</div><div class="card-value" style="color:var(--warn)">暂缺</div><div class="card-meta">实时数据已停更 · 暂无新数据源</div></div>
 <div class="card"><div class="card-title">ETF净流入TOP</div><div class="card-value" style="font-size:1rem">暂缺</div><div class="card-meta">API未返回 · 待后续集成</div></div>`}
 function renderHeatmap(){
-document.getElementById('heatmap-grid').innerHTML=industryData.map(d=>{
+document.getElementById('heatmap-grid').innerHTML=industryData.filter(d=>d.change!=null).map(d=>{
 let bg,cl;const a=Math.abs(d.change);
 if(d.change>=8){bg='#dc2626';cl='#fff'}
 else if(d.change>=5){bg='#ef4444';cl='#fff'}
@@ -266,6 +265,7 @@ else{bg='#dcfce7';cl='#166534'}
 return`<div class="heat-cell" style="background:${bg};color:${cl}"><div class="h-name">${d.name}</div><div class="h-chg">${chgS(d.change)}${d.change.toFixed(2)}%</div></div>`}).join('')}
 function renderIndustry(){
 document.getElementById('industry-tbody').innerHTML=industryData.map(d=>{
+if(d.change==null)return`<tr data-change="0"><td>${d.name}</td><td class="neutral">暂缺</td><td>暂缺</td><td>暂缺</td><td>暂缺</td><td>${d.leader}</td></tr>`;
 const ic=d.change>=3?'🔴 ':(d.change<=-3?'🟢 ':'');
 return`<tr data-change="${d.change}"><td>${ic}${d.name}</td><td class="${chgC(d.change)}">${chgS(d.change)}${d.change.toFixed(2)}%</td><td>${pr(d.turnover,2)}</td><td>${d.inflow!=null?(d.inflow>=0?'<span class="up">+'+d.inflow.toFixed(2)+'亿</span>':'<span class="down">'+d.inflow.toFixed(2)+'亿</span>'):'暂缺'}</td><td>${pr(d.inflow5d,2)}</td><td>${d.leader}</td></tr>`}).join('')}
 
