@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A股核心指标金融看板 | 2026-06-18 收盘</title>
-<meta name="update-time" content="2026-06-18 16:05 CST">
+<title>A股核心指标金融看板 | 2026-06-22 收盘</title>
+<meta name="update-time" content="2026-06-22 16:10 CST">
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
 <style>
 :root{--bg:#f5f7fa;--card-bg:#fff;--text:#1a1a2e;--text-secondary:#6b7280;--border:#e5e7eb;--accent:#2563eb;--red:#dc2626;--green:#16a34a;--warn:#f59e0b;--header-bg:linear-gradient(135deg,#1e293b,#0f172a);--header-text:#f1f5f9;--table-stripe:#f8fafc;--table-hover:#f1f5f9;--tag-high:#fef2f2;--tag-high-text:#dc2626;--tag-low:#f0fdf4;--tag-low-text:#16a34a}
@@ -138,45 +138,44 @@ td:first-child{text-align:left;font-weight:500}tr:nth-child(even){background:var
 <script>
 // ====== DATA ======
 const indexData=[
-{name:"上证指数",price:4090.48,change:-0.43,pe:17.29,pePct:98.56,chgYTD:3.16,note:"上交所 · NeoData"},
-{name:"深证成指",price:16030.70,change:0.94,pe:null,pePct:null,chgYTD:17.84,note:"深交所 · NeoData"},
-{name:"创业板指",price:4252.39,change:2.05,pe:null,pePct:null,chgYTD:31.13,note:"深交所 · NeoData"},
-{name:"科创50",price:1911.51,change:3.84,pe:null,pePct:null,chgYTD:40.57,note:"上交所 · NeoData"},
-{name:"沪深300",price:4941.60,change:0.21,pe:null,pePct:null,chgYTD:6.24,note:"中证 · NeoData"},
-{name:"中证500",price:8673.09,change:0.53,pe:null,pePct:null,chgYTD:16.28,note:"中证 · NeoData"},
-{name:"中证1000",price:8771.02,change:0.76,pe:null,pePct:null,chgYTD:15.45,note:"中证 · NeoData"},
-{name:"北证50",price:1265.16,change:-1.18,pe:null,pePct:null,chgYTD:-12.79,note:"北交所 · NeoData"}];
+{name:"上证指数",price:4163.10,change:1.78,pe:17.18,pePct:97.73,chgYTD:4.99,note:"上交所 · NeoData"},
+{name:"深证成指",price:16372.50,change:2.13,pe:38.00,pePct:100.0,chgYTD:20.35,note:"深交所 · NeoData"},
+{name:"创业板指",price:4359.39,change:2.52,pe:53.55,pePct:74.29,chgYTD:34.43,note:"深交所 · NeoData"},
+{name:"科创50",price:1948.93,change:1.96,pe:null,pePct:null,chgYTD:43.32,note:"上交所 · NeoData"},
+{name:"沪深300",price:5059.66,change:2.39,pe:null,pePct:null,chgYTD:8.78,note:"中证 · NeoData"},
+{name:"中证500",price:8868.78,change:2.26,pe:null,pePct:null,chgYTD:18.90,note:"中证 · NeoData"},
+{name:"中证1000",price:8865.68,change:1.08,pe:null,pePct:null,chgYTD:16.70,note:"中证 · NeoData"},
+{name:"北证50",price:1271.45,change:0.50,pe:null,pePct:null,chgYTD:-12.35,note:"北交所 · NeoData"}];
 const breadthData=[
-{name:"涨跌家数",val:"下跌约3300+只",note:"跷跷板分化明显 · 跌多涨少(个股) · 权重科技股拉升指数"},
-{name:"成交额(沪深京)",val:"约3.31万亿",note:"上证1.56万亿+深证1.75万亿 · 较上日放量2183亿 · 连续万亿"},
-{name:"领涨板块",val:"非金属材料/通信/半导体",note:"非金属材料+5.42%🔴 · 通信设备+4.14%🔴 · 半导体+3.84%🔴"},
-{name:"领跌板块",val:"非银金融/公用/石油石化",note:"大金融重挫 · 保险领跌 · 五大行齐跌 · 传统产业承压"},
-{name:"驱动事件",val:"国常会矿产法实施条例",note:"稀土永磁走强 · 成都5000台机器人订单 · 陆家嘴论坛次日"},
-{name:"市场风格",val:"跷跷板·科技独涨",note:"科创50+3.84%·创业板+2.05%领跑 · 上证独跌-0.43% · AI算力主线"}];
+{name:"涨跌家数",val:"上涨2916 / 下跌2468",note:"151股涨停 · 30股跌停 · 涨跌比1.18:1 · 权重股走强(NeoData+资讯)"},
+{name:"成交额(沪深京)",val:"3.74万亿",note:"历史第二天量 · 较上日放量4271亿 · 沪1.70万亿+深2.03万亿"},
+{name:"领涨板块",val:"证券/小金属/保险",note:"证券II+7.69%🔴 · 小金属+7.55%🔴 · 保险+5.84%🔴 · 大金融午后爆发"},
+{name:"领跌板块",val:"汽车/医药/机器人",note:"汽车-0.92% · 医药商业-0.51% · 机器人概念下挫 · 商业航天走低"},
+{name:"驱动事件",val:"求是网发文+券商业绩预期",note:"加快修复居民资产负债表 · IPO扩容利好券商 · 资金从AI止盈转向大金融"},
+{name:"市场风格",val:"风格切换·大金融崛起",note:"证券保险领涨 · 双创历史新高 · 金刚石散热/钴镍锑锡小金属全线涨停潮"}];
 const overseasData=[
-{name:"恒生科技",price:4586.52,change:-1.77,chg5d:-1.49,chg20d:-5.89,chgYTD:-16.85,note:"港交所 6/18 16:05"},
-{name:"纳斯达克",price:26021.66,change:-1.34,chg5d:3.39,chg20d:0.58,chgYTD:11.96,note:"6/17收盘(.IXIC) 美东"},
-{name:"标普500",price:7420.10,change:-1.21,chg5d:2.11,chg20d:0.90,chgYTD:8.39,note:"6/17收盘(.INX) 美东"},
-{name:"10Y美债",price:"暂缺",change:null,chg5d:null,chg20d:null,chgYTD:null,note:"API未返回"},
-{name:"美元人民币",price:"6.7621",change:0.03,chg5d:-0.15,chg20d:-0.50,chgYTD:-3.22,note:"USDCNY 6/18 16:05"},
-{name:"美元指数",price:"暂缺",change:null,chg5d:null,chg20d:null,chgYTD:null,note:"DINIW 6/18 API未返回"}];
+{name:"恒生科技",price:4549.11,change:-1.20,chg5d:-3.32,chg20d:-4.61,chgYTD:-17.53,note:"港交所 6/22 16:03"},
+{name:"纳斯达克",price:26517.93,change:1.91,chg5d:2.43,chg20d:0.86,chgYTD:14.09,note:"6/18收盘(.IXIC) 美东"},
+{name:"标普500",price:7500.58,change:1.08,chg5d:0.93,chg20d:0.74,chgYTD:9.57,note:"6/18收盘(.INX) 美东"},
+{name:"美元人民币",price:"6.7776",change:0.11,chg5d:0.24,chg20d:-0.26,chgYTD:-2.99,note:"USDCNY 6/22 16:03"},
+{name:"美元指数",price:"100.98",change:0.23,chg5d:1.17,chg20d:1.66,chgYTD:2.76,note:"DINIW 6/22 16:07"}];
 const futuresData=[
-{name:"富时A50期货",price:15746,change:0.96,note:"6/18 16:05 | 昨收15597 | 新交所"},
+{name:"富时A50期货",price:16002,change:1.61,note:"6/22 16:03 | 昨收15749 | 新交所"},
 {name:"IC2606(当月)",price:"暂缺",change:null,note:"中金所数据未获取"},
-{name:"中证500现货",price:8673.09,change:0.53,note:"6/18收盘 | 昨收8627.09"}
+{name:"中证500现货",price:8868.78,change:2.26,note:"6/22收盘 | 昨收8673.09"}
 ];
 // 中证500期货合约分析数据
 const icContracts=[
-{name:"IC2606(当月)",price:null,change:null,spot:8673.09,basis:null,basisAnn:null,oi:null,oiChg:null,volume:null,date:"6/18暂缺"},
-{name:"IC2607(下月)",price:null,change:null,spot:8673.09,basis:null,basisAnn:null,oi:null,oiChg:null,volume:null,date:"6/18暂缺"},
-{name:"IC2609(当季)",price:null,change:null,spot:8673.09,basis:null,basisAnn:null,oi:null,oiChg:null,volume:null,date:"6/18暂缺"},
-{name:"IC2612(下季)",price:null,change:null,spot:8673.09,basis:null,basisAnn:null,oi:null,oiChg:null,volume:null,date:"6/18暂缺"}
+{name:"IC2606(当月)",price:null,change:null,spot:8868.78,basis:null,basisAnn:null,oi:null,oiChg:null,volume:null,date:"6/22暂缺"},
+{name:"IC2607(下月)",price:null,change:null,spot:8868.78,basis:null,basisAnn:null,oi:null,oiChg:null,volume:null,date:"6/22暂缺"},
+{name:"IC2609(当季)",price:null,change:null,spot:8868.78,basis:null,basisAnn:null,oi:null,oiChg:null,volume:null,date:"6/22暂缺"},
+{name:"IC2612(下季)",price:null,change:null,spot:8868.78,basis:null,basisAnn:null,oi:null,oiChg:null,volume:null,date:"6/22暂缺"}
 ];
 const commodityData=[
-{name:"上海金 AU9999",price:"935.86元/克",change:-0.35,note:"6/18 15:29 | 昨结939.18"},
-{name:"伦敦金",price:"4311.70美元/盎司",change:-1.59,note:"6/18 15:55 | 昨收4381.40"},
-{name:"COMEX铜",price:"6.422美元/磅",change:-1.10,note:"6/18 03:55 ET | 昨收6.494"},
-{name:"WTI原油",price:"暂缺",change:null,note:"API未返回实时数据"}];
+{name:"上海金 AU9999",price:"914.35元/克",change:-2.30,note:"6/22 15:29 | 昨结935.86"},
+{name:"伦敦金",price:"4211.20美元/盎司",change:-0.82,note:"6/22 15:53 | 昨收4245.90"},
+{name:"COMEX铜",price:"6.350美元/磅",change:-0.56,note:"6/22 03:57 ET | 昨收6.386"},
+{name:"WTI原油",price:"75.82美元/桶",change:-0.04,note:"6/22 03:57 ET | 昨收75.85"}];
 const macroData=[
 {name:"制造业PMI(5月)",val:"50.0%",prev:"50.3%(4月)",chg:"-0.3%",date:"5/31",src:"国家统计局"},
 {name:"高技术PMI(5月)",val:"52.9",prev:"52.2(4月)",chg:"+0.7",date:"5/31",src:"国家统计局"},
@@ -187,19 +186,29 @@ const macroData=[
 {name:"社融存量(5月)",val:"458.81万亿",prev:"456.89万亿(4月)",chg:"+1.92万亿",date:"6/12发布",src:"央行"}
 ];
 const liquidityData=[
-{name:"10Y国债",val:"1.7270%",prev:"1.7324%(6/16)",chg:"-0.54bp",date:"6/17",src:"中债"},
-{name:"7天逆回购利率",val:"1.40%",prev:"1.40%",chg:"持平",date:"最新",src:"央行"},
+{name:"10Y国债",val:"暂缺",prev:"1.7270%(6/17)",chg:"暂缺",date:"6/22",src:"API未返回"},
 {name:"14天逆回购利率",val:"1.65%",prev:"1.65%",chg:"持平",date:"最新",src:"央行"},
-{name:"逆回购操作(6/17)",val:"暂缺",prev:"4495亿(6/16)",chg:"暂缺",date:"6/17",src:"央行"}
-];
+{name:"逆回购操作(6/18)",val:"2480亿",prev:"4203亿(6/17)",chg:"-1723亿",date:"6/18",src:"央行"},
+{name:"LPR 1Y/5Y(5月)",val:"3.0%/3.5%",prev:"3.0%/3.5%",chg:"持平",date:"5/20",src:"央行"}];
 const industryData=[
-{name:"非金属材料Ⅱ",change:5.42,turnover:4.54,inflow:null,inflow5d:null,leader:"联瑞新材 +14.98%"},
-{name:"金属新材料",change:4.17,turnover:6.94,inflow:null,inflow5d:null,leader:"江南新材 +10.00%"},
-{name:"通信设备",change:4.14,turnover:4.89,inflow:58.80,inflow5d:104.36,leader:"光迅科技 +10.00%"},
-{name:"半导体",change:3.84,turnover:6.45,inflow:null,inflow5d:null,leader:"晶升股份 +20.01%"},
-{name:"医疗服务",change:3.64,turnover:2.67,inflow:null,inflow5d:null,leader:"皓元医药 +15.08%"},
-{name:"消费电子",change:3.61,turnover:3.82,inflow:68.07,inflow5d:97.67,leader:"易德龙 +10.00%"},
-{name:"通用设备",change:2.63,turnover:4.84,inflow:33.76,inflow5d:39.58,leader:"春晖智控 +20.00%"}
+{name:"证券II",change:7.69,turnover:2.57,inflow:106.24,inflow5d:51.63,leader:"东方财富 +12.74%"},
+{name:"小金属",change:7.55,turnover:8.29,inflow:41.14,inflow5d:5.67,leader:"中钨高新 +10.00%"},
+{name:"保险II",change:5.84,turnover:0.79,inflow:null,inflow5d:null,leader:"新华保险 +10.01%"},
+{name:"农化制品",change:5.41,turnover:3.45,inflow:null,inflow5d:null,leader:"川金诺 +12.00%"},
+{name:"玻璃玻纤",change:5.32,turnover:8.28,inflow:null,inflow5d:null,leader:"长海股份 +10.48%"},
+{name:"非金属材料II",change:5.08,turnover:6.18,inflow:null,inflow5d:null,leader:"力量钻石 +20.00%"},
+{name:"工业金属",change:4.74,turnover:4.22,inflow:54.55,inflow5d:-8.76,leader:"锌业股份 +10.10%"},
+{name:"电力设备",change:3.39,turnover:4.02,inflow:50.34,inflow5d:null,leader:"万胜智能 +20.03%"},
+{name:"煤炭",change:2.13,turnover:1.67,inflow:null,inflow5d:null,leader:"暂缺"},
+{name:"通信设备",change:1.74,turnover:5.86,inflow:null,inflow5d:null,leader:"暂缺"},
+{name:"食品饮料",change:1.44,turnover:1.98,inflow:0.83,inflow5d:null,leader:"暂缺"},
+{name:"半导体",change:1.37,turnover:6.59,inflow:null,inflow5d:null,leader:"暂缺"},
+{name:"计算机设备",change:0.87,turnover:3.55,inflow:null,inflow5d:null,leader:"暂缺"},
+{name:"银行",change:0.81,turnover:0.32,inflow:3.97,inflow5d:null,leader:"中国银行 +2.77%"},
+{name:"军工",change:0.18,turnover:3.96,inflow:-28.27,inflow5d:null,leader:"肯特股份 +15.11%"},
+{name:"房地产",change:0.04,turnover:1.92,inflow:null,inflow5d:null,leader:"暂缺"},
+{name:"医药商业",change:-0.51,turnover:1.48,inflow:null,inflow5d:null,leader:"暂缺"},
+{name:"汽车",change:-0.92,turnover:2.27,inflow:-44.47,inflow5d:null,leader:"暂缺"}
 ];
 
 // ====== RENDER ======
@@ -242,12 +251,12 @@ function renderLiquidity(){
 document.getElementById('liquidity-cards').innerHTML=liquidityData.map(d=>
 `<div class="card"><div class="card-title">${d.name}</div><div class="card-value" style="font-size:1.1rem">${d.val}</div><div class="card-change ${d.chg.startsWith('+')?'up':(d.chg.startsWith('-')?'down':'neutral')}">${d.chg}</div><div class="card-meta">${d.date} | ${d.src}</div></div>`).join('')}
 function renderValuation(){
-const tmc=1150000,gdp=1470000,buffet=(tmc/gdp*100).toFixed(1),erp=((1/17.29*100)-1.7270).toFixed(2);
+const tmc=1150000,gdp=1470000,buffet=(tmc/gdp*100).toFixed(1),erp=((1/17.18*100)-1.65).toFixed(2);
 document.getElementById('valuation-cards').innerHTML=`
 <div class="card"><div class="card-title">巴菲特指数*</div><div class="card-value">${buffet}%</div><div class="card-meta">沪深总市值≈115万亿/GDP≈147万亿</div></div>
-<div class="card"><div class="card-title">ERP 股债性价比</div><div class="card-value">${erp}%</div><div class="card-meta">1/上证PE17.29 - 10Y(1.7270%)</div></div>
-<div class="card"><div class="card-title">深证PE分位</div><div class="card-value" style="color:var(--warn)">暂缺</div><div class="card-meta">深证PE今日未返回 · API仅返上证PE</div></div>
-<div class="card"><div class="card-title">创业板PE分位</div><div class="card-value" style="color:var(--warn)">暂缺</div><div class="card-meta">创业板PE今日未返回</div></div>`}
+<div class="card"><div class="card-title">ERP 股债性价比</div><div class="card-value">${erp}%</div><div class="card-meta">1/上证PE17.18 - 14天逆回购1.65% (10Y暂缺)</div></div>
+<div class="card"><div class="card-title">深证PE分位</div><div class="card-value" style="color:var(--warn)">100.0%⚠️</div><div class="card-meta">深证PE 38.00 · 极高位 · NeoData</div></div>
+<div class="card"><div class="card-title">创业板PE分位</div><div class="card-value">74.29%</div><div class="card-meta">创业板PE 53.55 · 偏高 · NeoData</div></div>`}
 function renderSentiment(){
 document.getElementById('sentiment-cards').innerHTML=`
 <div class="card"><div class="card-title">两融余额</div><div class="card-value" style="font-size:1.1rem">2.88万亿</div><div class="card-meta">6/8: 28828.95亿 | -237.93亿 | 沪深交易所</div></div>
@@ -289,23 +298,23 @@ var c2=echarts.init(document.getElementById('chart-pe'));
 var ped=indexData.filter(d=>d.pePct!=null);
 c2.setOption({tooltip:{trigger:'axis'},grid:{l:'8%',r:'4%',b:'8%',t:'5%'},xAxis:{type:'value',name:'PE',axisLabel:{color:tc}},yAxis:{type:'value',name:'分位%',axisLabel:{color:tc},max:100,markLine:{silent:!0,data:[{yAxis:80,label:{formatter:'高估80%',color:'#dc2626'},lineStyle:{color:'#dc2626',type:'dashed'}},{yAxis:20,label:{formatter:'低估20%',color:'#16a34a'},lineStyle:{color:'#16a34a',type:'dashed'}}]}},series:[{type:'scatter',data:ped.map(d=>[d.pe,d.pePct]),symbolSize:14,label:{show:!0,formatter:p=>ped[p.dataIndex].name,position:'right',fontSize:9,color:tc},itemStyle:{color:'#f59e0b'}}]});
 var c3=echarts.init(document.getElementById('chart-bond'));
-var bd=['5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11','6/12','6/15','6/16','6/17'],by=[1.7090,1.7009,1.7036,1.7128,1.7081,1.7207,1.7275,1.7376,1.7476,1.7475,1.7427,1.7446,1.7324,1.7270];
+var bd=['5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11','6/12','6/15','6/16','6/17','6/18','6/22'],by=[1.7090,1.7009,1.7036,1.7128,1.7081,1.7207,1.7275,1.7376,1.7476,1.7475,1.7427,1.7446,1.7324,1.7270,null,null];
 c3.setOption({tooltip:{trigger:'axis'},grid:{l:'3%',r:'4%',b:'3%',t:'5%',containLabel:!0},xAxis:{type:'category',data:bd,axisLabel:{color:tc}},yAxis:{type:'value',name:'%',axisLabel:{color:tc},min:1.68,max:1.77},series:[{type:'line',data:by,smooth:!0,lineStyle:{color:'#f59e0b',width:2},itemStyle:{color:'#f59e0b'},symbol:'circle',symbolSize:5,areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(245,158,11,0.2)'},{offset:1,color:'rgba(245,158,11,0)'}])}}]});
 var c4=echarts.init(document.getElementById('chart-repo'));
-var rd=['5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11','6/12','6/15','6/16'],rv=[2490,1776,1013,1230,1100,200,0,0,2150,2185,1530,1590,1885,3930,4250,4495];
+var rd=['5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4','6/5','6/8','6/9','6/10','6/11','6/12','6/15','6/16','6/17','6/18'],rv=[2490,1776,1013,1230,1100,200,0,0,2150,2185,1530,1590,1885,3930,4250,4495,4203,2480];
 c4.setOption({tooltip:{trigger:'axis'},grid:{l:'3%',r:'4%',b:'3%',t:'5%',containLabel:!0},xAxis:{type:'category',data:rd,axisLabel:{rotate:45,fontSize:8,color:tc}},yAxis:{type:'value',name:'亿元',axisLabel:{color:tc}},series:[{type:'bar',data:rv,itemStyle:{color:'#3b82f6',borderRadius:[4,4,0,0]}}]});
 }
 
 // ====== SUMMARY ======
 function renderSummary(){
 document.getElementById('daily-summary').innerHTML=`
-今日A股<a style="color:var(--warn)"><strong>剧烈分化，跷跷板效应极致演绎。</strong></a>上证指数独自收跌<span class="down">-0.43%</span>报4090.48，但<strong>科创50<span class="up">+3.84%</span></strong>、<strong>创业板指<span class="up">+2.05%</span></strong>双双走高，创业板综创历史新高。深证成指<span class="up">+0.94%</span>报16030.70。个股层面跌多涨少（下跌超3300只），但AI算力权重股强势拉升指数。成交额3.31万亿较上日放量2183亿，市场交投活跃但结构极端分化。<br><br>
-<strong>核心驱动：</strong>国常会审议通过《矿产资源法实施条例》，稀土永磁概念爆发（中国稀土、盛和资源双双涨停）。成都人形机器人创新中心签下5000台具身智能机器人战略采购订单（迄今国内最大单笔），机器人概念异动。SpaceX上市、世界杯开幕等事件相继落地，市场向业绩线靠拢。陆家嘴论坛第二日，科创板改革四大方向明晰。<strong>寒武纪<span class="up">+14.20%</span>创历史新高</strong>，字节跳动正与天数智芯洽谈采购至少5万颗AI芯片，算力芯片概念持续走强。<br><br>
-<strong>板块分化：</strong>科技方向一枝独秀。非金属材料Ⅱ<span class="up">+5.42%🔴</span>（联瑞新材+14.98%）、金属新材料<span class="up">+4.17%🔴</span>（江南新材+10.00%）、通信设备<span class="up">+4.14%🔴</span>（光迅科技+10.00%创历史新高）、半导体<span class="up">+3.84%🔴</span>（晶升股份+20.01%）、医疗服务<span class="up">+3.64%🔴</span>（皓元医药+15.08%）、消费电子<span class="up">+3.61%🔴</span>（易德龙+10.00%）涨幅居前。传统产业全面承压：非银金融、公用事业、石油石化跌超2%，保险板块领跌（新华保险、中国太保、中国平安、中国人寿均大跌），五大国有银行股价齐跌。<br><br>
-<strong>资金面：</strong>消费电子主力净流入<span class="up">+68.07亿</span>、通信设备<span class="up">+58.80亿</span>、通用设备<span class="up">+33.76亿</span>（NeoData估算）。通信设备5日累计净流入<span class="up">+104.36亿</span>，中线主力持续加仓。两融余额2.88万亿（6/8数据，-237.93亿）。北向资金仍停更。光模块方向：东山精密子公司索尔思光电12亿美元扩建光芯片及光模块项目，中际旭创涨超7%市值突破1.5万亿。<br><br>
-<strong>宏观背景：</strong>5月制造业PMI 50.0（荣枯线），高技术PMI 52.9扩张，PPI同比3.9%创46月高。CPI同比1.2%持平，环比-0.1%。社融存量458.81万亿。10Y国债1.7270%（6/17，-0.54bp下行），利率小幅回落。6/17逆回购数据暂缺（6/16为4495亿）。<br><br>
-<strong>海外与大宗：</strong>美股隔夜回调——纳斯达克<span class="down">-1.34%</span>（26021.66）、标普500<span class="down">-1.21%</span>（7420.10）。恒生科技<span class="down">-1.77%</span>报4586.52。富时A50期货<span class="up">+0.96%</span>报15746，期货端小幅看涨。大资金价全面回落：伦敦金<span class="down">-1.59%</span>报4311.70美元、上海金<span class="down">-0.35%</span>报935.86元/克、COMEX铜<span class="down">-1.10%</span>报6.422美元。美元人民币6.7621（+0.03%），美元指数暂缺。<br><br>
-<strong>⚠️估值：</strong>上证PE分位<span style="color:var(--warn)">98.56%</span>仍处历史极高位。深证/创业板/科创50/沪深300/中证500/中证1000/北证50 PE今日均未返回（API仅返上证）。ERP股债性价比约4.05%（1/17.29-1.727%），仍具一定安全边际。市场极致分化的结构性行情短期或延续，关注科技股中报业绩验证窗口及政策信号。`;
+今日A股<a style="color:var(--red)"><strong>放量大涨，风格切换信号强烈。</strong></a>八指齐涨，上证指数<span class="up">+1.78%</span>报4163.10，深证成指<span class="up">+2.13%</span>报16372.50，<strong>创业板指<span class="up">+2.52%</span>报4359.39创历史新高</strong>。沪深300<span class="up">+2.39%</span>再上5000关口，科创50<span class="up">+1.96%</span>报1948.93。两市成交3.74万亿创历史第二天量，较上日放量4271亿。全市场2916股上涨/2468股下跌，151股涨停/30股跌停。<br><br>
+<strong>核心驱动：大金融爆发三大原因。</strong>①求是网罕见发文——加快修复居民资产负债表，防止资产价格下跌对消费信心的负向螺旋。②券商业绩预期催化——中原证券等多家券商对二季度业绩给出乐观预期。③资金避险轮动——前期AI、算力、半导体持续大涨估值拥挤，大量获利资金止盈出逃，需要安全的低位板块承接，大金融成为明确方向。央票中标利率1.34%，央行在港发行400亿元6个月央票。<br><br>
+<strong>板块全面分化——大金融+资源双双爆发：</strong>证券II<span class="up">+7.69%🔴</span>领涨全场（东方财富+12.74%），广发证券、长江证券、中信建投涨停。保险II<span class="up">+5.84%🔴</span>（新华保险涨停），银行+0.81%。有色金属全线涨停潮——小金属<span class="up">+7.55%🔴</span>（中钨高新涨停）、工业金属<span class="up">+4.74%🔴</span>（锌业股份涨停）、非金属材料<span class="up">+5.08%🔴</span>（力量钻石+20%）、玻璃玻纤<span class="up">+5.32%🔴</span>。金刚石散热概念集体走强（英特尔CEO看好钻石散热材料），电池板块拉升（湖南裕能+12.85%）。下跌方向：<strong>机器人概念下挫、军工+0.18%微涨、商业航天走低、医药医疗走弱。</strong>汽车<span class="down">-0.92%</span>领跌板块。<br><br>
+<strong>资金面：</strong>证券II主力净流入<span class="up">+106.24亿</span>（全场第一），工业金属<span class="up">+54.55亿</span>，电力设备<span class="up">+50.34亿</span>，小金属<span class="up">+41.14亿</span>（NeoData估算）。军工主力净流出-28.27亿，汽车净流出-44.47亿。两融余额2.88万亿（6/8，-237.93亿）。北向资金仍停更。<br><br>
+<strong>宏观：</strong>5月制造业PMI 50.0（荣枯线），大企业51.1%扩张，中型企业48.6%收缩。高技术PMI 52.9扩张。CPI同比1.2%持平、环比-0.1%，PPI同比3.9%创46月高、环比+0.7%。社融458.81万亿。LPR 1Y 3.0%/5Y 3.5%不变。14天逆回购利率1.65%，6/18操作2480亿（较上日-1723亿）。10Y国债今日暂缺。<br><br>
+<strong>海外与大宗：</strong>美股上日反弹——纳斯达克<span class="up">+1.91%</span>报26517.93、标普500<span class="up">+1.08%</span>报7500.58。恒生科技<span class="down">-1.20%</span>报4549.11。富时A50期货<span class="up">+1.61%</span>报16002，期指看涨。大宗整体回落：上海金<span class="down">-2.30%</span>报914.35元/克，伦敦金<span class="down">-0.82%</span>报4211.20美元，COMEX铜<span class="down">-0.56%</span>报6.350美元，WTI原油<span class="down">-0.04%</span>报75.82美元。美元指数100.98（+0.23%），USDCNY 6.7776（+0.11%）。<br><br>
+<strong>⚠️估值：</strong>上证PE分位<span style="color:var(--warn)">97.73%</span>、深证PE分位<span style="color:var(--warn)">100.0%</span>均处历史极高位。创业板PE分位74.29%偏高。ERP股债性价比约4.17%（1/17.18-1.65%，10Y暂缺改用逆回购）。科创50/沪深300/中证500/中证1000/北证50 PE分位暂缺。市场风格是否成功从科技切换到大金融，取决于AI板块能否继续维持高景气，以及券商中报业绩兑现力度。短期关注6月底季报披露窗口的风格再平衡。`;
 }
 
 // ====== TIME ======
