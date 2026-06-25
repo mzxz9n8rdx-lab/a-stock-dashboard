@@ -318,8 +318,6 @@ return`<tr class="${indFilter?'':'all-row'}"><td>${icon}${d.name}</td><td class=
 function sortIndustry(col){indSortCol=col;indSortDir*=-1;renderIndustry()}
 function filterIndustry(){indFilter=document.getElementById('industry-filter').value;renderIndustry()}
 function switchTab(t){indTab=t;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');renderIndustry()}
-function sortTable(tid,col){var t=document.getElementById(tid),r=Array.from(t.querySelectorAll('tr')),h=r.shift();r.sort((a,b)=>{(va, vb) from cells?}).reverse();/* placeholder */}
-
 // ====== SUMMARY ======
 function renderSummary(){
 document.getElementById('daily-summary').innerHTML=`今日A股<a style="color:var(--red)"><strong>极致二八行情延续，科技独舞指数全红个股普跌。</strong></a>八指七涨（仅北证50-1.41%），但全市场超4200只个股下跌，仅823家上涨——涨跌比不到1:5。科创50<span class="up">+3.87%</span>报2066.33再创历史新高，上证指数<span class="up">+0.23%</span>报4120.28，深证成指<span class="up">+1.82%</span>报16344.08，创业板指<span class="up">+2.84%</span>报4371.99，沪深300<span class="up">+1.56%</span>报5020.10（重回5000点），中证500<span class="up">+1.08%</span>报8938.01，中证1000<span class="up">+0.37%</span>报8825.92。三市成交额3.59万亿，放量3100亿。涨停41家。<br><br>
